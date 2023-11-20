@@ -63,5 +63,7 @@ Tema yang kami gunakan adalah **<i>aplikasi review</i> buku**
 
 
 ## Alur Pengintegrasian dengan web Django
-- Membuat sebuah class remote data source yang berisi HTTP Client untuk melakukan HTTP request ke website deployment ulasbuku 
-- Melakukan integrasi antara front-end dengan back-end pada website deployment ulasbuku menggunakan konsep asynchronous programming
+- Melakukan integrasi antara front-end dengan back-end pada Rest API ulasbuku menggunakan konsep asynchronous programming
+- Berikut adalah langkah-langkah yang akan dilakukan untuk mengintegrasikan aplikasi dengan server web.
+- Mengimplementasikan sebuah wrapper class dengan menggunakan library http dan map untuk mendukung penggunaan cookie-based authentication pada aplikasi.
+- Mengimplementasikan REST API pada Django (views.py) dengan menggunakan JsonResponse atau Django JSON Serializer.
