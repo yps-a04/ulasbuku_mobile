@@ -28,26 +28,26 @@ Tema yang kami gunakan adalah **<i>aplikasi review</i> buku**
 3. Menjadi referensi masyarakat dalam memilih buku yang tepat untuk dibaca
 
 ## Implementasi Modul
-#### Modul <code>home</code>:
+#### Modul <code>home</code> by Daffa Akmal Zuhdii:
 - Menampilkan *list* daftar buku
 - Menambahkan navigasi ke *detail page*
 - Menambahkan fitur search
 
-#### Modul <code>book_details</code>:
+#### Modul <code>book_details</code> by Yasmin Putri Viryadhani:
 - Menampilkan detail buku beserta reviewnya
 - Menambahkan fitur *add review*
 - Menambahkan tombol *add to bookmark*
 
-#### Modul <code>profile</code>:
+#### Modul <code>profile</code> by Williams:
 - Menampilkan detail profil user/admin
 - Menampilkan review-review yang telah ditambahkan oleh user tersebut
 - Menampilkan author-author preference yang sudah dipilih oleh user
 - Membuat form untuk menambah preference
 
-#### Modul <code>bookmark</code>:
+#### Modul <code>bookmark</code> by Muhammad Iqbal:
 - Menambahkan list buku yang telah dibookmark user
 
-#### Modul <code>admin</code>:
+#### Modul <code>admin</code> by Ghaisan Luqyana Aqila:
 - Menambahkan fitur add/delete/edit buku
 - Menambahkan fitur delete user
 
