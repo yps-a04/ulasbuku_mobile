@@ -1,5 +1,5 @@
 # UlasBuku: Project Tugas Kelompok A04 PBP
-- Link Repository: [Click](https://github.com/yps-a04/proyekTengahSemester.git)
+- Link Repository: [Click](https://github.com/yps-a04/ulasbuku_mobile)
 - Link *Website* Proyek UTS: (soon)
 - Berita acara: [Click](https://univindonesia-my.sharepoint.com/:x:/g/personal/williams_office_ui_ac_id/EQLHHcRruOFNvy_njxDlPowBzr3vO4qu2B1SISeZ8JKbiQ?e=ScN18i)
 
