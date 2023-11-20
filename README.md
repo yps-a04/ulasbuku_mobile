@@ -41,6 +41,8 @@ Tema yang kami gunakan adalah **<i>aplikasi review</i> buku**
 #### Modul <code>profile</code>:
 - Menampilkan detail profil user/admin
 - Menampilkan review-review yang telah ditambahkan oleh user tersebut
+- Menampilkan author-author preference yang sudah dipilih oleh user
+- Membuat form untuk menambah preference
 
 #### Modul <code>bookmark</code>:
 - Menambahkan list buku yang telah dibookmark user
