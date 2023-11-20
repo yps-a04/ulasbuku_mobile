@@ -1,19 +1,11 @@
-# ulas_buku_mobile
+# UlasBuku: Project Tugas Kelompok A04 PBP
+- Link Repository: [Click](https://github.com/yps-a04/proyekTengahSemester.git)
+- Link *Website* Proyek UTS: (soon)
+- Berita acara: [Click](https://univindonesia-my.sharepoint.com/:x:/g/personal/williams_office_ui_ac_id/EQLHHcRruOFNvy_njxDlPowBzr3vO4qu2B1SISeZ8JKbiQ?e=ScN18i)
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-#   u l a s b u k u _ m o b i l e 
-. 
- 
+# Anggota Kelompok
+1. [Ghaisan Luqyana Aqila - 2206830460](https://github.com/Ghaisan007)
+2. [Williams - 2206820440](https://github.com/NtapSlur)
+3. [Yasmine Putri Viryadhani - 2206081862](https://github.com/sdikyarts)
+4. [Daffa Akmal Zuhdii - 2206083243](https://github.com/Daffa2101)
+5. [Muhammad Iqbal - 2206082152](https://github.com/Liqba)
