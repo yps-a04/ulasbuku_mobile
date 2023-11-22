@@ -8,6 +8,7 @@ class UBButton extends StatelessWidget {
     required this.text,
     required this.primaryColor,
     required this.secondaryColor,
+    this.alignment,
     this.icon,
   });
 
@@ -17,6 +18,7 @@ class UBButton extends StatelessWidget {
   final IconData? icon;
   final Color primaryColor;
   final Color secondaryColor;
+  final MainAxisAlignment? alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,8 @@ class UBButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment:
+              alignment == null ? MainAxisAlignment.spaceBetween : alignment!,
           children: [
             Text(
               text,
