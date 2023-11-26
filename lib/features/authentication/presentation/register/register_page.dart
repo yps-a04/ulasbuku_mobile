@@ -28,11 +28,11 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     "Register",
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   ),
-                  Container(
+                  SizedBox(
                     height: height * 0.4,
                     child: Image.asset(
                       'assets/img/book.png',
@@ -54,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   TextField(
@@ -85,7 +85,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   TextField(
@@ -116,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   UBButton(
@@ -128,21 +128,21 @@ class _RegisterPageState extends State<RegisterPage> {
                     alignment: MainAxisAlignment.center,
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => HomePage(),
+                        builder: (context) => const HomePage(),
                       ));
                     },
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Sudah punya akun? "),
+                      const Text("Sudah punya akun? "),
                       TextButton(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => LoginPage(),
+                              builder: (context) => const LoginPage(),
                             ));
                           },
-                          child: Text(
+                          child: const Text(
                             "Login sekarang!",
                             style: TextStyle(color: Color(0xFF5584a0)),
                           )),

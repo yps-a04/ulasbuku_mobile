@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+// ignore: unnecessary_import
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
-import 'package:unicons/unicons.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,7 +20,8 @@ class _HomePageState extends State<HomePage> {
 
     List<Color> cardColors = [
       const Color(0xffacdcf2),
-      const Color(0xffFf9bbd0),
+      // ignore: use_full_hex_values_for_flutter_colors
+      const Color(0xffff9bbd0),
       const Color(0xffb2dfdc),
       const Color(0xFFffcc80),
       const Color(0xffc5cae8),
@@ -34,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       drawer: const Drawer(),
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: height * 2,
           width: width,
           child: Stack(
@@ -70,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       IconButton(
                         onPressed: () {},
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.logout,
                           color: Colors.black,
                         ),
@@ -114,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                 left: 20,
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       height: height * 1 / 2.5,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -159,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: height * 1.25,
                       child: Column(
                         children: [

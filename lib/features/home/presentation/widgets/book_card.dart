@@ -17,7 +17,7 @@ class BookCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         showModalBottomSheet(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
               topRight: Radius.circular(25),
@@ -25,7 +25,7 @@ class BookCard extends StatelessWidget {
           ),
           context: context,
           builder: (context) {
-            return Container(
+            return SizedBox(
               width: width,
               height: height * 0.5,
               child: Padding(
@@ -45,7 +45,7 @@ class BookCard extends StatelessWidget {
                       children: [
                         Column(
                           children: [
-                            Container(
+                            SizedBox(
                               width: width * 0.4,
                               height: height * 0.25,
                               child: ClipRRect(
@@ -56,10 +56,10 @@ class BookCard extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
-                            Row(
+                            const Row(
                               children: [
                                 Text("4.5/5"),
                                 SizedBox(
@@ -70,23 +70,23 @@ class BookCard extends StatelessWidget {
                             )
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 30,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Judul",
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text("Penulis"),
-                            Text("1.321 times reviewed "),
-                            Text("22-5-2070"),
-                            SizedBox(
+                            const Text("Penulis"),
+                            const Text("1.321 times reviewed "),
+                            const Text("22-5-2070"),
+                            const SizedBox(
                               height: 30,
                             ),
                             UBButton(
@@ -117,13 +117,13 @@ class BookCard extends StatelessWidget {
         );
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         width: width * 1 / 2,
         height: height * 1 / 3,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(
+            SizedBox(
               height: height * 1 / 4,
               width: width * 1 / 2,
               child: Stack(
@@ -166,14 +166,14 @@ class BookCard extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
-            Text(
+            const Text(
               "Judul Buku",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
-            Text("Penulis")
+            const Text("Penulis")
           ],
         ),
       ),
