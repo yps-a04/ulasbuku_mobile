@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/register/register_page.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -94,6 +95,11 @@ class _LoginPageState extends State<LoginPage> {
                     primaryColor: Colors.black,
                     secondaryColor: Colors.white,
                     alignment: MainAxisAlignment.center,
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => HomePage(),
+                      ));
+                    },
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
