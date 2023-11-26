@@ -9,8 +9,7 @@
 .history
 .svn/
 migrate_working_dir/
-*.keystore
-*.jkss
+
 # IntelliJ related
 *.iml
 *.ipr
