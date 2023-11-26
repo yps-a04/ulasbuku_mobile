@@ -1,3 +1,5 @@
+.pipeline
+
 # UlasBuku: Project Tugas Kelompok A04 PBP
 - Link Repository: [Click](https://github.com/yps-a04/ulasbuku_mobile)
 - Link *Website* Proyek UTS: (soon)
