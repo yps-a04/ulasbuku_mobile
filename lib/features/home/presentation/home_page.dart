@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                 // Background
                 child: Center(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
                         icon: const Icon(
@@ -61,9 +61,6 @@ class _HomePageState extends State<HomePage> {
                           scaffoldKey.currentState!.openDrawer();
                         }),
                       ),
-                      SizedBox(
-                        width: width * 0.225,
-                      ),
                       const Text(
                         "Ulas Buku",
                         style: TextStyle(
@@ -71,6 +68,13 @@ class _HomePageState extends State<HomePage> {
                             fontWeight: FontWeight.w600,
                             color: Colors.black),
                       ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.logout,
+                          color: Colors.black,
+                        ),
+                      )
                     ],
                   ),
                 ),
