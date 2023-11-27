@@ -51,7 +51,7 @@ Tema yang kami gunakan adalah **<i>aplikasi review</i> buku**
 - Menambahkan fitur add/delete/edit buku
 - Menambahkan fitur delete user
 
-## Sumber <i>dataset</i> katalog buku
+## Sumber <i>dataset</i> katalog buku 
 - Kelompok kami menggunakan **Kaggle** sebagai sumber dataset buku-buku yang tersedia di UlasBuku
 - Dataset Kaggle yang kami pilih bersumber dari **GoodReads** dan **Amazon**
     - [Goodreads](https://www.kaggle.com/datasets/jealousleopard/goodreadsbooks)
