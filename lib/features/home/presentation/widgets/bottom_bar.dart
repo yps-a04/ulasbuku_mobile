@@ -18,7 +18,7 @@ class BottomNavBar extends StatelessWidget {
       backgroundColor: Colors.white,
       unselectedItemColor: Colors.grey,
       selectedItemColor: Colors.black, // Set the selected item color to purple
-      items: [
+      items: const [
         BottomNavigationBarItem(
           icon: Icon(UniconsLine.home),
           label: 'Home',
