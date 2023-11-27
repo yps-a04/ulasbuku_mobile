@@ -149,8 +149,8 @@ class BookCard extends StatelessWidget {
                       elevation: 10,
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
-                        width: width * 1 / 3.5,
-                        height: height * 1 / 5.25,
+                        width: width * 1 / 3,
+                        height: height * 1 / 5,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10)),
                         child: ClipRRect(
@@ -180,5 +180,3 @@ class BookCard extends StatelessWidget {
     );
   }
 }
-
-
