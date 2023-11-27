@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+// ignore: must_be_immutable
 class DetailPage extends StatelessWidget {
   DetailPage({required this.bgColor, super.key});
 
@@ -17,7 +18,7 @@ class DetailPage extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios,
               size: 28,
             )),
@@ -35,7 +36,7 @@ class DetailPage extends StatelessWidget {
                 child: Container(
                   height: height * 1.25,
                   width: width,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
@@ -51,7 +52,7 @@ class DetailPage extends StatelessWidget {
                 child: Material(
                   elevation: 10,
                   borderRadius: BorderRadius.circular(30),
-                  child: Container(
+                  child: SizedBox(
                     height: height * 0.3,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(30),
@@ -73,7 +74,7 @@ class DetailPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           "Judul Buku",
                           style: TextStyle(
                               color: Colors.black,
@@ -82,7 +83,7 @@ class DetailPage extends StatelessWidget {
                         ),
                         IconButton(
                             onPressed: () {},
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.bookmark,
                               color: Colors.grey,
                               size: 28,
@@ -93,7 +94,7 @@ class DetailPage extends StatelessWidget {
                       children: [
                         RatingBarIndicator(
                           rating: 3.5,
-                          itemBuilder: (context, index) => Icon(
+                          itemBuilder: (context, index) => const Icon(
                             Icons.star,
                             color: Colors.black,
                           ),
@@ -101,27 +102,27 @@ class DetailPage extends StatelessWidget {
                           itemSize: 20.0,
                           direction: Axis.horizontal,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
-                        Text(
+                        const Text(
                           "4.5/5",
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
-                    Divider(
+                    const Divider(
                       thickness: 1,
                     ),
-                    Text(
+                    const Text(
                       "Details",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Divider(thickness: 1),
-                    Text(
+                    const Divider(thickness: 1),
+                    const Text(
                       'Author : Morbius\n'
                       'ISBN13 : 12345678\n'
                       'ISBN : 12321312\n'
@@ -130,17 +131,17 @@ class DetailPage extends StatelessWidget {
                       'Published Date : 20/20/2020',
                       style: TextStyle(letterSpacing: 1, height: 2),
                     ),
-                    Divider(
+                    const Divider(
                       thickness: 1,
                     ),
-                    Text(
+                    const Text(
                       "Reviews",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Divider(
+                    const Divider(
                       thickness: 1,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
                     SizedBox(
@@ -148,11 +149,11 @@ class DetailPage extends StatelessWidget {
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemCount: 5,
-                        separatorBuilder: (context, index) => SizedBox(
+                        separatorBuilder: (context, index) => const SizedBox(
                           width: 16,
                         ),
                         itemBuilder: (context, index) {
-                          return Container(
+                          return SizedBox(
                             height: 0.3,
                             width: width * 0.75,
                             child: Column(
@@ -164,10 +165,10 @@ class DetailPage extends StatelessWidget {
                                     CircleAvatar(
                                       child: Image.asset('assets/img/user.png'),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 8,
                                     ),
-                                    Column(
+                                    const Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -179,11 +180,11 @@ class DetailPage extends StatelessWidget {
                                     )
                                   ],
                                 ),
-                                Text(
+                                const Text(
                                   "Title",
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                Text(
+                                const Text(
                                   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
                                   ' Etiam egestas quam eget orci imperdiet hendrerit. Nulla ultricies'
                                   ' dignissim risus nec feugiat. Aliquam eget fringilla mi, in pulvinar'

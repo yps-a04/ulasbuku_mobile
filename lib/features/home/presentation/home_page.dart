@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     List<Color> cardColors = [
       const Color(0xffacdcf2),
       // ignore: use_full_hex_values_for_flutter_colors
-      Color.fromRGBO(249, 187, 208, 1),
+      const Color.fromRGBO(249, 187, 208, 1),
       const Color(0xffb2dfdc),
       const Color(0xFFffcc80),
       const Color(0xffc5cae8),
@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                         height: height * 1.5,
                         child: Column(
                           children: [
-                            TabBar(
+                            const TabBar(
                                 indicatorColor: Colors.black,
                                 labelColor: Colors.black,
                                 unselectedLabelColor: Colors.grey,
