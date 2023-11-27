@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     List<Color> cardColors = [
       const Color(0xffacdcf2),
       // ignore: use_full_hex_values_for_flutter_colors
-      const Color(0xffff9bbd0),
+      Color.fromRGBO(249, 187, 208, 1),
       const Color(0xffb2dfdc),
       const Color(0xFFffcc80),
       const Color(0xffc5cae8),
@@ -250,6 +250,13 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavBar(
         currentIndex: index,
         onTap: (value) {
+          if (value == 1) {
+            //navigate ke home
+          } else if (value == 2) {
+            // navigate ke bookmark
+          } else if (value == 3) {
+            // navigate ke add book
+          }
           setState(() {
             index = value;
           });
