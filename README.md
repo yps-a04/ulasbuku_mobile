@@ -33,7 +33,7 @@ Tema yang kami gunakan adalah **<i>aplikasi review</i> buku**
 - Menambahkan navigasi ke *detail page*
 - Menambahkan fitur search
 
-#### Modul <code>book_details</code> by Yasmin Putri Viryadhani:
+#### Modul <code>book_details</code> by Yasmine Putri Viryadhani:
 - Menampilkan detail buku beserta reviewnya
 - Menambahkan fitur *add review*
 - Menambahkan tombol *add to bookmark*
