@@ -7,11 +7,17 @@ class BookCard extends StatelessWidget {
       {super.key,
       required this.width,
       required this.height,
-      required this.cardColor});
+      required this.cardColor,
+      required this.title,
+      required this.author,
+      required this.isbn});
 
   final double width;
   final double height;
   final Color cardColor;
+  final String title;
+  final String author;
+  final String isbn;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +85,7 @@ class BookCard extends StatelessWidget {
                           children: [
                             const Text(
                               "Judul",
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
@@ -162,8 +169,8 @@ class BookCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10)),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            'assets/img/tes.jpeg',
+                          child: Image.network(
+                            'https://covers.openlibrary.org/b/isbn/1553377524-M.jpg',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -176,11 +183,15 @@ class BookCard extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-            const Text(
-              "Judul Buku",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            Text(
+              title,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
-            const Text("Penulis")
+            Text(
+              author,
+              overflow: TextOverflow.ellipsis,
+            )
           ],
         ),
       ),
