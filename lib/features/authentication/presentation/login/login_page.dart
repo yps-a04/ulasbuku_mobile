@@ -1,4 +1,3 @@
-
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
@@ -106,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                       String password = _passwordController.text;
 
                       // Cek kredensial
-                      
+
                       final response = await request
                           .login("http://10.0.2.2:8000/auth/login/", {
                         'username': username,
@@ -123,7 +122,8 @@ class _LoginPageState extends State<LoginPage> {
                         } else {
                           Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const HomePage()),
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage()),
                           );
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
@@ -145,8 +145,9 @@ class _LoginPageState extends State<LoginPage> {
                                       color: Colors.green,
                                     ),
                                     Text(
-                                      " Login $message Selamat datang, $uname.",
-                                      style: const TextStyle(color: Colors.black),
+                                      "Selamat datang, $uname.",
+                                      style:
+                                          const TextStyle(color: Colors.black),
                                     ),
                                   ],
                                 ),
