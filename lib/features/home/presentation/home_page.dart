@@ -11,11 +11,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int index = 0;
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    int index = 0;
+    
     final scaffoldKey = GlobalKey<ScaffoldState>();
 
     List<Color> cardColors = [
