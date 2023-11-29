@@ -151,8 +151,7 @@ class _HomePageState extends State<HomePage> {
                               scrollDirection: Axis.horizontal,
                               itemCount: 10,
                               itemBuilder: (context, index) {
-                                Color cardColor = cardColors[index % 5];
-                                return Center(child: Text("kosong"));
+                                return const Center(child: Text("kosong"));
                               },
                             ),
                           ),
