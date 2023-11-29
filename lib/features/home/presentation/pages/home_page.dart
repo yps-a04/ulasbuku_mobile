@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:ulas_buku_mobile/features/detail/presentation/detail_page.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/features/home/data/data_source/book_list_remote_data_source.dart';
+import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 // ignore: unnecessary_import
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/bookmark_page.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,6 +35,10 @@ class _HomePageState extends State<HomePage> {
     ];
 
     cardColors.shuffle();
+
+    final request = context.watch<CookieRequest>();
+    BookListRemoteDataSource dataSource =
+        BookListRemoteDataSource(request: request);
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
@@ -81,11 +89,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-
-              Container(), // Required some widget in between to float AppBar
-
+              Container(),
               Positioned(
-                // To take AppBar Size only
                 top: height * 0.25 - 30,
                 left: 25.0,
                 right: 25.0,
@@ -148,6 +153,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               )
                             ],
+                          
                           ),
                           SizedBox(
                             height: height * 1 / 3,
@@ -157,12 +163,14 @@ class _HomePageState extends State<HomePage> {
                               scrollDirection: Axis.horizontal,
                               itemCount: 10,
                               itemBuilder: (context, index) {
-                                cardColors.shuffle();
                                 Color cardColor = cardColors[index % 5];
                                 return BookCard(
                                   width: width,
                                   height: height,
                                   cardColor: cardColor,
+                                  title: "bokmarked",
+                                  author: "aaaa",
+                                  isbn: '0385472579',
                                 );
                               },
                             ),
@@ -185,67 +193,122 @@ class _HomePageState extends State<HomePage> {
                                   Tab(text: "Newest"),
                                   Tab(text: "Most Reviewed"),
                                 ]),
-                            SizedBox(
-                              height: height * 1.2,
-                              child: TabBarView(children: [
-                                GridView.builder(
-                                  padding: const EdgeInsets.all(0),
-                                  physics: const BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          childAspectRatio: (height * 1 / 6) /
-                                              (width * 1 / 2),
-                                          crossAxisCount: 2),
-                                  itemBuilder: (context, index) {
-                                    cardColors.shuffle();
-                                    Color cardColor = cardColors[index % 5];
-                                    return BookCard(
-                                      width: width,
-                                      height: height,
-                                      cardColor: cardColor,
+                            FutureBuilder(
+                              future: dataSource.fetchBooks(),
+                              builder: (context,
+                                  AsyncSnapshot<List<Book>> snapshot) {
+                                if (snapshot.data == null) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xffacdcf2),
+                                    ),
+                                  );
+                                } else {
+                                  if (!snapshot.hasData) {
+                                    return const Column(
+                                      children: [
+                                        Text(
+                                          "Tidak ada data buku.",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20),
+                                        ),
+                                        SizedBox(height: 8),
+                                      ],
                                     );
-                                  },
-                                ),
-                                GridView.builder(
-                                  padding: const EdgeInsets.all(0),
-                                  physics: const BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          childAspectRatio: (height * 1 / 6) /
-                                              (width * 1 / 2),
-                                          crossAxisCount: 2),
-                                  itemBuilder: (context, index) {
-                                    cardColors.shuffle();
-                                    Color cardColor = cardColors[index % 5];
-                                    return BookCard(
-                                      width: width,
-                                      height: height,
-                                      cardColor: cardColor,
+                                  } else {
+                                    return SizedBox(
+                                      height: height * 1.2,
+                                      child: TabBarView(children: [
+                                        GridView.builder(
+                                          padding: const EdgeInsets.all(0),
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                                  childAspectRatio:
+                                                      (height * 1 / 6) /
+                                                          (width * 1 / 2),
+                                                  crossAxisCount: 2),
+                                          itemBuilder: (context, index) {
+                                            cardColors.shuffle();
+                                            Color cardColor =
+                                                cardColors[index % 5];
+                                            return BookCard(
+                                              width: width,
+                                              height: height,
+                                              cardColor: cardColor,
+                                              title: snapshot
+                                                  .data![index].fields!.title!,
+                                              author: snapshot
+                                                  .data![index].fields!.author!,
+                                              isbn: snapshot
+                                                  .data![index].fields!.isbn!,
+                                            );
+                                          },
+                                        ),
+                                        GridView.builder(
+                                          padding: const EdgeInsets.all(0),
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                                  childAspectRatio:
+                                                      (height * 1 / 6) /
+                                                          (width * 1 / 2),
+                                                  crossAxisCount: 2),
+                                          itemBuilder: (context, index) {
+                                            cardColors.shuffle();
+                                            Color cardColor =
+                                                cardColors[index % 5];
+                                            return BookCard(
+                                              width: width,
+                                              height: height,
+                                              cardColor: cardColor,
+                                              title: snapshot
+                                                  .data![index].fields!.title!,
+                                              author: snapshot
+                                                  .data![index].fields!.author!,
+                                              isbn: snapshot
+                                                  .data![index].fields!.isbn!,
+                                            );
+                                          },
+                                        ),
+                                        GridView.builder(
+                                          padding: const EdgeInsets.all(0),
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          gridDelegate:
+                                              SliverGridDelegateWithFixedCrossAxisCount(
+                                                  childAspectRatio:
+                                                      (height * 1 / 6) /
+                                                          (width * 1 / 2),
+                                                  crossAxisCount: 2),
+                                          itemBuilder: (context, index) {
+                                            cardColors.shuffle();
+                                            Color cardColor =
+                                                cardColors[index % 5];
+                                            return BookCard(
+                                              width: width,
+                                              height: height,
+                                              cardColor: cardColor,
+                                              title: snapshot
+                                                  .data![index].fields!.title!,
+                                              author: snapshot
+                                                  .data![index].fields!.author!,
+                                              isbn: snapshot
+                                                  .data![index].fields!.isbn!,
+                                            );
+                                          },
+                                        ),
+                                      ]),
                                     );
-                                  },
-                                ),
-                                GridView.builder(
-                                  padding: const EdgeInsets.all(0),
-                                  physics: const BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          childAspectRatio: (height * 1 / 6) /
-                                              (width * 1 / 2),
-                                          crossAxisCount: 2),
-                                  itemBuilder: (context, index) {
-                                    cardColors.shuffle();
-                                    Color cardColor = cardColors[index % 5];
-                                    return BookCard(
-                                      width: width,
-                                      height: height,
-                                      cardColor: cardColor,
-                                    );
-                                  },
-                                ),
-                              ]),
+                                  }
+                                }
+                              },
                             )
                           ],
                         ),
@@ -271,7 +334,7 @@ class _HomePageState extends State<HomePage> {
           } else if (value == 2) {
             // navigate ke add book
           } else if (value == 3) {
-            // navigate ke profile (?)
+            // navigate ke edit profile
           }
           setState(() {
             index = value;
