@@ -1,3 +1,8 @@
+[![Develop](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/develop.yml/badge.svg)](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/develop.yml)
+[![Pre-Release](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/pre-release.yml/badge.svg)](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/pre-release.yml)
+[![Release](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/release.yml/badge.svg)](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/release.yml)
+[![Build status](https://build.appcenter.ms/v0.1/apps/c458ebb8-218a-4fa7-93b2-5d27c6dd9dea/branches/main/badge)](https://appcenter.ms)
+
 # UlasBuku: Project Tugas Kelompok A04 PBP
 - Link Repository: [Click](https://github.com/yps-a04/ulasbuku_mobile)
 - Link *Website* Proyek UTS: (soon)
@@ -18,7 +23,8 @@ Nama aplikasi yang kami pilih adalah **UlasBuku** yang berfungsi untuk memberi u
 Tema yang kami gunakan adalah **<i>aplikasi review</i> buku**
 
 ## Latar Belakang
-- Data menunjukkan bahwa masyarakat di Indonesia minim akan literasi. Hal ini disebabkan oleh banyak hal, seperti kurangnya minat dalam membaca dan kemalasan yang timbul.
+- Data menunjukkan bahwa masyarakat di Indonesia minim akan literasi. Hal ini disebabkan oleh banyak hal, seperti kurangnya minat dalam membaca dan kemalasan yang timbul. Berdasarkan survei UNESCO dari 1000 orang indonesia hanya satu yang memiliki minat baca. Indeksi minat baca di Indonesia baru mencapai 0,001.
+ (https://www.djkn.kemenkeu.go.id/kpknl-sidempuan/baca-artikel/15159/Membaca-to-kill-time-or-to-full-time.html#:~:text=UNESCO%20menyatakan%20dari%201000%20orang,di%20Indonesia%20baru%20mencapai%200%2C001.)
 - Kita perlu untuk meningkatkan keinginan masyarakat dalam membaca, salah satunya adalah dengan merekomendasikan buku-buku yang sesuai dengan minat masyarakat beserta ulasannya agar masyarakat tahu mana buku yang bagus untuk dibaca.
 - Oleh karena itu, kita berkeinginan untuk membuat UlasBuku ini yang dapat mewadahi keinginan masyarakat untuk membaca dan memberikan ulasan terkait hasil bacaan mereka.
 
@@ -32,11 +38,11 @@ Tema yang kami gunakan adalah **<i>aplikasi review</i> buku**
 - Menampilkan *list* daftar buku
 - Menambahkan navigasi ke *detail page*
 - Menambahkan fitur search
+- menambahkan fitur sort
 
 #### Modul <code>book_details</code> by Yasmin Putri Viryadhani:
 - Menampilkan detail buku beserta reviewnya
 - Menambahkan fitur *add review*
-- Menambahkan tombol *add to bookmark*
 
 #### Modul <code>profile</code> by Williams:
 - Menampilkan detail profil user/admin
@@ -46,6 +52,8 @@ Tema yang kami gunakan adalah **<i>aplikasi review</i> buku**
 
 #### Modul <code>bookmark</code> by Muhammad Iqbal:
 - Menambahkan list buku yang telah dibookmark user
+- Menambahkan tombol *add to bookmark*
+
 
 #### Modul <code>admin</code> by Ghaisan Luqyana Aqila:
 - Menambahkan fitur add/delete/edit buku
@@ -65,7 +73,7 @@ Tema yang kami gunakan adalah **<i>aplikasi review</i> buku**
 
 
 ## Alur Pengintegrasian dengan web Django
-- Melakukan integrasi antara front-end dengan back-end pada Rest API ulasbuku menggunakan konsep asynchronous programming
-- Berikut adalah langkah-langkah yang akan dilakukan untuk mengintegrasikan aplikasi dengan server web.
-- Mengimplementasikan sebuah wrapper class dengan menggunakan library http dan map untuk mendukung penggunaan cookie-based authentication pada aplikasi.
-- Mengimplementasikan REST API pada Django (views.py) dengan menggunakan JsonResponse atau Django JSON Serializer.
+1. Melakukan integrasi antara front-end dengan back-end pada Rest API ulasbuku menggunakan konsep asynchronous programming
+2. Berikut adalah langkah-langkah yang akan dilakukan untuk mengintegrasikan aplikasi dengan server web.
+3. Mengimplementasikan sebuah wrapper class dengan menggunakan library http dan map untuk mendukung penggunaan cookie-based authentication pada aplikasi.
+4. Mengimplementasikan REST API pada Django (views.py) dengan menggunakan JsonResponse atau Django JSON Serializer.

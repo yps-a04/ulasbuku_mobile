@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+// ignore: unnecessary_import
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
-import 'package:unicons/unicons.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,16 +11,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int index = 0;
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    int index = 0;
     final scaffoldKey = GlobalKey<ScaffoldState>();
 
     List<Color> cardColors = [
       const Color(0xffacdcf2),
-      const Color(0xffFf9bbd0),
+      // ignore: use_full_hex_values_for_flutter_colors
+      const Color.fromRGBO(249, 187, 208, 1),
       const Color(0xffb2dfdc),
       const Color(0xFFffcc80),
       const Color(0xffc5cae8),
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       drawer: const Drawer(),
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: height * 2,
           width: width,
           child: Stack(
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       IconButton(
                         onPressed: () {},
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.logout,
                           color: Colors.black,
                         ),
@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                 left: 20,
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       height: height * 1 / 2.5,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -159,14 +159,13 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: height * 1.25,
-                      child: Column(
-                        children: [
-                          const DefaultTabController(
-                            initialIndex: 0,
-                            length: 3,
-                            child: TabBar(
+                    DefaultTabController(
+                      length: 3,
+                      child: SizedBox(
+                        height: height * 1.5,
+                        child: Column(
+                          children: [
+                            const TabBar(
                                 indicatorColor: Colors.black,
                                 labelColor: Colors.black,
                                 unselectedLabelColor: Colors.grey,
@@ -175,29 +174,70 @@ class _HomePageState extends State<HomePage> {
                                   Tab(text: "Newest"),
                                   Tab(text: "Most Reviewed"),
                                 ]),
-                          ),
-                          Expanded(
-                            child: GridView.builder(
-                              padding: const EdgeInsets.all(0),
-                              physics: const BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      childAspectRatio:
-                                          (height * 1 / 6) / (width * 1 / 2),
-                                      crossAxisCount: 2),
-                              itemBuilder: (context, index) {
-                                cardColors.shuffle();
-                                Color cardColor = cardColors[index % 5];
-                                return BookCard(
-                                  width: width,
-                                  height: height,
-                                  cardColor: cardColor,
-                                );
-                              },
-                            ),
-                          )
-                        ],
+                            SizedBox(
+                              height: height * 1.2,
+                              child: TabBarView(children: [
+                                GridView.builder(
+                                  padding: const EdgeInsets.all(0),
+                                  physics: const BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          childAspectRatio: (height * 1 / 6) /
+                                              (width * 1 / 2),
+                                          crossAxisCount: 2),
+                                  itemBuilder: (context, index) {
+                                    cardColors.shuffle();
+                                    Color cardColor = cardColors[index % 5];
+                                    return BookCard(
+                                      width: width,
+                                      height: height,
+                                      cardColor: cardColor,
+                                    );
+                                  },
+                                ),
+                                GridView.builder(
+                                  padding: const EdgeInsets.all(0),
+                                  physics: const BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          childAspectRatio: (height * 1 / 6) /
+                                              (width * 1 / 2),
+                                          crossAxisCount: 2),
+                                  itemBuilder: (context, index) {
+                                    cardColors.shuffle();
+                                    Color cardColor = cardColors[index % 5];
+                                    return BookCard(
+                                      width: width,
+                                      height: height,
+                                      cardColor: cardColor,
+                                    );
+                                  },
+                                ),
+                                GridView.builder(
+                                  padding: const EdgeInsets.all(0),
+                                  physics: const BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          childAspectRatio: (height * 1 / 6) /
+                                              (width * 1 / 2),
+                                          crossAxisCount: 2),
+                                  itemBuilder: (context, index) {
+                                    cardColors.shuffle();
+                                    Color cardColor = cardColors[index % 5];
+                                    return BookCard(
+                                      width: width,
+                                      height: height,
+                                      cardColor: cardColor,
+                                    );
+                                  },
+                                ),
+                              ]),
+                            )
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -210,6 +250,13 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavBar(
         currentIndex: index,
         onTap: (value) {
+          if (value == 1) {
+            //navigate ke home
+          } else if (value == 2) {
+            // navigate ke bookmark
+          } else if (value == 3) {
+            // navigate ke add book
+          }
           setState(() {
             index = value;
           });

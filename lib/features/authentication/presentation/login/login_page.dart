@@ -28,11 +28,11 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     "Login",
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   ),
-                  Container(
+                  SizedBox(
                     height: height * 0.4,
                     child: Image.asset(
                       'assets/img/book.png',
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   TextField(
@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         )),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   UBButton(
@@ -97,23 +97,23 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: MainAxisAlignment.center,
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => HomePage(),
+                        builder: (context) => const HomePage(),
                       ));
                     },
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Belum punya akun? "),
+                      const Text("Belum punya akun? "),
                       TextButton(
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => RegisterPage(),
+                                builder: (context) => const RegisterPage(),
                               ),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             "Daftar sekarang!",
                             style: TextStyle(color: Color(0xFF5584a0)),
                           )),
