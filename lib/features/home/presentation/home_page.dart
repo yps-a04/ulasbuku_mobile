@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:ulas_buku_mobile/features/detail/presentation/detail_page.dart';
 // ignore: unnecessary_import
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
+import 'package:ulas_buku_mobile/features/bookmark/presentation/bookmark_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -119,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
@@ -129,12 +131,21 @@ class _HomePageState extends State<HomePage> {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20),
                               ),
-                              Text(
-                                "Show All",
-                                style: TextStyle(
-                                    color: Colors.lightBlueAccent,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              BookmarkPage()));
+                                },
+                                child: Text(
+                                  "Show All",
+                                  style: TextStyle(
+                                      color: Colors.lightBlueAccent,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
                               )
                             ],
                           ),
@@ -251,11 +262,16 @@ class _HomePageState extends State<HomePage> {
         currentIndex: index,
         onTap: (value) {
           if (value == 1) {
-            //navigate ke home
+            //navigate ke bookmark
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BookmarkPage(),
+                ));
           } else if (value == 2) {
-            // navigate ke bookmark
-          } else if (value == 3) {
             // navigate ke add book
+          } else if (value == 3) {
+            // navigate ke profile (?)
           }
           setState(() {
             index = value;
