@@ -16,13 +16,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    
     final scaffoldKey = GlobalKey<ScaffoldState>();
 
     List<Color> cardColors = [
       const Color(0xffacdcf2),
       // ignore: use_full_hex_values_for_flutter_colors
-      const Color(0xffff9bbd0),
+      const Color.fromRGBO(249, 187, 208, 1),
       const Color(0xffb2dfdc),
       const Color(0xFFffcc80),
       const Color(0xffc5cae8),
@@ -159,14 +158,13 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: height * 1.25,
-                      child: Column(
-                        children: [
-                          const DefaultTabController(
-                            initialIndex: 0,
-                            length: 3,
-                            child: TabBar(
+                    DefaultTabController(
+                      length: 3,
+                      child: SizedBox(
+                        height: height * 1.5,
+                        child: Column(
+                          children: [
+                            const TabBar(
                                 indicatorColor: Colors.black,
                                 labelColor: Colors.black,
                                 unselectedLabelColor: Colors.grey,
@@ -175,29 +173,70 @@ class _HomePageState extends State<HomePage> {
                                   Tab(text: "Newest"),
                                   Tab(text: "Most Reviewed"),
                                 ]),
-                          ),
-                          Expanded(
-                            child: GridView.builder(
-                              padding: const EdgeInsets.all(0),
-                              physics: const BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                      childAspectRatio:
-                                          (height * 1 / 6) / (width * 1 / 2),
-                                      crossAxisCount: 2),
-                              itemBuilder: (context, index) {
-                                cardColors.shuffle();
-                                Color cardColor = cardColors[index % 5];
-                                return BookCard(
-                                  width: width,
-                                  height: height,
-                                  cardColor: cardColor,
-                                );
-                              },
-                            ),
-                          )
-                        ],
+                            SizedBox(
+                              height: height * 1.2,
+                              child: TabBarView(children: [
+                                GridView.builder(
+                                  padding: const EdgeInsets.all(0),
+                                  physics: const BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          childAspectRatio: (height * 1 / 6) /
+                                              (width * 1 / 2),
+                                          crossAxisCount: 2),
+                                  itemBuilder: (context, index) {
+                                    cardColors.shuffle();
+                                    Color cardColor = cardColors[index % 5];
+                                    return BookCard(
+                                      width: width,
+                                      height: height,
+                                      cardColor: cardColor,
+                                    );
+                                  },
+                                ),
+                                GridView.builder(
+                                  padding: const EdgeInsets.all(0),
+                                  physics: const BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          childAspectRatio: (height * 1 / 6) /
+                                              (width * 1 / 2),
+                                          crossAxisCount: 2),
+                                  itemBuilder: (context, index) {
+                                    cardColors.shuffle();
+                                    Color cardColor = cardColors[index % 5];
+                                    return BookCard(
+                                      width: width,
+                                      height: height,
+                                      cardColor: cardColor,
+                                    );
+                                  },
+                                ),
+                                GridView.builder(
+                                  padding: const EdgeInsets.all(0),
+                                  physics: const BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          childAspectRatio: (height * 1 / 6) /
+                                              (width * 1 / 2),
+                                          crossAxisCount: 2),
+                                  itemBuilder: (context, index) {
+                                    cardColors.shuffle();
+                                    Color cardColor = cardColors[index % 5];
+                                    return BookCard(
+                                      width: width,
+                                      height: height,
+                                      cardColor: cardColor,
+                                    );
+                                  },
+                                ),
+                              ]),
+                            )
+                          ],
+                        ),
                       ),
                     )
                   ],
@@ -210,6 +249,13 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavBar(
         currentIndex: index,
         onTap: (value) {
+          if (value == 1) {
+            //navigate ke home
+          } else if (value == 2) {
+            // navigate ke bookmark
+          } else if (value == 3) {
+            // navigate ke add book
+          }
           setState(() {
             index = value;
           });
