@@ -151,15 +151,7 @@ class _HomePageState extends State<HomePage> {
                               scrollDirection: Axis.horizontal,
                               itemCount: 10,
                               itemBuilder: (context, index) {
-                                Color cardColor = cardColors[index % 5];
-                                return BookCard(
-                                  width: width,
-                                  height: height,
-                                  cardColor: cardColor,
-                                  title: "bokmarked",
-                                  author: "aaaa",
-                                  isbn: '0385472579',
-                                );
+                                return const Center(child: Text("kosong"));
                               },
                             ),
                           ),
@@ -227,12 +219,7 @@ class _HomePageState extends State<HomePage> {
                                               width: width,
                                               height: height,
                                               cardColor: cardColor,
-                                              title: snapshot
-                                                  .data![index].fields!.title!,
-                                              author: snapshot
-                                                  .data![index].fields!.author!,
-                                              isbn: snapshot
-                                                  .data![index].fields!.isbn!,
+                                              book: snapshot.data![index],
                                             );
                                           },
                                         ),
@@ -255,12 +242,7 @@ class _HomePageState extends State<HomePage> {
                                               width: width,
                                               height: height,
                                               cardColor: cardColor,
-                                              title: snapshot
-                                                  .data![index].fields!.title!,
-                                              author: snapshot
-                                                  .data![index].fields!.author!,
-                                              isbn: snapshot
-                                                  .data![index].fields!.isbn!,
+                                              book: snapshot.data![index],
                                             );
                                           },
                                         ),
@@ -283,12 +265,7 @@ class _HomePageState extends State<HomePage> {
                                               width: width,
                                               height: height,
                                               cardColor: cardColor,
-                                              title: snapshot
-                                                  .data![index].fields!.title!,
-                                              author: snapshot
-                                                  .data![index].fields!.author!,
-                                              isbn: snapshot
-                                                  .data![index].fields!.isbn!,
+                                              book: snapshot.data![index],
                                             );
                                           },
                                         ),
