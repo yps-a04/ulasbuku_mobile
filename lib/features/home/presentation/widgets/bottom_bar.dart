@@ -32,6 +32,11 @@ class BottomNavBar extends StatelessWidget {
           label: 'Add book',
         ),
         BottomNavigationBarItem(
+            icon: Icon(
+              UniconsLine.user_check,
+            ),
+            label: "Edit User"),
+        BottomNavigationBarItem(
           icon: Icon(UniconsLine.user),
           label: 'Profile',
         ),

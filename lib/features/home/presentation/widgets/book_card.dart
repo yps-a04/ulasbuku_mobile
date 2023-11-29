@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
+import 'package:ulas_buku_mobile/features/detail/presentation/detail_page.dart';
 
 class BookCard extends StatelessWidget {
   const BookCard(
@@ -93,9 +94,15 @@ class BookCard extends StatelessWidget {
                               height: 50,
                               width: width * 0.4,
                               text: "More details",
-                              primaryColor: Colors.black,
+                              primaryColor: cardColor,
                               secondaryColor: Colors.white,
                               icon: Icons.arrow_forward_ios,
+                              onTap: () =>
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => DetailPage(
+                                  bgColor: cardColor,
+                                ),
+                              )),
                             )
                           ],
                         )
@@ -104,7 +111,7 @@ class BookCard extends StatelessWidget {
                     UBButton(
                       width: width,
                       height: 50,
-                      primaryColor: Colors.black,
+                      primaryColor: cardColor,
                       secondaryColor: Colors.white,
                       text: "Add a review",
                       icon: Icons.edit,
@@ -149,8 +156,8 @@ class BookCard extends StatelessWidget {
                       elevation: 10,
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
-                        width: width * 1 / 3.5,
-                        height: height * 1 / 5.25,
+                        width: width * 1 / 3,
+                        height: height * 1 / 5,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10)),
                         child: ClipRRect(
@@ -180,5 +187,3 @@ class BookCard extends StatelessWidget {
     );
   }
 }
-
-
