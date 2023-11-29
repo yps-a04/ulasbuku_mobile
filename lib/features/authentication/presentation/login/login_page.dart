@@ -113,7 +113,6 @@ class _LoginPageState extends State<LoginPage> {
                       });
 
                       if (request.loggedIn) {
-                        String message = response['message'];
                         String uname = response['username'];
                         bool isStaff = response['is_staff'][0];
 
