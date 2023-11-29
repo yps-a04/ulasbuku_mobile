@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/detail/presentation/detail_page.dart';
+import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 
 class BookCard extends StatelessWidget {
   const BookCard(
@@ -8,16 +9,12 @@ class BookCard extends StatelessWidget {
       required this.width,
       required this.height,
       required this.cardColor,
-      required this.title,
-      required this.author,
-      required this.isbn});
+      required this.book});
 
   final double width;
   final double height;
   final Color cardColor;
-  final String title;
-  final String author;
-  final String isbn;
+  final Book book;
 
   @override
   Widget build(BuildContext context) {
@@ -83,17 +80,22 @@ class BookCard extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Judul",
+                            Text(
+                              book.fields!.title!,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const Text("Penulis"),
-                            const Text("1.321 times reviewed "),
-                            const Text("22-5-2070"),
+                            Text(
+                              book.fields!.author!,
+                            ),
+                            Text(
+                                "${book.fields!.textReviewCount} times reviewed "),
+                            Text(
+                              book.fields!.publicationDate!,
+                            ),
                             const SizedBox(
                               height: 30,
                             ),
@@ -184,12 +186,12 @@ class BookCard extends StatelessWidget {
               height: 12,
             ),
             Text(
-              title,
+              book.fields!.title!,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
             Text(
-              author,
+              book.fields!.author!,
               overflow: TextOverflow.ellipsis,
             )
           ],
