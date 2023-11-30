@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
+import 'package:ulas_buku_mobile/features/detail/presentation/add_review.dart';
 
 // ignore: must_be_immutable
 class DetailPage extends StatelessWidget {
@@ -131,6 +133,9 @@ class DetailPage extends StatelessWidget {
                       'Published Date : 20/20/2020',
                       style: TextStyle(letterSpacing: 1, height: 2),
                     ),
+                    const SizedBox(
+                      height: 16,
+                    ),
                     const Divider(
                       thickness: 1,
                     ),
@@ -142,7 +147,7 @@ class DetailPage extends StatelessWidget {
                       thickness: 1,
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: 8,
                     ),
                     SizedBox(
                       height: height * 0.3,
@@ -200,6 +205,23 @@ class DetailPage extends StatelessWidget {
                           );
                         },
                       ),
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    UBButton(
+                      width: width,
+                      height: 50,
+                      primaryColor: bgColor,
+                      secondaryColor: Colors.white,
+                      text: "Add a review",
+                      icon: Icons.edit,
+                      onTap: () =>
+                          Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AddReview(
+                          bgColor: bgColor,
+                        ),
+                      )),
                     )
                   ],
                 ),

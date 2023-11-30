@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/detail/presentation/detail_page.dart';
+import 'package:ulas_buku_mobile/features/detail/presentation/add_review.dart';
 
 class BookCard extends StatelessWidget {
   const BookCard(
@@ -80,11 +81,18 @@ class BookCard extends StatelessWidget {
                             const Text(
                               "Judul",
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 24,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const Text("Penulis"),
+                            const Text(
+                              "Penulis",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
                             const Text("1.321 times reviewed "),
                             const Text("22-5-2070"),
                             const SizedBox(
@@ -115,6 +123,12 @@ class BookCard extends StatelessWidget {
                       secondaryColor: Colors.white,
                       text: "Add a review",
                       icon: Icons.edit,
+                      onTap: () =>
+                          Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AddReview(
+                          bgColor: cardColor,
+                        ),
+                      )),
                     )
                   ],
                 ),
