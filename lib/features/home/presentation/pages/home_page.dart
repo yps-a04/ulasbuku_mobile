@@ -86,6 +86,7 @@ class _HomePageState extends State<HomePage> {
                               await request.logout(EndPoints.logout);
                           if (response['status']) {
                             String uname = response["username"];
+                            // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()
                               ..showSnackBar(
@@ -104,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                                         Icons.check,
                                         color: Colors.green,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 16,
                                       ),
                                       Text(
@@ -116,6 +117,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               );
+                            // ignore: use_build_context_synchronously
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

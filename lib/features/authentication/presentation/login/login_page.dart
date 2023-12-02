@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                                       Icons.check,
                                       color: Colors.green,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 16,
                                     ),
                                     Text(
