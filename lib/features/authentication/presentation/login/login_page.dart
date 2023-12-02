@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                       // Cek kredensial
 
                       final response = await request
-                          .login("http://10.0.2.2:8000/auth/login/", {
+                          .login("http://127.0.0.1:8000/auth/login/", {
                         'username': username,
                         'password': password,
                       });
