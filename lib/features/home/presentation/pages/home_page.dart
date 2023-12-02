@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
-import 'package:ulas_buku_mobile/features/home/data/data_source/book_list_remote_data_source.dart';
-import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
+import 'package:sizer/sizer.dart';
+import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
+import 'package:ulas_buku_mobile/features/authentication/presentation/login/login_page.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 // ignore: unnecessary_import
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_view.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,8 +22,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    final bloc = context.read<HomeBloc>();
+
     final scaffoldKey = GlobalKey<ScaffoldState>();
 
     List<Color> cardColors = [
@@ -35,16 +38,17 @@ class _HomePageState extends State<HomePage> {
     cardColors.shuffle();
 
     final request = context.watch<CookieRequest>();
-    BookListRemoteDataSource dataSource =
-        BookListRemoteDataSource(request: request);
+
+    bloc.add(HomeLoadDataEvent(request: request));
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: scaffoldKey,
       backgroundColor: Colors.white,
       drawer: const Drawer(),
       body: SingleChildScrollView(
         child: SizedBox(
-          height: height * 2,
-          width: width,
+          height: 200.h,
+          width: 100.w,
           child: Stack(
             children: <Widget>[
               Container(
@@ -53,8 +57,8 @@ class _HomePageState extends State<HomePage> {
                     color: cardColors[0],
                     borderRadius: const BorderRadius.vertical(
                         bottom: Radius.elliptical(30, 30))),
-                height: height * 0.25,
-                width: width,
+                height: 25.h,
+                width: 100.w,
                 // Background
                 child: Center(
                   child: Row(
@@ -77,7 +81,48 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.black),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final response =
+                              await request.logout(EndPoints.logout);
+                          if (response['status']) {
+                            String uname = response["username"];
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(
+                                SnackBar(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(24),
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.white,
+                                  margin: EdgeInsets.fromLTRB(
+                                      10.w, 10.h, 10.w, 75.h),
+                                  content: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Icon(
+                                        Icons.check,
+                                        color: Colors.green,
+                                      ),
+                                      SizedBox(
+                                        width: 16,
+                                      ),
+                                      Text(
+                                        "Sampai jumpa, $uname.",
+                                        style: const TextStyle(
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()),
+                            );
+                          }
+                        },
                         icon: const Icon(
                           Icons.logout,
                           color: Colors.black,
@@ -89,197 +134,133 @@ class _HomePageState extends State<HomePage> {
               ),
               Container(),
               Positioned(
-                top: height * 0.25 - 30,
+                top: 25.h - 30,
                 left: 25.0,
                 right: 25.0,
-                child: AppBar(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      25,
+                child: Container(
+                  height: 7.5.h,
+                  width: 75.w,
+                  decoration: BoxDecoration(
+                      color: const Color(0xFFFAF9F6),
+                      borderRadius: BorderRadius.circular(25)),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 60.w,
+                          child: TextField(
+                            decoration: const InputDecoration(
+                              hintText: "Search by name/author/ISBN",
+                              hintStyle:
+                                  TextStyle(color: Colors.grey, fontSize: 14),
+                              border: InputBorder.none,
+                            ),
+                            onTap: () {},
+                            onChanged: (value) {
+                              bloc.add(
+                                HomeSearchEvent(
+                                  request: request,
+                                  query: value.toString(),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        const Icon(Icons.search, color: Colors.black),
+                      ],
                     ),
                   ),
-                  primary: false,
-                  title: const TextField(
-                      decoration: InputDecoration(
-                          hintText: "Search",
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: Colors.grey))),
-                  actions: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.search, color: Colors.black),
-                      onPressed: () {},
-                    ),
-                  ],
                 ),
               ),
               Positioned(
-                top: height * 0.35,
+                top: 35.h,
                 right: 20,
                 left: 20,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: height * 1 / 2.5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    if (state is HomeSearchLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.black,
+                        ),
+                      );
+                    }
+
+                    if (state is HomeSearchError) {
+                      return const Center(
+                        child: Text(
+                            "Terjadi Kesalahan. Cek kembali koneksi internet anda."),
+                      );
+                    }
+
+                    if (state is HomeSearchLoaded) {
+                      if (state.results.isEmpty) {
+                        return const Center(
+                          child: Text("Buku tidak ditemukan :("),
+                        );
+                      }
+                      return SizedBox(
+                        height: 75.h,
+                        child: ListView.builder(
+                          padding: const EdgeInsets.all(0),
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemCount: state.results.length,
+                          itemBuilder: (context, index) {
+                            return BookCard(
+                                cardColor: cardColors[index % 5],
+                                book: state.results[index]);
+                          },
+                        ),
+                      );
+                    }
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: 40.h,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                "Your Bookmark",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
+                              const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Your Bookmark",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                  Text(
+                                    "Show All",
+                                    style: TextStyle(
+                                        color: Colors.lightBlueAccent,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  )
+                                ],
                               ),
-                              Text(
-                                "Show All",
-                                style: TextStyle(
-                                    color: Colors.lightBlueAccent,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              )
+                              SizedBox(
+                                height: 33.h,
+                                width: 100.w,
+                                child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 10,
+                                  itemBuilder: (context, index) {
+                                    return const Center(child: Text("kosong"));
+                                  },
+                                ),
+                              ),
                             ],
                           ),
-                          SizedBox(
-                            height: height * 1 / 3,
-                            width: width,
-                            child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 10,
-                              itemBuilder: (context, index) {
-                                return const Center(child: Text("kosong"));
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    DefaultTabController(
-                      length: 3,
-                      child: SizedBox(
-                        height: height * 1.5,
-                        child: Column(
-                          children: [
-                            const TabBar(
-                                indicatorColor: Colors.black,
-                                labelColor: Colors.black,
-                                unselectedLabelColor: Colors.grey,
-                                tabs: [
-                                  Tab(text: "Explore"),
-                                  Tab(text: "Newest"),
-                                  Tab(text: "Most Reviewed"),
-                                ]),
-                            FutureBuilder(
-                              future: dataSource.fetchBooks(),
-                              builder: (context,
-                                  AsyncSnapshot<List<Book>> snapshot) {
-                                if (snapshot.data == null) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Color(0xffacdcf2),
-                                    ),
-                                  );
-                                } else {
-                                  if (!snapshot.hasData) {
-                                    return const Column(
-                                      children: [
-                                        Text(
-                                          "Tidak ada data buku.",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 20),
-                                        ),
-                                        SizedBox(height: 8),
-                                      ],
-                                    );
-                                  } else {
-                                    return SizedBox(
-                                      height: height * 1.2,
-                                      child: TabBarView(children: [
-                                        GridView.builder(
-                                          padding: const EdgeInsets.all(0),
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          shrinkWrap: true,
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                                  childAspectRatio:
-                                                      (height * 1 / 6) /
-                                                          (width * 1 / 2),
-                                                  crossAxisCount: 2),
-                                          itemBuilder: (context, index) {
-                                            cardColors.shuffle();
-                                            Color cardColor =
-                                                cardColors[index % 5];
-                                            return BookCard(
-                                              width: width,
-                                              height: height,
-                                              cardColor: cardColor,
-                                              book: snapshot.data![index],
-                                            );
-                                          },
-                                        ),
-                                        GridView.builder(
-                                          padding: const EdgeInsets.all(0),
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          shrinkWrap: true,
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                                  childAspectRatio:
-                                                      (height * 1 / 6) /
-                                                          (width * 1 / 2),
-                                                  crossAxisCount: 2),
-                                          itemBuilder: (context, index) {
-                                            cardColors.shuffle();
-                                            Color cardColor =
-                                                cardColors[index % 5];
-                                            return BookCard(
-                                              width: width,
-                                              height: height,
-                                              cardColor: cardColor,
-                                              book: snapshot.data![index],
-                                            );
-                                          },
-                                        ),
-                                        GridView.builder(
-                                          padding: const EdgeInsets.all(0),
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          shrinkWrap: true,
-                                          gridDelegate:
-                                              SliverGridDelegateWithFixedCrossAxisCount(
-                                                  childAspectRatio:
-                                                      (height * 1 / 6) /
-                                                          (width * 1 / 2),
-                                                  crossAxisCount: 2),
-                                          itemBuilder: (context, index) {
-                                            cardColors.shuffle();
-                                            Color cardColor =
-                                                cardColors[index % 5];
-                                            return BookCard(
-                                              width: width,
-                                              height: height,
-                                              cardColor: cardColor,
-                                              book: snapshot.data![index],
-                                            );
-                                          },
-                                        ),
-                                      ]),
-                                    );
-                                  }
-                                }
-                              },
-                            )
-                          ],
                         ),
-                      ),
-                    )
-                  ],
+                        BookListView(bloc: bloc, cardColors: cardColors)
+                      ],
+                    );
+                  },
                 ),
               ),
             ],

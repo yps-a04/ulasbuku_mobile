@@ -136,12 +136,14 @@ class _LoginPageState extends State<LoginPage> {
                                 margin: EdgeInsets.fromLTRB(width * 0.1,
                                     height * 0.1, width * 0.1, height * 0.75),
                                 content: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     const Icon(
                                       Icons.check,
                                       color: Colors.green,
+                                    ),
+                                    SizedBox(
+                                      width: 16,
                                     ),
                                     Text(
                                       "Selamat datang, $uname.",
