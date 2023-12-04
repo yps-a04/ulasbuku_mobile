@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
 class BookForm extends StatefulWidget {
   const BookForm({Key? key}) : super(key: key);
@@ -20,6 +21,8 @@ class _BookFormState extends State<BookForm> {
   int _textReviewCount = 0;
   String _publicationDate = "";
   String _publisher = "";
+
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -367,6 +370,21 @@ class _BookFormState extends State<BookForm> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: index,
+        onTap: (value) {
+          if (value == 1) {
+            //navigate ke home
+          } else if (value == 2) {
+            // navigate ke bookmark
+          } else if (value == 3) {
+            // navigate ke add book
+          }
+          setState(() {
+            index = value;
+          });
+        },
       ),
     );
   }

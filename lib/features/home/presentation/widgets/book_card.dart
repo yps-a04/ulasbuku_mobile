@@ -172,7 +172,7 @@ class BookCard extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.network(
-                            'https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg',
+                            'https://covers.openlibrary.org/b/isbn/${book.fields!.isbn}-M.jpg',
                             fit: BoxFit.cover,
                           ),
                         ),
