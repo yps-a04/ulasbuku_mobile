@@ -1,88 +1,166 @@
 import 'package:flutter/material.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
-
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
-class BookmarkPage extends StatefulWidget {
+class BookmarkPage extends StatelessWidget {
   const BookmarkPage({Key? key}) : super(key: key);
 
   @override
-  _BookmarkPageState createState() => _BookmarkPageState();
-}
-
-class _BookmarkPageState extends State<BookmarkPage> {
-  // Dummy bookmark data
-  final List<String> bookmarks = [
-    "Bookmark 1",
-    "Bookmark 2",
-    "Bookmark 3",
-    // Add more dummy bookmarks as needed
-  ];
-
-  @override
   Widget build(BuildContext context) {
-    final scaffoldKey = GlobalKey<ScaffoldState>();
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    int index = 1;
-
     return Scaffold(
-      key: scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Bookmarks',
+          style: TextStyle(
+            fontFamily: 'Outfit',
+            color: Colors.black,
+            fontSize: 22,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.black,
+            size: 30,
+          ),
+          onPressed: () {
+            print('IconButton pressed ...');
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.tune_rounded,
+              color: Colors.black,
+              size: 24,
+            ),
+            onPressed: () {
+              print('IconButton pressed ...');
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
-        child: SizedBox(
-          height: height * 2,
-          width: width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const SizedBox(height: 20),
-              const Text(
-                "User's Bookmark",
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(40),
+                  border: Border.all(
+                    color: Colors.black,
+                  ),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.fromLTRB(16, 0, 12, 0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.search_rounded,
+                        color: Colors.grey,
+                        size: 24,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 4),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: 'Search bookmarks...',
+                              labelStyle: TextStyle(
+                                fontSize: 16,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 12, 0, 4),
+              child: Text(
+                'My Bookmarks',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 20),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: bookmarks.length,
-                  itemBuilder: (context, idx) {
-                    return ListTile(
-                      title: Text(bookmarks[idx]),
-                      onTap: () {
-                        // Handle bookmark tap
-                      },
-                    );
-                  },
-                ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 8),
+                    child: Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                'https://images.unsplash.com/photo-1473755504818-b72b6dfdc226?w=1280&h=720',
+                                width: 70,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(8, 0, 4, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'The Great Gatsby',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 4),
+                                      child: Text(
+                                        'F. Scott Fitzgerald',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: 'Plus Jakarta Sans',
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: index,
-        onTap: (value) {
-          if (value == 0) {
-            // Navigate to homepage
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomePage(),
-              ),
-            );
-          } else if (value == 2) {
-            // Navigate to add book page
-            // Implement navigation logic
-          } else if (value == 3) {
-            // Navigate to profile page
-          }
-          setState(() {
-            index = value;
-          });
-        },
       ),
     );
   }
