@@ -13,7 +13,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  int index = 3;
+  int index = 4;
   
   @override
   Widget build(BuildContext context) {
@@ -134,6 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 borderRadius: BorderRadius.circular(30.0), // Adjust the radius as needed
                               ),
                               labelText: 'cbkadal',
+                              hintStyle: const TextStyle(color: Colors.grey),
                             ),
                             // Provide a controller when using obscureText
                             controller: TextEditingController(),
@@ -141,9 +142,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 24,),
+                    const SizedBox(height: 24,),
 
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -179,6 +180,71 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 24,),
+
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "My Preferences", // Replace with your actual username
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12,),
+                    
+                    SizedBox(
+                      height: height * 0.1,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        separatorBuilder: (context, index) => const SizedBox(
+                          width: 16,
+                        ),
+                        itemBuilder: (context, index) {
+                          return SizedBox(
+                            height: 100,
+                            width: 200,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 8,
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Ini namanya emang begini sih",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+
                   ],
                 ),
               ),

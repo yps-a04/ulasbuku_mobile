@@ -23,7 +23,7 @@ class BottomNavBar extends StatelessWidget {
             MaterialPageRoute(builder: (context) => HomePage()),
           );
         }
-        if (index == 3) { // index of 'Profile' item
+        if (index == 4) { // index of 'Profile' item
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ProfilePage()),
