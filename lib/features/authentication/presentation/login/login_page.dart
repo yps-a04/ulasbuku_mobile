@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/register/register_page.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
@@ -106,8 +107,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       // Cek kredensial
 
-                      final response = await request
-                          .login("http://10.0.2.2:8000/auth/login/", {
+                      final response = await request.login(EndPoints.login, {
                         'username': username,
                         'password': password,
                       });
@@ -136,12 +136,14 @@ class _LoginPageState extends State<LoginPage> {
                                 margin: EdgeInsets.fromLTRB(width * 0.1,
                                     height * 0.1, width * 0.1, height * 0.75),
                                 content: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     const Icon(
                                       Icons.check,
                                       color: Colors.green,
+                                    ),
+                                    const SizedBox(
+                                      width: 16,
                                     ),
                                     Text(
                                       "Selamat datang, $uname.",
