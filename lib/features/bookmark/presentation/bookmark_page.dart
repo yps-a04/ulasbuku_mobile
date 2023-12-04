@@ -37,7 +37,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               const SizedBox(height: 20),
-              Text(
+              const Text(
                 "User's Bookmark",
                 style: TextStyle(
                   fontSize: 24,

@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
+                              const Text(
                                 "Your Bookmark",
                                 style: TextStyle(
                                     color: Colors.black,
@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                                           builder: (context) =>
                                               BookmarkPage()));
                                 },
-                                child: Text(
+                                child: const Text(
                                   "Show All",
                                   style: TextStyle(
                                       color: Colors.lightBlueAccent,
