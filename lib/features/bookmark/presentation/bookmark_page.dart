@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
 class BookmarkPage extends StatelessWidget {
   const BookmarkPage({Key? key}) : super(key: key);
@@ -40,7 +39,6 @@ class BookmarkPage extends StatelessWidget {
               size: 24,
             ),
             onPressed: () {
-              print('IconButton pressed ...');
             },
           ),
         ],
@@ -50,7 +48,7 @@ class BookmarkPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Container(
                 height: 60,
                 decoration: BoxDecoration(
@@ -102,11 +100,11 @@ class BookmarkPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 8),
                     child: Container(
                       height: 100,
                       decoration: BoxDecoration(
@@ -114,7 +112,7 @@ class BookmarkPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Row(
                           children: [
                             ClipRRect(
