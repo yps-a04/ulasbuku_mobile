@@ -25,7 +25,11 @@ class BookmarkPage extends StatelessWidget {
             size: 30,
           ),
           onPressed: () {
-            print('IconButton pressed ...');
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ));            
           },
         ),
         actions: [
