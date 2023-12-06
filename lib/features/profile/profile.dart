@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
+import 'package:ulas_buku_mobile/features/profile/change_pref.dart';
 import 'package:unicons/unicons.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -182,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 24,),
 
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -194,8 +195,17 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontSize: 16,
                           ),
                         ),
+                        TextButton(onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => PreferencePage(),
+                            ),
+                          );
+                        },
+                        child: Text("Ubah Preference"))
                       ],
                     ),
+
                     const SizedBox(height: 12,),
                     
                     SizedBox(
