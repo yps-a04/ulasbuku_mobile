@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
-import 'package:ulas_buku_mobile/features/detail/presentation/detail_page.dart';
-import 'package:ulas_buku_mobile/features/detail/presentation/add_review.dart';
+import 'package:ulas_buku_mobile/features/detail/presentation/pages/detail_page.dart';
+import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 
 class BookCard extends StatelessWidget {
-  const BookCard(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.cardColor});
+  const BookCard({super.key, required this.cardColor, required this.book});
 
-  final double width;
-  final double height;
   final Color cardColor;
+  final Book book;
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: () {
         showModalBottomSheet(
@@ -52,8 +50,8 @@ class BookCard extends StatelessWidget {
                               height: height * 0.25,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
-                                child: Image.asset(
-                                  'assets/img/tes.jpeg',
+                                child: Image.network(
+                                  'https://covers.openlibrary.org/b/isbn/${book.fields!.isbn}-M.jpg',
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -61,13 +59,18 @@ class BookCard extends StatelessWidget {
                             const SizedBox(
                               height: 10,
                             ),
-                            const Row(
+                            Row(
                               children: [
-                                Text("4.5/5"),
-                                SizedBox(
-                                  width: 10,
+                                RatingBarIndicator(
+                                  rating: book.fields!.averageRating!,
+                                  itemBuilder: (context, index) => const Icon(
+                                    Icons.star,
+                                    color: Colors.black,
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: 20.0,
+                                  direction: Axis.horizontal,
                                 ),
-                                Icon(Icons.star)
                               ],
                             )
                           ],
@@ -75,44 +78,55 @@ class BookCard extends StatelessWidget {
                         const SizedBox(
                           width: 30,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Judul",
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const Text(
-                              "Penulis",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            const Text("1.321 times reviewed "),
-                            const Text("22-5-2070"),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            UBButton(
-                              height: 50,
-                              width: width * 0.4,
-                              text: "More details",
-                              primaryColor: cardColor,
-                              secondaryColor: Colors.white,
-                              icon: Icons.arrow_forward_ios,
-                              onTap: () =>
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => DetailPage(
-                                  bgColor: cardColor,
+                        SizedBox(
+                          width: width * 0.4,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: width * 0.4,
+                                child: Text(
+                                  book.fields!.title!,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              )),
-                            )
-                          ],
+                              ),
+                              Text(
+                                book.fields!.author!,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                "${book.fields!.textReviewCount} times reviewed ",
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const Text(
+                                "tes",
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              UBButton(
+                                height: 50,
+                                width: width * 0.4,
+                                text: "More details",
+                                primaryColor: cardColor,
+                                secondaryColor: Colors.white,
+                                icon: Icons.arrow_forward_ios,
+                                onTap: () => Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                  builder: (context) => DetailPage(
+                                    book: book,
+                                    bgColor: cardColor,
+                                  ),
+                                )),
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -176,8 +190,8 @@ class BookCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10)),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            'assets/img/tes.jpeg',
+                          child: Image.network(
+                            'https://covers.openlibrary.org/b/isbn/${book.fields!.isbn}-M.jpg',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -190,11 +204,15 @@ class BookCard extends StatelessWidget {
             const SizedBox(
               height: 12,
             ),
-            const Text(
-              "Judul Buku",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            Text(
+              book.fields!.title!,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
-            const Text("Penulis")
+            Text(
+              book.fields!.author!,
+              overflow: TextOverflow.ellipsis,
+            )
           ],
         ),
       ),
