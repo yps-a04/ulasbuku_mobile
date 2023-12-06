@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/users/list_user.dart';
 import 'package:ulas_buku_mobile/features/home/data/data_source/book_list_remote_data_source.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 // ignore: unnecessary_import
@@ -289,12 +290,14 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavBar(
         currentIndex: index,
         onTap: (value) {
-          if (value == 1) {
+          if (value == 0) {
             //navigate ke home
-          } else if (value == 2) {
+          } else if (value == 1) {
             // navigate ke bookmark
-          } else if (value == 3) {
+          } else if (value == 2) {
             // navigate ke add book
+          } else if (value == 3) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListUserPage()));
           }
           setState(() {
             index = value;
