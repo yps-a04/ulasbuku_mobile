@@ -1,6 +1,6 @@
-[![Develop](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/develop.yml/badge.svg)](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/develop.yml)
-[![Pre-Release](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/pre-release.yml/badge.svg)](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/pre-release.yml)
-[![Release](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/release.yml/badge.svg)](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/release.yml)
+[![Develop](https://github.com/yps-a04/ulasbuku_mobile/actions/workflows/develop.yml/badge.svg)](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/develop.yml)
+[![Pre-Release](https://github.com/yps-a04/ulasbuku_mobile/actions/workflows/pre-release.yml/badge.svg)](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/pre-release.yml)
+[![Release](https://github.com/yps-a04/ulasbuku_mobile/actions/workflows/release.yml/badge.svg)](https://github.com/letterbookd/letterbookd-mobile/actions/workflows/release.yml)
 [![Build status](https://build.appcenter.ms/v0.1/apps/c458ebb8-218a-4fa7-93b2-5d27c6dd9dea/branches/main/badge)](https://appcenter.ms)
 
 # UlasBuku: Project Tugas Kelompok A04 PBP
