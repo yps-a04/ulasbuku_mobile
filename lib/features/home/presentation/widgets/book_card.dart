@@ -3,12 +3,84 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/detail/presentation/pages/detail_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
+// import 'package:http/http.dart' as http;
 
 class BookCard extends StatelessWidget {
   const BookCard({super.key, required this.cardColor, required this.book});
 
   final Color cardColor;
   final Book book;
+
+  // void _deleteBook(int pk) async {
+  //   try {
+  //     final response = await http.post('http://127.0.0.1:8000/show-admin/delete/$pk/');
+  //     if (response["status"] == true) {
+        
+  //     }
+  //   }
+  // } catch (e) {
+  //   throw Exception('Error : $e');
+  // }
+
+  // void _showDeleteBookConfirmationDialog(String title, int pk) {
+  //   double height = MediaQuery.of(context).size.height;
+  //   double width = MediaQuery.of(context).size.width;
+
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text('Delete Book'),
+  //         content: Text('Apakah anda yakin ingin menghapus buku $title?'),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop(); // Close the dialog
+  //             },
+  //             child: Text('Cancel'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () async {
+  //               _deleteBook(pk);
+  //               Navigator.of(context).pop(); // Close the dialog
+  //               ScaffoldMessenger.of(context)
+  //                 ..hideCurrentSnackBar()
+  //                 ..showSnackBar(
+  //                   SnackBar(
+  //                     shape: RoundedRectangleBorder(
+  //                       borderRadius: BorderRadius.circular(24),
+  //                     ),
+  //                     behavior: SnackBarBehavior.floating,
+  //                     backgroundColor: Colors.white,
+  //                     margin: EdgeInsets.fromLTRB(width * 0.1,
+  //                         height * 0.1, width * 0.1, height * 0.75),
+  //                     content: Row(
+  //                       mainAxisAlignment: MainAxisAlignment.start,
+  //                       children: [
+  //                         const Icon(
+  //                           Icons.check,
+  //                           color: Colors.green,
+  //                         ),
+  //                         const SizedBox(
+  //                           width: 16,
+  //                         ),
+  //                         Text(
+  //                           "Buku $title telah dihapus !",
+  //                           style:
+  //                               const TextStyle(color: Colors.black),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 );
+  //             },
+  //             child: Text('Delete'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +278,49 @@ class BookCard extends StatelessWidget {
             Text(
               book.fields!.author!,
               overflow: TextOverflow.ellipsis,
-            )
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle EDIT button press
+                    // You can navigate to the edit screen or show a dialog
+                    // to edit the book details.
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 4,
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    fixedSize: Size(100, 40)
+                  ),
+                  child: const Text(
+                    "EDIT",
+                    style: TextStyle(fontSize: 16 ,color: Colors.white),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Handle DELETE button press
+                    // You can show a confirmation dialog before deleting.
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 4,
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    fixedSize: Size(100, 40)
+                  ),
+                  child: const Text(
+                    "DELETE",
+                    style: TextStyle(fontSize: 16 ,color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

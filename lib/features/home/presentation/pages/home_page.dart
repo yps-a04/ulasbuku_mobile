@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/users/list_user.dart';
 import 'package:ulas_buku_mobile/features/home/data/data_source/book_list_remote_data_source.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
@@ -281,7 +282,7 @@ class _HomePageState extends State<HomePage> {
           } else if (value == 1) {
             // navigate ke bookmark
           } else if (value == 2) {
-            // navigate ke add book
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookForm()));
           } else if (value == 3) {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListUserPage()));
           }

@@ -20,16 +20,14 @@ class _ListUserPageState extends State<ListUserPage> {
       final List<User> list_user = [];
       final response = await cookieRequest.get(EndPoints.getUser);
 
-      // print(response);
       for (var i in response) {
         User user = User.fromJson(i);
         list_user.add(user);
       }
-      print(response);
 
       return list_user;
     } catch (e) {
-      throw Exception('error : $e');
+      throw Exception('Error : $e');
     }
   }
 
@@ -42,9 +40,8 @@ class _ListUserPageState extends State<ListUserPage> {
           
         });
       }
-      print(response);
     } catch (e) {
-      throw Exception('error : $e');
+      throw Exception('Error : $e');
     }
   }
 
@@ -57,7 +54,7 @@ class _ListUserPageState extends State<ListUserPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Delete User'),
-          content: Text('Are you sure you want to delete the user $username?'),
+          content: Text('Apakah Anda yakin ingin menghapus user $username?'),
           actions: [
             TextButton(
               onPressed: () {
@@ -104,7 +101,6 @@ class _ListUserPageState extends State<ListUserPage> {
             ),
           ],
         );
-        
       },
     );
   }
@@ -186,12 +182,16 @@ class _ListUserPageState extends State<ListUserPage> {
                           ),
                         ),
                         // Right column with delete button
+                        Text(
+                          "Delete",
+                          style: const TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () {
-                            // Add your logic for user deletion
-                            // You may want to show a confirmation dialog before deleting
-                            // and then update the UI accordingly
                             _showDeleteConfirmationDialog(snapshot.data![index].username, snapshot.data![index].id, request);
                           },
                         ),

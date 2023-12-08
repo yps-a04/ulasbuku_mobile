@@ -6,14 +6,14 @@ import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
-class BookForm extends StatefulWidget {
-  const BookForm({Key? key}) : super(key: key);
+class EditBookPage extends StatefulWidget {
+  const EditBookPage({Key? key}) : super(key: key);
 
   @override
-  _BookFormState createState() => _BookFormState();
+  _EditBookPageState createState() => _EditBookPageState();
 }
 
-class _BookFormState extends State<BookForm> {
+class _EditBookPageState extends State<EditBookPage> {
   final _formKey = GlobalKey<FormState>();
   String _title = "";
   String _author = "";
