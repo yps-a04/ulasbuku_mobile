@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/features/detail/presentation/widgets/review_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/profile/change_pref.dart';
+import 'package:ulas_buku_mobile/features/profile/preference.dart';
 import 'package:unicons/unicons.dart';
+import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -14,10 +21,52 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  var user;
+  var role;
+
+  
+  Future<List<String>> fetchUser(CookieRequest request) async{
+    final List<String> profile = [];
+    final response = await request.get('http://10.0.2.2:8000/ret_profile/');
+    response.forEach((key, value) {
+      profile.add(value);
+    });
+    return profile;
+  }
+
+  Future<List<Preference>> fetchPref(CookieRequest request) async{
+    try {
+        final List<Preference> result = [];
+        final response = await request.get('http://10.0.2.2:8000/pref_json/');
+        
+        // print(response);
+        for (var i in response) {
+          Preference pref = Preference.fromJson(i);
+          result.add(pref);
+        }
+
+        return result;
+      } catch (e) {
+        throw Exception('error : $e');
+      }
+
+    }
+  Future<Map<String, dynamic>> fetchReview(CookieRequest request) async{
+    try {
+        final response = await request.get('http://10.0.2.2:8000/ret_review/');
+        return response;
+      } 
+      catch (e) {
+        throw Exception('error : $e');
+      }
+
+    }
   int index = 4;
   
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     
@@ -122,26 +171,39 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
 
                     SizedBox(height: 12,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: TextField(
-                            enabled: false,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30.0), // Adjust the radius as needed
-                              ),
-                              labelText: 'cbkadal',
-                              hintStyle: const TextStyle(color: Colors.grey),
-                            ),
-                            // Provide a controller when using obscureText
-                            controller: TextEditingController(),
-                          ),
-                        ),
-                      ],
+                    FutureBuilder(
+                      future: fetchUser(request), // Assume this is your function to fetch the role
+                      builder: (context, AsyncSnapshot snapshot) 
+                      {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator()); // Show a loading spinner while waiting
+                          } else {
+                              if (snapshot.hasError)
+                                  return Text('Error: ${snapshot.error}');
+                              else
+                                  return Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Flexible(
+                                          child: TextField(
+                                            enabled: false,
+                                            obscureText: true,
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(30.0), // Adjust the radius as needed
+                                              ),
+                                              labelText: snapshot.data[0],
+                                              hintStyle: const TextStyle(color: Colors.grey),
+                                            ),
+                                            // Provide a controller when using obscureText
+                                            controller: TextEditingController(),
+                                          ),
+                                        ),
+                                      ],
+                                  ); // Return your widget here once role is fetched
+                            }
+                        },
                     ),
                     const SizedBox(height: 24,),
 
@@ -161,25 +223,38 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
 
                     SizedBox(height: 12,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: TextField(
-                            enabled: false,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30.0), // Adjust the radius as needed
-                              ),
-                              labelText: 'Admin/User coming soon boiii',
-                            ),
-                            // Provide a controller when using obscureText
-                            controller: TextEditingController(),
-                          ),
-                        ),
-                      ],
+                    FutureBuilder(
+                      future: fetchUser(request), // Assume this is your function to fetch the role
+                      builder: (context, AsyncSnapshot snapshot) 
+                      {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator()); // Show a loading spinner while waiting
+                          } else {
+                              if (snapshot.hasError)
+                                  return Text('Error: ${snapshot.error}');
+                              else
+                                  return Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                          Flexible(
+                                              child: TextField(
+                                                  enabled: false,
+                                                  obscureText: true,
+                                                  decoration: InputDecoration(
+                                                      border: OutlineInputBorder(
+                                                          borderRadius: BorderRadius.circular(30.0), // Adjust the radius as needed
+                                                      ),
+                                                      labelText: snapshot.data[1], // Use the role here
+                                                  ),
+                                                  // Provide a controller when using obscureText
+                                                  controller: TextEditingController(),
+                                              ),
+                                          ),
+                                      ],
+                                  ); // Return your widget here once role is fetched
+                            }
+                        },
                     ),
                     const SizedBox(height: 24,),
 
@@ -208,52 +283,115 @@ class _ProfilePageState extends State<ProfilePage> {
 
                     const SizedBox(height: 12,),
                     
-                    SizedBox(
-                      height: height * 0.1,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        separatorBuilder: (context, index) => const SizedBox(
-                          width: 16,
-                        ),
-                        itemBuilder: (context, index) {
-                          return SizedBox(
-                            height: 100,
-                            width: 200,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                    FutureBuilder(
+                      future: fetchPref(request),
+                      builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.data == null) {
+                              return const Center(child: CircularProgressIndicator());
+                          } else {
+                              if (!snapshot.hasData) {
+                              return const Column(
                                   children: [
-                                    const SizedBox(
-                                      width: 8,
-                                    ),
+                                  Text(
+                                      "Tidak ada preference :(",
+                                      style:
+                                          TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                                  ),
+                                  SizedBox(height: 8),
                                   ],
-                                ),
-                                Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.black,
-                                      width: 2.0,
-                                    ),
+                              );
+                          } else {
+                              return SizedBox(
+                                height: height * 0.1,
+                                child: ListView.separated(
+                                  physics: const BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: snapshot.data!.length,
+                                  separatorBuilder: (context, index) => const SizedBox(
+                                    width: 16,
                                   ),
-                                  child: Text(
-                                    "Ini namanya emang begini sih",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
+                                  itemBuilder: (context, index) {
+                                    return Text(
+                                      "${snapshot.data![index].fields.author}",
+                                      style: const TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                      ),
+                                      );
+                                  },
                                 ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                              );
+                              }
+                          }
+                      }),
+                      const SizedBox(height: 12,),
 
+                      FutureBuilder(
+                      future: fetchReview(request),
+                      builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.data == null) {
+                              return const Center(child: CircularProgressIndicator());
+                          } else {
+                              if (!snapshot.hasData) {
+                              return const Column(
+                                  children: [
+                                  Text(
+                                      "Tidak ada review :(",
+                                      style:
+                                          TextStyle(color: Color(0xff59A5D8), fontSize: 20),
+                                  ),
+                                  SizedBox(height: 8),
+                                  ],
+                              );
+                          } else {
+                           
+                              return SizedBox(
+                                height: height * 0.3,
+                                child: ListView.separated(
+                                  physics: const BouncingScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: snapshot.data!['title'].length,
+                                  separatorBuilder: (context, index) => const SizedBox(
+                                    width: 16,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    return SizedBox(
+                                      // height: 0.3,
+                                      // width: width * 0.75,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              CircleAvatar(
+                                                child: Image.asset('assets/img/user.png'),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            "${snapshot.data!['title'][index]}",
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "${snapshot.data!['reviewnya'][index]}",
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            "${snapshot.data!['author'][index]}",
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 6,
+                                            textAlign: TextAlign.justify,
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );;
+                              }
+                          }
+                      }),
 
                   ],
                 ),
