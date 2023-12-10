@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/detail/presentation/widgets/review_card.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 
 // ignore: must_be_immutable
 class DetailPage extends StatelessWidget {
-  DetailPage({required this.bgColor, required this.book, super.key});
+  DetailPage(
+      {this.isLightMode = true,
+      required this.bgColor,
+      required this.book,
+      super.key});
 
   Book book;
   Color bgColor;
+  bool isLightMode;
+
   @override
   Widget build(BuildContext context) {
+    final Color textColor =
+        isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -39,9 +49,11 @@ class DetailPage extends StatelessWidget {
                 child: Container(
                   height: height * 1.25,
                   width: width,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: isLightMode
+                        ? UBColor.lightBgColor
+                        : UBColor.darkBgColor,
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
                     ),
@@ -81,8 +93,8 @@ class DetailPage extends StatelessWidget {
                           width: width * 0.7,
                           child: Text(
                             book.fields!.title!,
-                            style: const TextStyle(
-                                color: Colors.black,
+                            style: TextStyle(
+                                color: textColor,
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -100,9 +112,9 @@ class DetailPage extends StatelessWidget {
                       children: [
                         RatingBarIndicator(
                           rating: book.fields!.averageRating!,
-                          itemBuilder: (context, index) => const Icon(
+                          itemBuilder: (context, index) => Icon(
                             Icons.star,
-                            color: Colors.black,
+                            color: textColor,
                           ),
                           itemCount: 5,
                           itemSize: 20.0,
@@ -113,21 +125,31 @@ class DetailPage extends StatelessWidget {
                         ),
                         Text(
                           "${book.fields!.averageRating!}/5",
-                          style: const TextStyle(fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: textColor,
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(
                       height: 16,
                     ),
-                    const Divider(
+                    Divider(
                       thickness: 1,
+                      color: textColor,
                     ),
-                    const Text(
+                    Text(
                       "Details",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
+                      ),
                     ),
-                    const Divider(thickness: 1),
+                    Divider(
+                      thickness: 1,
+                      color: textColor,
+                    ),
                     Text(
                       'Author : ${book.fields!.author!} \n'
                       'ISBN13 :  ${book.fields!.isbn13!} \n'
@@ -135,17 +157,23 @@ class DetailPage extends StatelessWidget {
                       'Reviews Count  :  ${book.fields!.textReviewCount!}\n'
                       'Publisher  :  ${book.fields!.publisher!}\n'
                       'Published Date : 20/20/2020',
-                      style: const TextStyle(letterSpacing: 1, height: 2),
+                      style: TextStyle(
+                          letterSpacing: 1, height: 2, color: textColor),
                     ),
-                    const Divider(
+                    Divider(
                       thickness: 1,
+                      color: textColor,
                     ),
-                    const Text(
+                    Text(
                       "Reviews",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
+                      ),
                     ),
-                    const Divider(
+                    Divider(
                       thickness: 1,
+                      color: textColor,
                     ),
                     const SizedBox(
                       height: 16,
@@ -160,7 +188,8 @@ class DetailPage extends StatelessWidget {
                           width: 16,
                         ),
                         itemBuilder: (context, index) {
-                          return const ReviewCard(
+                          return ReviewCard(
+                            textColor: textColor,
                             reviewer: "Reviewer Name",
                             reviewDate: "22/22/2222",
                             title: "Title",

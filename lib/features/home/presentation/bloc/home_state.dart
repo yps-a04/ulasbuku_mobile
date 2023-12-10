@@ -12,12 +12,16 @@ final class HomeInitial extends HomeState {}
 final class HomeLoading extends HomeState {}
 
 final class HomeLoaded extends HomeState {
-  final List<Book> books;
-
-  const HomeLoaded({required this.books});
+  final List<Book> allBooks;
+  final List<Book> mostReviewedBooks;
+  final List<Book> byPrefBooks;
+  const HomeLoaded(
+      {required this.allBooks,
+      required this.mostReviewedBooks,
+      required this.byPrefBooks});
 
   @override
-  List<Object> get props => [books];
+  List<Object> get props => [allBooks, mostReviewedBooks, byPrefBooks];
 }
 
 final class HomeError extends HomeState {

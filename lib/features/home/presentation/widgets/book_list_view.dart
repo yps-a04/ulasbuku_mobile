@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/widgets/scroll_parent.dart';
 
 class BookListView extends StatelessWidget {
   const BookListView({
     super.key,
     required this.bloc,
     required this.cardColors,
+    required this.textColor,
+    required this.homeScrollController,
+    required this.isLightMode,
   });
-
+  final bool isLightMode;
+  final ScrollController homeScrollController;
+  final Color textColor;
   final List<Color> cardColors;
   final HomeBloc bloc;
 
@@ -23,14 +29,14 @@ class BookListView extends StatelessWidget {
         height: height * 1.5,
         child: Column(
           children: [
-            const TabBar(
-                indicatorColor: Colors.black,
-                labelColor: Colors.black,
+            TabBar(
+                indicatorColor: textColor,
+                labelColor: textColor,
                 unselectedLabelColor: Colors.grey,
-                tabs: [
+                tabs: const [
                   Tab(text: "Explore"),
-                  Tab(text: "Newest"),
-                  Tab(text: "Most Reviewed"),
+                  Tab(text: "Most Reviews"),
+                  Tab(text: "Preferences"),
                 ]),
             BlocBuilder<HomeBloc, HomeState>(
               bloc: bloc,
@@ -51,56 +57,78 @@ class BookListView extends StatelessWidget {
                   return SizedBox(
                     height: height * 1.2,
                     child: TabBarView(children: [
-                      GridView.builder(
-                        padding: const EdgeInsets.all(0),
-                        physics: const ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio:
-                                (height * 1 / 6) / (width * 1 / 2),
-                            crossAxisCount: 2),
-                        itemBuilder: (context, index) {
-                          cardColors.shuffle();
-                          Color cardColor = cardColors[index % 5];
-                          return BookCard(
-                            cardColor: cardColor,
-                            book: state.books[index],
-                          );
-                        },
+                      ScrollParent(
+                        controller: homeScrollController,
+                        child: GridView.builder(
+                          padding: const EdgeInsets.all(0),
+                          physics: const ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: state.allBooks.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  childAspectRatio:
+                                      (height * 1 / 6) / (width * 1 / 2),
+                                  crossAxisCount: 2),
+                          itemBuilder: (context, index) {
+                            cardColors.shuffle();
+                            Color cardColor = cardColors[index % 5];
+
+                            return BookCard(
+                              isLightMode: isLightMode,
+                              textColor: textColor,
+                              cardColor: cardColor,
+                              book: state.allBooks[index],
+                            );
+                          },
+                        ),
                       ),
-                      GridView.builder(
-                        padding: const EdgeInsets.all(0),
-                        physics: const ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio:
-                                (height * 1 / 6) / (width * 1 / 2),
-                            crossAxisCount: 2),
-                        itemBuilder: (context, index) {
-                          cardColors.shuffle();
-                          Color cardColor = cardColors[index % 5];
-                          return BookCard(
-                            cardColor: cardColor,
-                            book: state.books[index],
-                          );
-                        },
+                      ScrollParent(
+                        controller: homeScrollController,
+                        child: GridView.builder(
+                          padding: const EdgeInsets.all(0),
+                          physics: const ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: state.mostReviewedBooks.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  childAspectRatio:
+                                      (height * 1 / 6) / (width * 1 / 2),
+                                  crossAxisCount: 2),
+                          itemBuilder: (context, index) {
+                            cardColors.shuffle();
+                            Color cardColor = cardColors[index % 5];
+                            return BookCard(
+                              isLightMode: isLightMode,
+                              textColor: textColor,
+                              cardColor: cardColor,
+                              book: state.mostReviewedBooks[index],
+                            );
+                          },
+                        ),
                       ),
-                      GridView.builder(
-                        padding: const EdgeInsets.all(0),
-                        physics: const ClampingScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            childAspectRatio:
-                                (height * 1 / 6) / (width * 1 / 2),
-                            crossAxisCount: 2),
-                        itemBuilder: (context, index) {
-                          cardColors.shuffle();
-                          Color cardColor = cardColors[index % 5];
-                          return BookCard(
-                            cardColor: cardColor,
-                            book: state.books[index],
-                          );
-                        },
+                      ScrollParent(
+                        controller: homeScrollController,
+                        child: GridView.builder(
+                          padding: const EdgeInsets.all(0),
+                          physics: const ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: state.byPrefBooks.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  childAspectRatio:
+                                      (height * 1 / 6) / (width * 1 / 2),
+                                  crossAxisCount: 2),
+                          itemBuilder: (context, index) {
+                            cardColors.shuffle();
+                            Color cardColor = cardColors[index % 5];
+                            return BookCard(
+                              isLightMode: isLightMode,
+                              textColor: textColor,
+                              cardColor: cardColor,
+                              book: state.byPrefBooks[index],
+                            );
+                          },
+                        ),
                       ),
                     ]),
                   );
