@@ -31,9 +31,10 @@ class _PreferenceState extends State<PreferencePage> {
         throw Exception('error : $e');
       }
   }
-   List<bool> isCheckedList = List<bool>.filled(8, false);
+   //List<bool> isCheckedList = List<bool>.filled(8, false);
 
   int index = 4;
+  bool isLightMode = true;
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +142,7 @@ class _PreferenceState extends State<PreferencePage> {
         },
       ),
       bottomNavigationBar: BottomNavBar(
+        isLightMode: isLightMode,
         currentIndex: index,
         onTap: (value) {
           setState(() {

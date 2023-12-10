@@ -62,6 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     }
   int index = 4;
+  bool isLightMode = true;
   
   @override
   Widget build(BuildContext context) {
@@ -401,8 +402,26 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
+        isLightMode: isLightMode,
         currentIndex: index,
+
         onTap: (value) {
+          print(value);
+          if (value == 1) {
+            //navigate ke home
+          } else if (value == 2) {
+            // navigate ke bookmark
+          } else if (value == 3) {
+            // navigate ke add book
+          }
+          else if (value == 4)
+          {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ProfilePage(),
+              ),
+            );
+          }
           setState(() {
             index = value;
           });

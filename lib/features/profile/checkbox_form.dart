@@ -12,6 +12,11 @@ class CheckboxList extends StatefulWidget {
 class _CheckboxListState extends State<CheckboxList> {
   late List<bool> isCheckedList;
 
+  void savePreference(List<bool> isCheckedList) async
+  {
+
+  }
+
   @override
   void initState() {
     super.initState();
@@ -30,6 +35,7 @@ class _CheckboxListState extends State<CheckboxList> {
               setState(() {
                 isCheckedList[i] = value!;
               });
+              print(isCheckedList);
             },
           ),
       ],
