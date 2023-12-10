@@ -5,6 +5,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
+import 'package:ulas_buku_mobile/features/profile/checkbox_form.dart';
 import 'package:unicons/unicons.dart';
 
 class PreferencePage extends StatefulWidget {
@@ -16,19 +17,24 @@ class PreferencePage extends StatefulWidget {
 
 class _PreferenceState extends State<PreferencePage> {
   final _formKey = GlobalKey<FormState>();
+  
   Future<List<String>> fetchAuthors(CookieRequest request) async{
     try {
         final response = await request.get('http://10.0.2.2:8000/change_pref/');
-        return response['author'];  // Assuming 'author' is a list of strings
+        final List<String> authors = [];
+        for (var i in response['author']) {
+          authors.add(i['author']);
+        }
+        return authors;  // Assuming 'author' is a list of strings
       } 
       catch (e) {
         throw Exception('error : $e');
       }
   }
-  List<bool> isCheckedList = [];
+   List<bool> isCheckedList = List<bool>.filled(8, false);
 
   int index = 4;
-  
+
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
@@ -85,40 +91,46 @@ class _PreferenceState extends State<PreferencePage> {
         future: fetchAuthors(request),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            isCheckedList = List<bool>.filled(snapshot.data!.length, false);
-            print(snapshot.data!);
-            return Column(
-              children: <Widget>[
-                Center(
-                  child: Text("Ubah Preference Author Anda!", style: TextStyle(fontSize: 24))),
-                // Loop over each author and create a checkbox
-                for (int i = 0; i < snapshot.data!.length; i++)
-                  
-                  CheckboxListTile(
-                    title: Text(snapshot.data![i]),
-                    value: isCheckedList[i],
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isCheckedList[i] = value!;
-                      });
-                    },
+            return Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Center(
+                    child: Text("Ubah Preference Author Anda!", style: TextStyle(fontSize: 24)),
                   ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context); // This line will navigate to the previous screen.
-                      },
-                      child: Text('Kembali'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Colors.blue,
-                        side: BorderSide(color: Color(0xffacdcf2), width:2)
-                      )
-                    ),
-                  ]),
-              ],
+                  // Loop over each author and create a checkbox
+                  CheckboxList(data: snapshot.data!),
+                  
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context); // This line will navigate to the previous screen.
+                        },
+                        child: Text('Kembali'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          onPrimary: Colors.blue,
+                          side: BorderSide(color: Color(0xffacdcf2), width: 2),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () async {
+                          Navigator.pop(context); // This line will navigate to the previous screen.
+                        },
+                        child: Text('Simpan'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          onPrimary: Colors.blue,
+                          side: BorderSide(color: Color(0xffacdcf2), width: 2),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             );
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");

@@ -30,8 +30,9 @@ class App extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              textTheme:
-                  GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme, ),
+              textTheme: GoogleFonts.poppinsTextTheme(
+                Theme.of(context).textTheme,
+              ),
             ),
             home: const LoginPage(),
           );
