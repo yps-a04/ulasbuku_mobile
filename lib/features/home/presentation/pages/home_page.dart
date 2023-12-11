@@ -13,7 +13,6 @@ import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_vi
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/bookmark_page.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -241,24 +240,23 @@ class _HomePageState extends State<HomePage> {
                                         fontSize: 20),
                                   ),
                                   TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const BookmarkPage()));
-                                },
-                                child: const Text(
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const BookmarkPage()));
+                                    },
+                                    child: const Text(
                                       "Show All",
                                       style: TextStyle(
                                           color: Colors.lightBlueAccent,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20),
                                     ),
-                              )
+                                  )
                                 ],
-                              
-                          ),
+                              ),
                               SizedBox(
                                 height: 33.h,
                                 width: 100.w,
@@ -283,7 +281,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         BookListView(
-                            isLightMode : isLightMode,
+                            isLightMode: isLightMode,
                             homeScrollController: homeController,
                             bloc: bloc,
                             cardColors: cardColors,
