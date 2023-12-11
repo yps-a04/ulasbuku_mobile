@@ -127,9 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     secondaryColor: Colors.white,
                     alignment: MainAxisAlignment.center,
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const HomePage(),
-                      ));
+                      
                     },
                   ),
                   Row(

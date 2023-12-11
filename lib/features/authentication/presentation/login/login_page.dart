@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                       // Cek kredensial
 
                       final response = await request
-                          .login("http://127.0.0.1:8000/auth/login/", {
+                          .login(EndPoints.login, {
                         'username': username,
                         'password': password,
                       });
@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const HomePage()),
+                                builder: (context) => HomePage(isAdmin: true,)),
                           );
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()

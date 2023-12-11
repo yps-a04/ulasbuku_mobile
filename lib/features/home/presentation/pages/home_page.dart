@@ -8,7 +8,9 @@ import 'package:ulas_buku_mobile/features/home/data/data_source/book_list_remote
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/login/login_page.dart';
+import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 // ignore: unnecessary_import
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
@@ -16,7 +18,8 @@ import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_vi
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.isAdmin});
+  final bool isAdmin;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -24,33 +27,31 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
-
+  bool isLightMode = true;
+  ScrollController homeController = ScrollController();
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<HomeBloc>();
 
     final scaffoldKey = GlobalKey<ScaffoldState>();
 
-    List<Color> cardColors = [
-      const Color(0xffacdcf2),
-      // ignore: use_full_hex_values_for_flutter_colors
-      const Color.fromRGBO(249, 187, 208, 1),
-      const Color(0xffb2dfdc),
-      const Color(0xFFffcc80),
-      const Color(0xffc5cae8),
-    ];
+    List<Color> cardColors =
+        isLightMode ? UBColor.lightCardColors : UBColor.darkCardColors;
 
+    Color textColor = isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
     cardColors.shuffle();
 
     final request = context.watch<CookieRequest>();
 
     bloc.add(HomeLoadDataEvent(request: request));
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       key: scaffoldKey,
-      backgroundColor: Colors.white,
+      backgroundColor: isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
       drawer: const Drawer(),
       body: SingleChildScrollView(
+        controller: homeController,
         child: SizedBox(
           height: 200.h,
           width: 100.w,
@@ -70,12 +71,14 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: const Icon(
-                          Icons.menu,
+                        icon: Icon(
+                          isLightMode ? Icons.light_mode : Icons.dark_mode,
                           color: Colors.black,
                         ),
                         onPressed: (() {
-                          scaffoldKey.currentState!.openDrawer();
+                          setState(() {
+                            isLightMode = !isLightMode;
+                          });
                         }),
                       ),
                       const Text(
@@ -216,6 +219,8 @@ class _HomePageState extends State<HomePage> {
                           itemCount: state.results.length,
                           itemBuilder: (context, index) {
                             return BookCard(
+                                isAdmin: widget.isAdmin,
+                                textColor: textColor,
                                 cardColor: cardColors[index % 5],
                                 book: state.results[index]);
                           },
@@ -229,18 +234,18 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Row(
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Your Bookmark",
                                     style: TextStyle(
-                                        color: Colors.black,
+                                        color: textColor,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20),
                                   ),
-                                  Text(
+                                  const Text(
                                     "Show All",
                                     style: TextStyle(
                                         color: Colors.lightBlueAccent,
@@ -257,14 +262,29 @@ class _HomePageState extends State<HomePage> {
                                   scrollDirection: Axis.horizontal,
                                   itemCount: 10,
                                   itemBuilder: (context, index) {
-                                    return const Center(child: Text("kosong"));
+                                    return BookCard(
+                                      isAdmin: widget.isAdmin,
+                                      cardColor: cardColors[index % 5],
+                                      textColor: textColor,
+                                      book: Book(
+                                        fields: Fields(
+                                            title: "ini bookmarked book",
+                                            author: "ini bookmarked book "),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        BookListView(bloc: bloc, cardColors: cardColors)
+                        BookListView(
+                            isAdmin: widget.isAdmin,
+                            isLightMode : isLightMode,
+                            homeScrollController: homeController,
+                            bloc: bloc,
+                            cardColors: cardColors,
+                            textColor: textColor)
                       ],
                     );
                   },
@@ -275,6 +295,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
+        isLightMode: isLightMode,
         currentIndex: index,
         onTap: (value) {
           if (value == 0) {

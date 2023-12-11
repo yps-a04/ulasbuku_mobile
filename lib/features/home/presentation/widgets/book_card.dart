@@ -1,103 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
+import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/form/edit_book.dart';
 import 'package:ulas_buku_mobile/features/detail/presentation/pages/detail_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 
-class BookCard extends StatefulWidget {
-  const BookCard({super.key, required this.cardColor, required this.book});
-
+class BookCard extends StatelessWidget {
+  const BookCard(
+      {super.key,
+      required this.isAdmin,
+      required this.cardColor,
+      required this.textColor,
+      required this.book,
+      this.isLightMode = true});
+  final bool isAdmin;
+  final Color textColor;
   final Color cardColor;
   final Book book;
+  final bool isLightMode;
 
-  @override
-  State<BookCard> createState() => _BookCardState();
-}
-
-class _BookCardState extends State<BookCard> {
-  void _deleteBook(int pk, CookieRequest cookieRequest) async {
+  void _deleteBook(int id, CookieRequest cookieRequest) async {
     try {
       final response = await cookieRequest 
-          .post('http://127.0.0.1:8000/show-admin/delete/$pk/', {});
-      if (response["status"] == true) {
-        setState(() {
-          
-        });
-      }
+          .post("${EndPoints.deleteBook}$id", {});
     } catch (e) {
       throw Exception('Error : $e');
     }
   }
 
-  void _showDeleteConfirmationDialog(String title, int pk, CookieRequest cookieRequest) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Delete Book'),
-          content: Text('Apakah anda yakin ingin menghapus buku $title?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                _deleteBook(pk, cookieRequest);
-                Navigator.of(context).pop(); // Close the dialog
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    SnackBar(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      behavior: SnackBarBehavior.floating,
-                      backgroundColor: Colors.white,
-                      margin: EdgeInsets.fromLTRB(width * 0.1,
-                          height * 0.1, width * 0.1, height * 0.75),
-                      content: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.check,
-                            color: Colors.green,
-                          ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                          Text(
-                            "Buku $title telah dihapus !",
-                            style:
-                                const TextStyle(color: Colors.black),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-              },
-              child: Text('Delete'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
     return InkWell(
       onTap: () {
         showModalBottomSheet(
+          backgroundColor:
+              isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
@@ -132,7 +79,7 @@ class _BookCardState extends State<BookCard> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: Image.network(
-                                  'https://covers.openlibrary.org/b/isbn/${widget.book.fields!.isbn}-M.jpg',
+                                  'https://covers.openlibrary.org/b/isbn/${book.fields!.isbn}-M.jpg',
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -143,10 +90,10 @@ class _BookCardState extends State<BookCard> {
                             Row(
                               children: [
                                 RatingBarIndicator(
-                                  rating: widget.book.fields!.averageRating!,
-                                  itemBuilder: (context, index) => const Icon(
+                                  rating: book.fields!.averageRating!,
+                                  itemBuilder: (context, index) => Icon(
                                     Icons.star,
-                                    color: Colors.black,
+                                    color: textColor,
                                   ),
                                   itemCount: 5,
                                   itemSize: 20.0,
@@ -167,25 +114,28 @@ class _BookCardState extends State<BookCard> {
                               SizedBox(
                                 width: width * 0.4,
                                 child: Text(
-                                  widget.book.fields!.title!,
+                                  book.fields!.title!,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: 20.sp,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
                               Text(
-                                widget.book.fields!.author!,
+                                book.fields!.author!,
+                                style: TextStyle(color: textColor),
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                "${widget.book.fields!.textReviewCount} times reviewed ",
+                                "${book.fields!.textReviewCount} times reviewed ",
+                                style: TextStyle(color: textColor),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              const Text(
+                              Text(
                                 "tes",
+                                style: TextStyle(color: textColor),
                                 overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(
@@ -195,14 +145,15 @@ class _BookCardState extends State<BookCard> {
                                 height: 50,
                                 width: width * 0.4,
                                 text: "More details",
-                                primaryColor: widget.cardColor,
+                                primaryColor: cardColor,
                                 secondaryColor: Colors.white,
                                 icon: Icons.arrow_forward_ios,
                                 onTap: () => Navigator.of(context)
                                     .push(MaterialPageRoute(
                                   builder: (context) => DetailPage(
-                                    book: widget.book,
-                                    bgColor: widget.cardColor,
+                                    isLightMode: isLightMode,
+                                    book: book,
+                                    bgColor: cardColor,
                                   ),
                                 )),
                               )
@@ -211,14 +162,102 @@ class _BookCardState extends State<BookCard> {
                         )
                       ],
                     ),
-                    UBButton(
-                      width: width,
-                      height: 50,
-                      primaryColor: widget.cardColor,
-                      secondaryColor: Colors.white,
-                      text: "Add a review",
-                      icon: Icons.edit,
-                    )
+                    if (!isAdmin) ...[
+                      UBButton(
+                        width: width,
+                        height: 50,
+                        primaryColor: cardColor,
+                        secondaryColor: Colors.white,
+                        text: "Add a review",
+                        icon: Icons.edit,
+                      )
+                    ],
+                    if (isAdmin) ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          UBButton(
+                            width: width * 0.4,
+                            height: 50,
+                            primaryColor: cardColor,
+                            secondaryColor: Colors.white,
+                            text: "Edit",
+                            icon: Icons.edit,
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditBookPage(book: book,)));
+                            },
+                          ),
+                          UBButton(
+                            width: width * 0.4,
+                            height: 50,
+                            primaryColor: cardColor,
+                            secondaryColor: Colors.white,
+                            text: "Delete",
+                            icon: Icons.delete,
+                            onTap: () => showDialog(
+                              context: context, 
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Delete Book'),
+                                  content: Text('Apakah Anda yakin ingin menghapus buku ${book.fields!.title!}?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // Close the dialog
+                                      },
+                                      child: Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        _deleteBook(book.pk!, request);
+                                        Navigator.of(context).pop(); // Close the dialog
+                                        context.read<HomeBloc>().add(HomeLoadDataEvent(request: request));
+                                        Navigator.of(context).pop(); 
+                                        ScaffoldMessenger.of(context)
+                                          ..hideCurrentSnackBar()
+                                          ..showSnackBar(
+                                            SnackBar(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(24),
+                                              ),
+                                              behavior: SnackBarBehavior.floating,
+                                              backgroundColor: Colors.white,
+                                              margin: EdgeInsets.fromLTRB(width * 0.1,
+                                                  height * 0.1, width * 0.1, height * 0.75),
+                                              content: Row(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                children: [
+                                                  const Icon(
+                                                    Icons.check,
+                                                    color: Colors.green,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 16,
+                                                  ),
+                                                  SizedBox(
+                                                    width: width * 0.5,
+                                                    child: Text(
+                                                      "Buku ${book.fields!.title!} telah dihapus !",
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style:
+                                                          const TextStyle(color: Colors.black),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                      },
+                                      child: Text('Delete'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          )
+                        ],
+                      )
+                    ]
                   ],
                 ),
               ),
@@ -247,7 +286,7 @@ class _BookCardState extends State<BookCard> {
                       width: width * 1 / 2.5,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
-                        color: widget.cardColor,
+                        color: cardColor,
                       ),
                     ),
                   ),
@@ -266,7 +305,7 @@ class _BookCardState extends State<BookCard> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.network(
-                            'https://covers.openlibrary.org/b/isbn/${widget.book.fields!.isbn}-M.jpg',
+                            'https://covers.openlibrary.org/b/isbn/${book.fields!.isbn}-M.jpg',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -280,56 +319,17 @@ class _BookCardState extends State<BookCard> {
               height: 12,
             ),
             Text(
-              widget.book.fields!.title!,
+              book.fields!.title!,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 11.sp,
+                  color: textColor),
             ),
             Text(
-              widget.book.fields!.author!,
+              book.fields!.author!,
+              style: TextStyle(color: textColor, fontSize: 9.sp),
               overflow: TextOverflow.ellipsis,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle EDIT button press
-                    // You can navigate to the edit screen or show a dialog
-                    // to edit the book details.
-                    // _showDeleteConfirmationDialog(snapshot.data![index].title, snapshot.data![index].pk, request);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 4,
-                    backgroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    fixedSize: Size(100, 40)
-                  ),
-                  child: const Text(
-                    "EDIT",
-                    style: TextStyle(fontSize: 16 ,color: Colors.white),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle DELETE button press
-                    // You can show a confirmation dialog before deleting.
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 4,
-                    backgroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    fixedSize: Size(100, 40)
-                  ),
-                  child: const Text(
-                    "DELETE",
-                    style: TextStyle(fontSize: 16 ,color: Colors.white),
-                  ),
-                ),
-              ],
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/users/list_user.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
@@ -15,6 +16,7 @@ class BookForm extends StatefulWidget {
 
 class _BookFormState extends State<BookForm> {
   final _formKey = GlobalKey<FormState>();
+  bool isLightMode = true;
   String _title = "";
   String _author = "";
   double _averageRating = 0.0;
@@ -337,7 +339,7 @@ class _BookFormState extends State<BookForm> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                           final response = await request.postJson(
-                          "http://127.0.0.1:8000/show-admin/create-flutter/",
+                          "http://ulasbuku-a04-tk.pbp.cs.ui.ac.id/show-admin/create-flutter/",
                           jsonEncode(<String, String>{
                               'title': _title,
                               'author': _author,
@@ -358,7 +360,7 @@ class _BookFormState extends State<BookForm> {
                               ));
                               Navigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(builder: (context) => HomePage()),
+                                  MaterialPageRoute(builder: (context) => HomePage(isAdmin: true)),
                               );
                           } else {
                               ScaffoldMessenger.of(context)
@@ -381,14 +383,17 @@ class _BookFormState extends State<BookForm> {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
+        isLightMode: isLightMode,
         currentIndex: index,
         onTap: (value) {
-          if (value == 1) {
+          if (value == 0) {
             //navigate ke home
-          } else if (value == 2) {
+          } else if (value == 1) {
             // navigate ke bookmark
+          } else if (value == 2) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookForm()));
           } else if (value == 3) {
-            // navigate ke add book
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListUserPage()));
           }
           setState(() {
             index = value;

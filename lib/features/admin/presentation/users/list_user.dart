@@ -3,6 +3,7 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/features/admin/models/user.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
 class ListUserPage extends StatefulWidget {
@@ -108,7 +109,7 @@ class _ListUserPageState extends State<ListUserPage> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-
+    bool isLightMode = true;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -205,6 +206,7 @@ class _ListUserPageState extends State<ListUserPage> {
         }
       ),
       bottomNavigationBar: BottomNavBar(
+        isLightMode: isLightMode,
         currentIndex: index,
         onTap: (value) {
           if (value == 0) {
@@ -212,13 +214,9 @@ class _ListUserPageState extends State<ListUserPage> {
           } else if (value == 1) {
             // navigate ke bookmark
           } else if (value == 2) {
-            // navigate ke add book
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookForm()));
           } else if (value == 3) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ListUserPage()
-              )
-            );
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListUserPage()));
           }
           setState(() {
             index = value;
