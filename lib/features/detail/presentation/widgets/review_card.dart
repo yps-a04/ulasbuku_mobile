@@ -6,6 +6,7 @@ class ReviewCard extends StatelessWidget {
     required this.reviewDate,
     required this.title,
     required this.text,
+    required this.textColor,
     super.key,
   });
 
@@ -13,6 +14,7 @@ class ReviewCard extends StatelessWidget {
   final String reviewDate;
   final String title;
   final String text;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,13 @@ class ReviewCard extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                child: Image.asset('assets/img/user.png'),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.asset(
+                    'assets/img/user.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
               const SizedBox(
                 width: 8,
@@ -35,18 +43,24 @@ class ReviewCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(reviewer, style: const TextStyle(fontWeight: FontWeight.w500)),
-                  Text(reviewDate)
+                  Text(reviewer,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, color: textColor)),
+                  Text(
+                    reviewDate,
+                    style: TextStyle(color: textColor),
+                  )
                 ],
               )
             ],
           ),
           Text(
             title,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
           ),
           Text(
             text,
+            style: TextStyle(color: textColor),
             overflow: TextOverflow.ellipsis,
             maxLines: 6,
             textAlign: TextAlign.justify,
