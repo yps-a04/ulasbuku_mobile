@@ -102,35 +102,6 @@ class _PreferenceState extends State<PreferencePage> {
                   ),
                   // Loop over each author and create a checkbox
                   CheckboxList(data: snapshot.data!),
-                  
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context); // This line will navigate to the previous screen.
-                        },
-                        child: Text('Kembali'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: Colors.blue,
-                          side: BorderSide(color: Color(0xffacdcf2), width: 2),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: () async {
-                          Navigator.pop(context); // This line will navigate to the previous screen.
-                        },
-                        child: Text('Simpan'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: Colors.blue,
-                          side: BorderSide(color: Color(0xffacdcf2), width: 2),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             );

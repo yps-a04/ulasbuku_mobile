@@ -106,12 +106,10 @@ class _LoginPageState extends State<LoginPage> {
                       String password = _passwordController.text;
 
                       // Cek kredensial
-                      print("masuik");
                       final response = await request.login(EndPoints.login, {
                         'username': username,
                         'password': password,
                       });
-                      print(response);
 
                       if (request.loggedIn) {
                         String uname = response['username'];
