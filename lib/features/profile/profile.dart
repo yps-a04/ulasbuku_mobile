@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
   
   Future<List<String>> fetchUser(CookieRequest request) async{
     final List<String> profile = [];
-    final response = await request.get('http://10.0.2.2:8000/ret_profile/');
+    final response = await request.get('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/ret_profile/');
     response.forEach((key, value) {
       profile.add(value);
     });
@@ -37,9 +37,8 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<List<Preference>> fetchPref(CookieRequest request) async{
     try {
         final List<Preference> result = [];
-        final response = await request.get('http://10.0.2.2:8000/pref_json/');
+        final response = await request.get('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/pref_json/');
         
-        // print(response);
         for (var i in response) {
           Preference pref = Preference.fromJson(i);
           result.add(pref);
@@ -53,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   Future<Map<String, dynamic>> fetchReview(CookieRequest request) async{
     try {
-        final response = await request.get('http://10.0.2.2:8000/ret_review/');
+        final response = await request.get('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/ret_review/');
         return response;
       } 
       catch (e) {
@@ -406,7 +405,6 @@ class _ProfilePageState extends State<ProfilePage> {
         currentIndex: index,
 
         onTap: (value) {
-          print(value);
           if (value == 1) {
             //navigate ke home
           } else if (value == 2) {

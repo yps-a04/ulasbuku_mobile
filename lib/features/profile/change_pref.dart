@@ -20,10 +20,11 @@ class _PreferenceState extends State<PreferencePage> {
   
   Future<List<String>> fetchAuthors(CookieRequest request) async{
     try {
-        final response = await request.get('http://10.0.2.2:8000/change_pref/');
+        final response = await request.get('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/change_pref/');
         final List<String> authors = [];
         for (var i in response['author']) {
           authors.add(i['author']);
+          print(i['author']);
         }
         return authors;  // Assuming 'author' is a list of strings
       } 
