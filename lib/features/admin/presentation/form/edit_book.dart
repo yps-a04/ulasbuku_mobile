@@ -47,7 +47,7 @@ class _EditBookPageState extends State<EditBookPage> {
             ),
           ),
         ),
-        backgroundColor: Color(0xffb2dfdc),
+        backgroundColor: Color(0xffc5cae8),
         foregroundColor: Colors.black,
       ),
       body: Form(

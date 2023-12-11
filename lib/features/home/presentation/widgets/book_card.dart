@@ -1,91 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/detail/presentation/pages/detail_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
-// import 'package:http/http.dart' as http;
 
-class BookCard extends StatelessWidget {
+class BookCard extends StatefulWidget {
   const BookCard({super.key, required this.cardColor, required this.book});
 
   final Color cardColor;
   final Book book;
 
-  // void _deleteBook(int pk) async {
-  //   try {
-  //     final response = await http.post('http://127.0.0.1:8000/show-admin/delete/$pk/');
-  //     if (response["status"] == true) {
-        
-  //     }
-  //   }
-  // } catch (e) {
-  //   throw Exception('Error : $e');
-  // }
+  @override
+  State<BookCard> createState() => _BookCardState();
+}
 
-  // void _showDeleteBookConfirmationDialog(String title, int pk) {
-  //   double height = MediaQuery.of(context).size.height;
-  //   double width = MediaQuery.of(context).size.width;
+class _BookCardState extends State<BookCard> {
+  void _deleteBook(int pk, CookieRequest cookieRequest) async {
+    try {
+      final response = await cookieRequest 
+          .post('http://127.0.0.1:8000/show-admin/delete/$pk/', {});
+      if (response["status"] == true) {
+        setState(() {
+          
+        });
+      }
+    } catch (e) {
+      throw Exception('Error : $e');
+    }
+  }
 
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text('Delete Book'),
-  //         content: Text('Apakah anda yakin ingin menghapus buku $title?'),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop(); // Close the dialog
-  //             },
-  //             child: Text('Cancel'),
-  //           ),
-  //           TextButton(
-  //             onPressed: () async {
-  //               _deleteBook(pk);
-  //               Navigator.of(context).pop(); // Close the dialog
-  //               ScaffoldMessenger.of(context)
-  //                 ..hideCurrentSnackBar()
-  //                 ..showSnackBar(
-  //                   SnackBar(
-  //                     shape: RoundedRectangleBorder(
-  //                       borderRadius: BorderRadius.circular(24),
-  //                     ),
-  //                     behavior: SnackBarBehavior.floating,
-  //                     backgroundColor: Colors.white,
-  //                     margin: EdgeInsets.fromLTRB(width * 0.1,
-  //                         height * 0.1, width * 0.1, height * 0.75),
-  //                     content: Row(
-  //                       mainAxisAlignment: MainAxisAlignment.start,
-  //                       children: [
-  //                         const Icon(
-  //                           Icons.check,
-  //                           color: Colors.green,
-  //                         ),
-  //                         const SizedBox(
-  //                           width: 16,
-  //                         ),
-  //                         Text(
-  //                           "Buku $title telah dihapus !",
-  //                           style:
-  //                               const TextStyle(color: Colors.black),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 );
-  //             },
-  //             child: Text('Delete'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
+  void _showDeleteConfirmationDialog(String title, int pk, CookieRequest cookieRequest) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Book'),
+          content: Text('Apakah anda yakin ingin menghapus buku $title?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                _deleteBook(pk, cookieRequest);
+                Navigator.of(context).pop(); // Close the dialog
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.white,
+                      margin: EdgeInsets.fromLTRB(width * 0.1,
+                          height * 0.1, width * 0.1, height * 0.75),
+                      content: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Icon(
+                            Icons.check,
+                            color: Colors.green,
+                          ),
+                          const SizedBox(
+                            width: 16,
+                          ),
+                          Text(
+                            "Buku $title telah dihapus !",
+                            style:
+                                const TextStyle(color: Colors.black),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
     return InkWell(
       onTap: () {
         showModalBottomSheet(
@@ -123,7 +132,7 @@ class BookCard extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: Image.network(
-                                  'https://covers.openlibrary.org/b/isbn/${book.fields!.isbn}-M.jpg',
+                                  'https://covers.openlibrary.org/b/isbn/${widget.book.fields!.isbn}-M.jpg',
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -134,7 +143,7 @@ class BookCard extends StatelessWidget {
                             Row(
                               children: [
                                 RatingBarIndicator(
-                                  rating: book.fields!.averageRating!,
+                                  rating: widget.book.fields!.averageRating!,
                                   itemBuilder: (context, index) => const Icon(
                                     Icons.star,
                                     color: Colors.black,
@@ -158,7 +167,7 @@ class BookCard extends StatelessWidget {
                               SizedBox(
                                 width: width * 0.4,
                                 child: Text(
-                                  book.fields!.title!,
+                                  widget.book.fields!.title!,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     color: Colors.white,
@@ -168,11 +177,11 @@ class BookCard extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                book.fields!.author!,
+                                widget.book.fields!.author!,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                "${book.fields!.textReviewCount} times reviewed ",
+                                "${widget.book.fields!.textReviewCount} times reviewed ",
                                 overflow: TextOverflow.ellipsis,
                               ),
                               const Text(
@@ -186,14 +195,14 @@ class BookCard extends StatelessWidget {
                                 height: 50,
                                 width: width * 0.4,
                                 text: "More details",
-                                primaryColor: cardColor,
+                                primaryColor: widget.cardColor,
                                 secondaryColor: Colors.white,
                                 icon: Icons.arrow_forward_ios,
                                 onTap: () => Navigator.of(context)
                                     .push(MaterialPageRoute(
                                   builder: (context) => DetailPage(
-                                    book: book,
-                                    bgColor: cardColor,
+                                    book: widget.book,
+                                    bgColor: widget.cardColor,
                                   ),
                                 )),
                               )
@@ -205,7 +214,7 @@ class BookCard extends StatelessWidget {
                     UBButton(
                       width: width,
                       height: 50,
-                      primaryColor: cardColor,
+                      primaryColor: widget.cardColor,
                       secondaryColor: Colors.white,
                       text: "Add a review",
                       icon: Icons.edit,
@@ -238,7 +247,7 @@ class BookCard extends StatelessWidget {
                       width: width * 1 / 2.5,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
-                        color: cardColor,
+                        color: widget.cardColor,
                       ),
                     ),
                   ),
@@ -257,7 +266,7 @@ class BookCard extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: Image.network(
-                            'https://covers.openlibrary.org/b/isbn/${book.fields!.isbn}-M.jpg',
+                            'https://covers.openlibrary.org/b/isbn/${widget.book.fields!.isbn}-M.jpg',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -271,12 +280,12 @@ class BookCard extends StatelessWidget {
               height: 12,
             ),
             Text(
-              book.fields!.title!,
+              widget.book.fields!.title!,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
             Text(
-              book.fields!.author!,
+              widget.book.fields!.author!,
               overflow: TextOverflow.ellipsis,
             ),
             Row(
@@ -287,6 +296,7 @@ class BookCard extends StatelessWidget {
                     // Handle EDIT button press
                     // You can navigate to the edit screen or show a dialog
                     // to edit the book details.
+                    // _showDeleteConfirmationDialog(snapshot.data![index].title, snapshot.data![index].pk, request);
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 4,
