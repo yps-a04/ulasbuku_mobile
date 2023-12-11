@@ -1,17 +1,12 @@
-import 'dart:convert';
+
+// ignore_for_file: prefer_typing_uninitialized_variables, curly_braces_in_flow_control_structures, duplicate_ignore
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:ulas_buku_mobile/features/detail/presentation/widgets/review_card.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/profile/change_pref.dart';
 import 'package:ulas_buku_mobile/features/profile/preference.dart';
-import 'package:unicons/unicons.dart';
-import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -68,25 +63,17 @@ class _ProfilePageState extends State<ProfilePage> {
     final request = context.watch<CookieRequest>();
     
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     
     final scaffoldKey = GlobalKey<ScaffoldState>();
 
-    List<Color> cardColors = [
-      Color(0xffacdcf2),
-      Color(0xffFf9bbd0),
-      Color(0xffb2dfdc),
-      Color(0xFFffcc80),
-      Color(0xffc5cae8),
-    ];
 
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Color(0xffacdcf2),
-        shape: RoundedRectangleBorder(
+        backgroundColor: const Color(0xffacdcf2),
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10), // Adjust the radius as needed
           ),
@@ -95,38 +82,39 @@ class _ProfilePageState extends State<ProfilePage> {
           onPressed: () {
             scaffoldKey.currentState!.openDrawer();
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.menu,
             color: Colors.black,
           ),
         ),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Ulas Buku",
           style: TextStyle(color: Colors.black),
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.search,
               color: Colors.black,
             ),
           ),
         ],
       ),
-      drawer: Drawer(),
+      drawer: const Drawer(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             children: [
+              // ignore: sized_box_for_whitespace
               Container(
                 height: 1000,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center, // Center the text vertically
                       children: [
@@ -140,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 24,),
+                    const SizedBox(height: 24,),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -153,9 +141,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 24,),
+                    const SizedBox(height: 24,),
 
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -170,7 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
 
-                    SizedBox(height: 12,),
+                    const SizedBox(height: 12,),
                     FutureBuilder(
                       future: fetchUser(request), // Assume this is your function to fetch the role
                       builder: (context, AsyncSnapshot snapshot) 
@@ -179,6 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               return const Center(child: CircularProgressIndicator()); // Show a loading spinner while waiting
                           } else {
                               if (snapshot.hasError)
+                                  // ignore: curly_braces_in_flow_control_structures
                                   return Text('Error: ${snapshot.error}');
                               else
                                   return Row(
@@ -222,7 +211,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
 
-                    SizedBox(height: 12,),
+                    const SizedBox(height: 12,),
                     FutureBuilder(
                       future: fetchUser(request), // Assume this is your function to fetch the role
                       builder: (context, AsyncSnapshot snapshot) 
@@ -262,7 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "My Preferences", // Replace with your actual username
                           style: TextStyle(
                             color: Colors.black,
@@ -273,11 +262,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         TextButton(onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => PreferencePage(),
+                              builder: (context) => const PreferencePage(),
                             ),
                           );
                         },
-                        child: Text("Ubah Preference"))
+                        child: const Text("Ubah Preference"))
                       ],
                     ),
 
@@ -388,7 +377,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     );
                                   },
                                 ),
-                              );;
+                              );
                               }
                           }
                       }),
@@ -416,7 +405,7 @@ class _ProfilePageState extends State<ProfilePage> {
           {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProfilePage(),
+                builder: (context) => const ProfilePage(),
               ),
             );
           }

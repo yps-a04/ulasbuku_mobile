@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                             MaterialPageRoute(
                                 builder: (context) => const HomePage()),
                           );
-                          print(context);
+
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(

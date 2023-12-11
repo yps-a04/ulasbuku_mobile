@@ -11,7 +11,6 @@ import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart'
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_view.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
-import 'package:ulas_buku_mobile/features/profile/change_pref.dart';
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
@@ -292,7 +291,7 @@ class _HomePageState extends State<HomePage> {
         currentIndex: index,
 
         onTap: (value) {
-          print(value);
+          // ignore: avoid_print
           if (value == 1) {
             //navigate ke home
           } else if (value == 2) {
@@ -304,7 +303,7 @@ class _HomePageState extends State<HomePage> {
           {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProfilePage(),
+                builder: (context) => const ProfilePage(),
               ),
             );
           }

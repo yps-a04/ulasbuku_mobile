@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, sort_child_properties_last, deprecated_member_use
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -8,9 +10,11 @@ import 'package:ulas_buku_mobile/features/profile/profile.dart';
 class CheckboxList extends StatefulWidget {
   final List<String> data;
 
-  CheckboxList({required this.data});
+  // ignore: use_key_in_widget_constructors
+  const CheckboxList({required this.data});
 
   @override
+  // ignore: library_private_types_in_public_api
   _CheckboxListState createState() => _CheckboxListState();
 }
 
@@ -43,10 +47,8 @@ class _CheckboxListState extends State<CheckboxList> {
 
     else
     {
-      print(validNya);
       final response = await request.postJson(
         "https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/set_pref/", jsonEncode(<String, List<String>?>{'valid': validNya}));
-        print("Masuk lo");
         if (response['status'] == 'success') {
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(
@@ -54,7 +56,7 @@ class _CheckboxListState extends State<CheckboxList> {
             ));
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProfilePage(),
+                builder: (context) => const ProfilePage(),
               ),
             );
         } else {
@@ -99,11 +101,11 @@ class _CheckboxListState extends State<CheckboxList> {
                 onPressed: () {
                   Navigator.pop(context); // This line will navigate to the previous screen.
                 },
-                child: Text('Kembali'),
+                child: const Text('Kembali'),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white,
                   onPrimary: Colors.blue,
-                  side: BorderSide(color: Color(0xffacdcf2), width: 2),
+                  side: const BorderSide(color: Color(0xffacdcf2), width: 2),
                 ),
               ),
               const SizedBox(width: 10),
@@ -111,11 +113,11 @@ class _CheckboxListState extends State<CheckboxList> {
                 onPressed: () async {
                   savePreference();
                 },
-                child: Text('Simpan'),
+                child: const Text('Simpan'),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white,
                   onPrimary: Colors.blue,
-                  side: BorderSide(color: Color(0xffacdcf2), width: 2),
+                  side: const BorderSide(color: Color(0xffacdcf2), width: 2),
                 ),
               ),
             ],
