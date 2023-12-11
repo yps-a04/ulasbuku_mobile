@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:sizer/sizer.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/detail/presentation/pages/detail_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 
 class BookCard extends StatelessWidget {
-  const BookCard({super.key, required this.cardColor, required this.book});
-
+  const BookCard(
+      {super.key,
+      required this.cardColor,
+      required this.textColor,
+      required this.book,
+      this.isLightMode = true});
+  final Color textColor;
   final Color cardColor;
   final Book book;
+  final bool isLightMode;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +25,8 @@ class BookCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         showModalBottomSheet(
+          backgroundColor:
+              isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
@@ -63,9 +73,9 @@ class BookCard extends StatelessWidget {
                               children: [
                                 RatingBarIndicator(
                                   rating: book.fields!.averageRating!,
-                                  itemBuilder: (context, index) => const Icon(
+                                  itemBuilder: (context, index) => Icon(
                                     Icons.star,
-                                    color: Colors.black,
+                                    color: textColor,
                                   ),
                                   itemCount: 5,
                                   itemSize: 20.0,
@@ -88,23 +98,26 @@ class BookCard extends StatelessWidget {
                                 child: Text(
                                   book.fields!.title!,
                                   overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 22,
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontSize: 20.sp,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
                               Text(
                                 book.fields!.author!,
+                                style: TextStyle(color: textColor),
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
                                 "${book.fields!.textReviewCount} times reviewed ",
+                                style: TextStyle(color: textColor),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              const Text(
+                              Text(
                                 "tes",
+                                style: TextStyle(color: textColor),
                                 overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(
@@ -120,6 +133,7 @@ class BookCard extends StatelessWidget {
                                 onTap: () => Navigator.of(context)
                                     .push(MaterialPageRoute(
                                   builder: (context) => DetailPage(
+                                    isLightMode: isLightMode,
                                     book: book,
                                     bgColor: cardColor,
                                   ),
@@ -207,10 +221,14 @@ class BookCard extends StatelessWidget {
             Text(
               book.fields!.title!,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 11.sp,
+                  color: textColor),
             ),
             Text(
               book.fields!.author!,
+              style: TextStyle(color: textColor, fontSize: 9.sp),
               overflow: TextOverflow.ellipsis,
             )
           ],
