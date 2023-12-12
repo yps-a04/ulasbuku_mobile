@@ -12,6 +12,8 @@ import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.da
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_view.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/pages/bookmark_page.dart';
+import 'package:ulas_buku_mobile/features/profile/change_pref.dart';
+import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -298,7 +300,9 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavBar(
         isLightMode: isLightMode,
         currentIndex: index,
+
         onTap: (value) {
+          print(value);
           if (value == 1) {
             //navigate ke bookmark
             Navigator.pushReplacement(
@@ -309,7 +313,15 @@ class _HomePageState extends State<HomePage> {
           } else if (value == 2) {
             // navigate ke add book
           } else if (value == 3) {
-            // navigate ke edit profile
+            // navigate ke add book
+          }
+          else if (value == 4)
+          {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ProfilePage(),
+              ),
+            );
           }
           setState(() {
             index = value;
