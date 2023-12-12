@@ -11,7 +11,7 @@ import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart'
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_view.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
-import 'package:ulas_buku_mobile/features/bookmark/presentation/bookmark_page.dart';
+import 'package:ulas_buku_mobile/features/bookmark/presentation/pages/bookmark_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

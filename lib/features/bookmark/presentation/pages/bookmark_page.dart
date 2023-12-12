@@ -1,11 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:ulas_buku_mobile/features/bookmark/presentation/widget/bookmark_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
+import 'package:ulas_buku_mobile/features/bookmark/data/data_source/bookmark_remote_data_source.dart';
+import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
+import 'package:provider/provider.dart';
 
-class BookmarkPage extends StatelessWidget {
+class BookmarkPage extends StatefulWidget {
   const BookmarkPage({Key? key}) : super(key: key);
+  @override
+  _BookmarkPageState createState() => _BookmarkPageState();
+}
+
+class _BookmarkPageState extends State<BookmarkPage> {
+  List<Book>? bookmarkedBooks;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    fetchBookmark();
+  }
+
+  Future<void> fetchBookmark() async {
+    final request = context.read<CookieRequest>();
+    final dataSource = BookmarkListRemoteDataSource(request: request);
+
+    try {
+      final books = await dataSource.fetchBooks();
+      setState(() {
+        bookmarkedBooks = books;
+      });
+    } catch (e) {
+        print('error : $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {   
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -28,7 +59,7 @@ class BookmarkPage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const HomePage(),
-                ));            
+                ));
           },
         ),
         actions: [
@@ -38,8 +69,7 @@ class BookmarkPage extends StatelessWidget {
               color: Colors.black,
               size: 24,
             ),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -101,65 +131,20 @@ class BookmarkPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Container(
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(
-                                'https://images.unsplash.com/photo-1473755504818-b72b6dfdc226?w=1280&h=720',
-                                width: 70,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(8, 0, 4, 0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'The Great Gatsby',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 4),
-                                      child: Text(
-                                        'F. Scott Fitzgerald',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontFamily: 'Plus Jakarta Sans',
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+              child: (bookmarkedBooks == null) 
+              ? const Center(child: CircularProgressIndicator()) 
+              : Expanded(
+                  child: SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                      itemCount: bookmarkedBooks!.length, 
+                      itemBuilder: (context, index) { 
+                        return BookmarkCard(book: bookmarkedBooks![index]);
+                      },
                     ),
-                  ),
-                ],
-              ),
+                ),
+              )
+              
             ),
           ],
         ),
