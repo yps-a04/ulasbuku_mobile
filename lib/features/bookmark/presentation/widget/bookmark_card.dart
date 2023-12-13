@@ -1,21 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sizer/sizer.dart';
+import 'package:provider/provider.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/detail/presentation/pages/detail_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 
-class BookmarkCard extends StatelessWidget {
-  const BookmarkCard({
-    super.key,
-    required this.book,
-    this.isLightMode = true
-  });
+class BookmarkCard extends StatefulWidget {
+  const BookmarkCard({super.key, required this.book, this.isLightMode = true});
   final Book book;
   final bool isLightMode;
+  @override
+  State<StatefulWidget> createState() => _BookmarkCardState();
+}
 
+class _BookmarkCardState extends State<BookmarkCard> {
+  bool pressed = true;
   
+  Future<void> deleteBookmark() async {
+    final request = context.read<CookieRequest>();
+    final response = await request.postJson(EndPoints.aodBookmarkUser, jsonEncode(null)); // isi jsonencodenya bang
+
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response,
+      // then parse the JSON.
+      return response;
+    } else {
+      // If the server returns an error response,
+      // then throw an exception.
+      throw Exception('Failed to send data.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -24,7 +45,7 @@ class BookmarkCard extends StatelessWidget {
       onTap: () {
         showModalBottomSheet(
           backgroundColor:
-              isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
+              widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
@@ -59,7 +80,7 @@ class BookmarkCard extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: Image.network(
-                                  'https://covers.openlibrary.org/b/isbn/${book.fields!.isbn}-M.jpg',
+                                  'https://covers.openlibrary.org/b/isbn/${widget.book.fields!.isbn}-M.jpg',
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -70,7 +91,7 @@ class BookmarkCard extends StatelessWidget {
                             Row(
                               children: [
                                 RatingBarIndicator(
-                                  rating: book.fields!.averageRating!,
+                                  rating: widget.book.fields!.averageRating!,
                                   itemBuilder: (context, index) => Icon(
                                     Icons.star,
                                   ),
@@ -93,7 +114,7 @@ class BookmarkCard extends StatelessWidget {
                               SizedBox(
                                 width: width * 0.4,
                                 child: Text(
-                                  book.fields!.title!,
+                                  widget.book.fields!.title!,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     fontSize: 20.sp,
@@ -102,11 +123,11 @@ class BookmarkCard extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                book.fields!.author!,
+                                widget.book.fields!.author!,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                "${book.fields!.textReviewCount} times reviewed ",
+                                "${widget.book.fields!.textReviewCount} times reviewed ",
                                 overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(
@@ -122,8 +143,8 @@ class BookmarkCard extends StatelessWidget {
                                 onTap: () => Navigator.of(context)
                                     .push(MaterialPageRoute(
                                   builder: (context) => DetailPage(
-                                    isLightMode: isLightMode,
-                                    book: book,
+                                    isLightMode: widget.isLightMode,
+                                    book: widget.book,
                                     bgColor: Colors.white,
                                   ),
                                 )),
@@ -151,7 +172,7 @@ class BookmarkCard extends StatelessWidget {
       child: Container(
         height: 100,
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          color: Colors.white,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Padding(
@@ -161,7 +182,7 @@ class BookmarkCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  'https://covers.openlibrary.org/b/isbn/${book.fields!.isbn}-L.jpg', // URL gambar dari ISBN
+                  'https://covers.openlibrary.org/b/isbn/${widget.book.fields!.isbn}-L.jpg', // URL gambar dari ISBN
                   width: 70,
                   height: 100,
                   fit: BoxFit.cover,
@@ -175,7 +196,7 @@ class BookmarkCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        book.fields!.title ?? '',
+                        widget.book.fields!.title ?? '',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -184,7 +205,7 @@ class BookmarkCard extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(top: 4),
                         child: Text(
-                          book.fields!.author ?? '',
+                          widget.book.fields!.author ?? '',
                           style: const TextStyle(
                             fontSize: 12,
                             fontFamily: 'Plus Jakarta Sans',
@@ -193,7 +214,7 @@ class BookmarkCard extends StatelessWidget {
                         ),
                       ),
                       RatingBarIndicator(
-                        rating: book.fields!.averageRating!,
+                        rating: widget.book.fields!.averageRating!,
                         itemBuilder: (context, index) => const Icon(
                           Icons.star,
                         ),
@@ -203,6 +224,18 @@ class BookmarkCard extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    pressed = !pressed;
+                    
+                  });
+                },
+                icon: Icon(
+                  Icons.bookmark,
+                  color: (pressed == true) ? Colors.black : Colors.grey,
                 ),
               ),
             ],
