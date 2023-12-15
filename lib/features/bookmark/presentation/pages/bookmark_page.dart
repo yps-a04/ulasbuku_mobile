@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/widget/bookmark_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
+import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
 class BookmarkPage extends StatefulWidget {
   const BookmarkPage(
@@ -13,6 +15,7 @@ class BookmarkPage extends StatefulWidget {
 }
 
 class _BookmarkPageState extends State<BookmarkPage> {
+  int index = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +129,39 @@ class _BookmarkPageState extends State<BookmarkPage> {
                       )),
           ],
         ),
+      ), 
+      bottomNavigationBar: BottomNavBar(
+        isLightMode: widget.isLightMode,
+        currentIndex: index,
+
+        onTap: (value) {
+          print(value);
+          if (value == 0) {
+            //navigate ke bookmark
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomePage(),
+                ));
+          } else if (value == 2) {
+            // navigate ke add book
+          } else if (value == 3) {
+            // navigate ke add book
+          }
+          else if (value == 4)
+          {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const ProfilePage(),
+              ),
+            );
+          }
+          setState(() {
+            index = value;
+          });
+        },
       ),
+    
     );
   }
 }
