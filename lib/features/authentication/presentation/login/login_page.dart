@@ -106,7 +106,6 @@ class _LoginPageState extends State<LoginPage> {
                       String password = _passwordController.text;
 
                       // Cek kredensial
-
                       final response = await request.login(EndPoints.login, {
                         'username': username,
                         'password': password,
@@ -122,8 +121,9 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const HomePage()),
+                                builder: (context) => HomePage()),
                           );
+
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(

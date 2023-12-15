@@ -128,7 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     alignment: MainAxisAlignment.center,
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const HomePage(),
+                        builder: (context) => HomePage(),
                       ));
                     },
                   ),

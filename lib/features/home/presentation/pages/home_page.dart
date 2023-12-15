@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/login/login_page.dart';
+import 'package:ulas_buku_mobile/features/bookmark/presentation/pages/bookmark_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 // ignore: unnecessary_import
@@ -12,8 +13,11 @@ import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.da
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_view.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
+import 'package:ulas_buku_mobile/features/profile/profile.dart';
+
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage({this.isLightMode = true, super.key});
+  bool isLightMode;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -21,7 +25,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
-  bool isLightMode = true;
+  late bool isLightMode;
+  @override
+  void initState() {
+    super.initState();
+    isLightMode = widget.isLightMode;
+  }
   ScrollController homeController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -98,8 +107,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                   backgroundColor: Colors.white,
-                                  margin: EdgeInsets.fromLTRB(
-                                      10.w, 10.h, 10.w, 75.h),
+                                  margin: EdgeInsets.fromLTRB(10.w, 10.h, 10.w, 10.h),
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
@@ -231,19 +239,28 @@ class _HomePageState extends State<HomePage> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    "Your Bookmark",
-                                    style: TextStyle(
-                                        color: textColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
                                   const Text(
-                                    "Show All",
+                                    "Your Bookmark",
                                     style: TextStyle(
                                         color: Colors.lightBlueAccent,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const BookmarkPage()));
+                                    },
+                                    child: const Text(
+                                      "Show All",
+                                      style: TextStyle(
+                                          color: Colors.lightBlueAccent,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ),
                                   )
                                 ],
                               ),
@@ -271,7 +288,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         BookListView(
-                            isLightMode : isLightMode,
+                            isLightMode: isLightMode,
                             homeScrollController: homeController,
                             bloc: bloc,
                             cardColors: cardColors,
@@ -288,13 +305,30 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavBar(
         isLightMode: isLightMode,
         currentIndex: index,
+
         onTap: (value) {
+          // ignore: avoid_print
           if (value == 1) {
-            //navigate ke home
+            //navigate ke bookmark
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookmarkPage(
+                    isLightMode: isLightMode,
+                  ),
+                ));
           } else if (value == 2) {
-            // navigate ke bookmark
+            // navigate ke add book
           } else if (value == 3) {
             // navigate ke add book
+          }
+          else if (value == 4)
+          {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ProfilePage(isLightMode: isLightMode,),
+              ),
+            );
           }
           setState(() {
             index = value;
