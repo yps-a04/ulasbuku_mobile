@@ -11,20 +11,25 @@ import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart'
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_view.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
-import 'package:ulas_buku_mobile/features/bookmark/presentation/pages/bookmark_page.dart';
-import 'package:ulas_buku_mobile/features/profile/change_pref.dart';
+
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-  
+  HomePage({this.isLightMode = true, super.key});
+  bool isLightMode;
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
-  bool isLightMode = true;
+  late bool isLightMode;
+  @override
+  void initState() {
+    super.initState();
+    isLightMode = widget.isLightMode;
+  }
   ScrollController homeController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -301,7 +306,7 @@ class _HomePageState extends State<HomePage> {
         currentIndex: index,
 
         onTap: (value) {
-          print(value);
+          // ignore: avoid_print
           if (value == 1) {
             //navigate ke bookmark
             Navigator.pushReplacement(
@@ -320,7 +325,7 @@ class _HomePageState extends State<HomePage> {
           {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProfilePage(),
+                builder: (context) => ProfilePage(isLightMode: isLightMode,),
               ),
             );
           }
