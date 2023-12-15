@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/widget/bookmark_card.dart';
@@ -32,6 +34,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
         bookmarkedBooks = books;
       });
     } catch (e) {
+      // ignore: avoid_print
       print('error : $e');
     }
   }

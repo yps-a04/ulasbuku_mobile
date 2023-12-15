@@ -199,7 +199,7 @@ class DetailPage extends StatelessWidget {
                       future: fetchReview(book.pk!, request),
                       builder: (context, snapshot) {
                         if (snapshot.data != null) {
-                          if (!snapshot.hasData) {
+                          if (snapshot.data!.isEmpty) {
                             return const Center(
                               child: Text("Belum ada review untuk buku ini :("),
                             );

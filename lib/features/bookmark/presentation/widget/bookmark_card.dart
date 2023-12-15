@@ -97,7 +97,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
                               children: [
                                 RatingBarIndicator(
                                   rating: widget.book.fields!.averageRating!,
-                                  itemBuilder: (context, index) => Icon(
+                                  itemBuilder: (context, index) => const Icon(
                                     Icons.star,
                                   ),
                                   itemCount: 5,
@@ -195,7 +195,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(8, 0, 4, 0),
+                  padding: const EdgeInsets.fromLTRB(8, 0, 4, 0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,7 +208,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 4),
+                        padding: const EdgeInsets.only(top: 4),
                         child: Text(
                           widget.book.fields!.author ?? '',
                           style: const TextStyle(
