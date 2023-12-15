@@ -9,5 +9,4 @@ class EndPoints {
   static const String search = '$baseUrl/search/';
   static const String sort = "$baseUrl/sort-books";
   static const String getUserBookmark = "$baseUrl/bookmarks-json/";
-  static const String aodBookmarkUser = "$baseUrl/delete-bookmark/";
 }

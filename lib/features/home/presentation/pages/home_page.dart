@@ -17,7 +17,7 @@ import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
+  
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -101,8 +101,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                   backgroundColor: Colors.white,
-                                  margin: EdgeInsets.fromLTRB(
-                                      10.w, 10.h, 10.w, 75.h),
+                                  margin: EdgeInsets.fromLTRB(10.w, 10.h, 10.w, 10.h),
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
@@ -308,7 +307,9 @@ class _HomePageState extends State<HomePage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const BookmarkPage(),
+                  builder: (context) => BookmarkPage(
+                    isLightMode: isLightMode,
+                  ),
                 ));
           } else if (value == 2) {
             // navigate ke add book

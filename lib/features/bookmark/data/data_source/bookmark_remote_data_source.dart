@@ -14,7 +14,7 @@ class BookmarkListRemoteDataSource {
 
       // print(response);
       for (var i in response) {
-        Book book = Book.fromJson(i);
+        Book book = Book.fromJson(i); 
         result.add(book);
       }
 

@@ -21,15 +21,20 @@ class BookmarkCard extends StatefulWidget {
 
 class _BookmarkCardState extends State<BookmarkCard> {
   bool pressed = true;
-  
+
   Future<void> deleteBookmark() async {
     final request = context.read<CookieRequest>();
-    final response = await request.postJson(EndPoints.aodBookmarkUser, jsonEncode(null)); // isi jsonencodenya bang
+    final user = await request.get('http://localhost:8000/ret_profile/');
+    final List<String> profile = [];
+    user.forEach((key, value) {
+      profile.add(value);
+    });
+    final response = await request.postJson(
+        "${EndPoints.baseUrl}/b/${profile[0]}/delete/",
+        jsonEncode({"pk": widget.book.pk}));
 
     if (response.statusCode == 200) {
       // If the server returns a 200 OK response,
-      // then parse the JSON.
-      return response;
     } else {
       // If the server returns an error response,
       // then throw an exception.
@@ -230,7 +235,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
                 onPressed: () {
                   setState(() {
                     pressed = !pressed;
-                    
+                    deleteBookmark();
                   });
                 },
                 icon: Icon(

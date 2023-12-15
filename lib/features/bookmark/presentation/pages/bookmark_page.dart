@@ -7,7 +7,8 @@ import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:provider/provider.dart';
 
 class BookmarkPage extends StatefulWidget {
-  const BookmarkPage({Key? key}) : super(key: key);
+  const BookmarkPage({super.key, this.isLightMode = true});
+  final bool isLightMode;
   @override
   _BookmarkPageState createState() => _BookmarkPageState();
 }
@@ -31,12 +32,12 @@ class _BookmarkPageState extends State<BookmarkPage> {
         bookmarkedBooks = books;
       });
     } catch (e) {
-        print('error : $e');
+      print('error : $e');
     }
   }
 
   @override
-  Widget build(BuildContext context) {   
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -130,22 +131,21 @@ class _BookmarkPageState extends State<BookmarkPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: (bookmarkedBooks == null) 
-              ? const Center(child: CircularProgressIndicator()) 
-              : Expanded(
-                  child: SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                      itemCount: bookmarkedBooks!.length, 
-                      itemBuilder: (context, index) { 
-                        return BookmarkCard(book: bookmarkedBooks![index]);
-                      },
-                    ),
-                ),
-              )
-              
-            ),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                child: (bookmarkedBooks == null)
+                    ? const Center(child: CircularProgressIndicator())
+                    : Expanded(
+                        child: SizedBox(
+                          height: 200,
+                          child: ListView.builder(
+                            itemCount: bookmarkedBooks!.length,
+                            itemBuilder: (context, index) {
+                              return BookmarkCard(
+                                  book: bookmarkedBooks![index]);
+                            },
+                          ),
+                        ),
+                      )),
           ],
         ),
       ),
