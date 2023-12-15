@@ -4,6 +4,7 @@ import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 
 class BookmarkPage extends StatefulWidget {
   const BookmarkPage(
@@ -20,7 +21,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
         title: const Text(
           'Bookmarks',
           style: TextStyle(
@@ -30,9 +31,9 @@ class _BookmarkPageState extends State<BookmarkPage> {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_rounded,
-            color: Colors.black,
+            color: widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
             size: 30,
           ),
           onPressed: () {
@@ -45,9 +46,9 @@ class _BookmarkPageState extends State<BookmarkPage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               Icons.tune_rounded,
-              color: Colors.black,
+              color: widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
               size: 24,
             ),
             onPressed: () {},
@@ -66,7 +67,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(40),
                   border: Border.all(
-                    color: Colors.black,
+                    color: widget.isLightMode ? UBColor.darkBgColor:UBColor.lightBgColor ,
                   ),
                 ),
                 child: const Padding(
