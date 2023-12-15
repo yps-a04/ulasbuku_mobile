@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/login/login_page.dart';
+import 'package:ulas_buku_mobile/features/bookmark/presentation/pages/bookmark_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 // ignore: unnecessary_import
