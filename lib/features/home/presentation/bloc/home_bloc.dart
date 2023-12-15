@@ -30,7 +30,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       List<Book> mostReviewedBook =
           await sortDataSource.fetchSortedBooks('reviews-count');
       List<Book> byPrefBooks =
-          await sortDataSource.fetchSortedBooks('preferences');
+          await sortDataSource.fetchSortedBooks('preference');
 
       emit(
         HomeLoaded(

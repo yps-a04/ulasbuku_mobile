@@ -6,6 +6,7 @@ class EndPoints {
   static const String getAllBooks = '$baseUrl/books-json/';
   static const String search = '$baseUrl/search/';
   static const String sort = "$baseUrl/sort-books";
+  static const String getUserBookmark = "$baseUrl/bookmarks-json/";
   static const String addReview = '$baseUrl/add-review-flutter/';
   static const String getReview = '$baseUrl/show-review-flutter/';
 }
