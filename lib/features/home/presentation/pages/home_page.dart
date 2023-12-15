@@ -14,6 +14,7 @@ import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.d
 import 'package:ulas_buku_mobile/features/bookmark/presentation/pages/bookmark_page.dart';
 import 'package:ulas_buku_mobile/features/profile/change_pref.dart';
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
+import 'package:ulas_buku_mobile/features/bookmark/data/data_source/bookmark_remote_data_source.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,6 +27,29 @@ class _HomePageState extends State<HomePage> {
   int index = 0;
   bool isLightMode = true;
   ScrollController homeController = ScrollController();
+  List<Book> bookmarkedBooks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchBookmark();
+  }
+
+  Future<void> fetchBookmark() async {
+    final request = context.read<CookieRequest>();
+    final dataSource = BookmarkListRemoteDataSource(request: request);
+
+    try {
+      final books = await dataSource.fetchBooks();
+      setState(() {
+        bookmarkedBooks = books;
+      });
+    } catch (e) {
+      print('error : $e');
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<HomeBloc>();
@@ -101,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                   backgroundColor: Colors.white,
-                                  margin: EdgeInsets.fromLTRB(10.w, 10.h, 10.w, 10.h),
+                                  margin: EdgeInsets.fromLTRB(10.w, 10.h, 10.w, 75.h),
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
@@ -217,7 +241,9 @@ class _HomePageState extends State<HomePage> {
                             return BookCard(
                                 textColor: textColor,
                                 cardColor: cardColors[index % 5],
-                                book: state.results[index]);
+                                book: state.results[index],
+                                bookmarkedBooks : bookmarkedBooks,
+                                );
                           },
                         ),
                       );
@@ -246,7 +272,7 @@ class _HomePageState extends State<HomePage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  const BookmarkPage()));
+                                                  BookmarkPage(bookmarkedBooks: bookmarkedBooks, isLightMode: isLightMode,)));
                                     },
                                     child: const Text(
                                       "Show All",
@@ -260,20 +286,17 @@ class _HomePageState extends State<HomePage> {
                               ),
                               SizedBox(
                                 height: 33.h,
-                                width: 100.w,
                                 child: ListView.builder(
+                                  padding: const EdgeInsets.all(0),
                                   physics: const BouncingScrollPhysics(),
                                   scrollDirection: Axis.horizontal,
-                                  itemCount: 10,
+                                  itemCount: (bookmarkedBooks.length < 10) ? bookmarkedBooks.length : 10,
                                   itemBuilder: (context, index) {
                                     return BookCard(
                                       cardColor: cardColors[index % 5],
                                       textColor: textColor,
-                                      book: Book(
-                                        fields: Fields(
-                                            title: "ini bookmarked book",
-                                            author: "ini bookmarked book "),
-                                      ),
+                                      book: bookmarkedBooks[index],
+                                      bookmarkedBooks: bookmarkedBooks,
                                     );
                                   },
                                 ),
@@ -286,7 +309,8 @@ class _HomePageState extends State<HomePage> {
                             homeScrollController: homeController,
                             bloc: bloc,
                             cardColors: cardColors,
-                            textColor: textColor)
+                            textColor: textColor,
+                            bookmarkedBooks: bookmarkedBooks)
                       ],
                     );
                   },
@@ -309,6 +333,7 @@ class _HomePageState extends State<HomePage> {
                 MaterialPageRoute(
                   builder: (context) => BookmarkPage(
                     isLightMode: isLightMode,
+                    bookmarkedBooks: bookmarkedBooks,
                   ),
                 ));
           } else if (value == 2) {

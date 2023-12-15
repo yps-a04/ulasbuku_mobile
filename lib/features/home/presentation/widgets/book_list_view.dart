@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ulas_buku_mobile/features/bookmark/presentation/widget/bookmark_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/scroll_parent.dart';
+import "package:ulas_buku_mobile/features/home/data/models/book.dart";
 
 class BookListView extends StatelessWidget {
   const BookListView({
@@ -12,12 +14,14 @@ class BookListView extends StatelessWidget {
     required this.textColor,
     required this.homeScrollController,
     required this.isLightMode,
+    required this.bookmarkedBooks,
   });
   final bool isLightMode;
   final ScrollController homeScrollController;
   final Color textColor;
   final List<Color> cardColors;
   final HomeBloc bloc;
+  final List<Book> bookmarkedBooks;
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +82,7 @@ class BookListView extends StatelessWidget {
                               textColor: textColor,
                               cardColor: cardColor,
                               book: state.allBooks[index],
+                              bookmarkedBooks: bookmarkedBooks,
                             );
                           },
                         ),
@@ -102,6 +107,7 @@ class BookListView extends StatelessWidget {
                               textColor: textColor,
                               cardColor: cardColor,
                               book: state.mostReviewedBooks[index],
+                              bookmarkedBooks: bookmarkedBooks,
                             );
                           },
                         ),
@@ -126,6 +132,7 @@ class BookListView extends StatelessWidget {
                               textColor: textColor,
                               cardColor: cardColor,
                               book: state.byPrefBooks[index],
+                              bookmarkedBooks: bookmarkedBooks,
                             );
                           },
                         ),

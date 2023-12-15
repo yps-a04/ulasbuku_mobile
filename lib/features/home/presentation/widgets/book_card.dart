@@ -12,11 +12,13 @@ class BookCard extends StatelessWidget {
       required this.cardColor,
       required this.textColor,
       required this.book,
+      required this.bookmarkedBooks,
       this.isLightMode = true});
   final Color textColor;
   final Color cardColor;
   final Book book;
   final bool isLightMode;
+  final List<Book>? bookmarkedBooks;
 
   @override
   Widget build(BuildContext context) {
@@ -136,6 +138,7 @@ class BookCard extends StatelessWidget {
                                     isLightMode: isLightMode,
                                     book: book,
                                     bgColor: cardColor,
+                                    bookmarkedBooks: bookmarkedBooks,
                                   ),
                                 )),
                               )

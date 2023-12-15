@@ -12,9 +12,10 @@ import 'package:ulas_buku_mobile/features/detail/presentation/pages/detail_page.
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 
 class BookmarkCard extends StatefulWidget {
-  const BookmarkCard({super.key, required this.book, this.isLightMode = true});
-  final Book book;
-  final bool isLightMode;
+  BookmarkCard({super.key, required this.book, this.isLightMode = true, required this.bookmarkedBooks});
+  Book book;
+  bool isLightMode;
+  List<Book>? bookmarkedBooks;
   @override
   State<StatefulWidget> createState() => _BookmarkCardState();
 }
@@ -151,6 +152,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
                                     isLightMode: widget.isLightMode,
                                     book: widget.book,
                                     bgColor: Colors.white,
+                                    bookmarkedBooks: widget.bookmarkedBooks,
                                   ),
                                 )),
                               )
