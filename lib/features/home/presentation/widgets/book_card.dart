@@ -3,7 +3,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/form/edit_book.dart';
@@ -27,8 +26,6 @@ class BookCard extends StatelessWidget {
 
   void _deleteBook(int id, CookieRequest cookieRequest) async {
     try {
-      final response = await cookieRequest 
-          .post("${EndPoints.deleteBook}$id", {});
     } catch (e) {
       throw Exception('Error : $e');
     }
@@ -198,14 +195,14 @@ class BookCard extends StatelessWidget {
                               context: context, 
                               builder: (context) {
                                 return AlertDialog(
-                                  title: Text('Delete Book'),
+                                  title: const Text('Delete Book'),
                                   content: Text('Apakah Anda yakin ingin menghapus buku ${book.fields!.title!}?'),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop(); // Close the dialog
                                       },
-                                      child: Text('Cancel'),
+                                      child: const Text('Cancel'),
                                     ),
                                     TextButton(
                                       onPressed: () async {
@@ -248,7 +245,7 @@ class BookCard extends StatelessWidget {
                                             ),
                                           );
                                       },
-                                      child: Text('Delete'),
+                                      child: const Text('Delete'),
                                     ),
                                   ],
                                 );

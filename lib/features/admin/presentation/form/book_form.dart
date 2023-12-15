@@ -11,6 +11,7 @@ class BookForm extends StatefulWidget {
   const BookForm({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _BookFormState createState() => _BookFormState();
 }
 
@@ -35,8 +36,6 @@ class _BookFormState extends State<BookForm> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
 
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +48,7 @@ class _BookFormState extends State<BookForm> {
             ),
           ),
         ),
-        backgroundColor: Color(0xffb2dfdc),
+        backgroundColor: const Color(0xffb2dfdc),
         foregroundColor: Colors.black,
       ),
       body: Form(
@@ -354,15 +353,18 @@ class _BookFormState extends State<BookForm> {
                               'publisher': _publisher,
                           }));
                           if (response['status'] == 'success') {
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
                               content: Text("Buku baru berhasil disimpan!"),
                               ));
+                              // ignore: use_build_context_synchronously
                               Navigator.pushReplacement(
                                   context,
-                                  MaterialPageRoute(builder: (context) => HomePage(isAdmin: true)),
+                                  MaterialPageRoute(builder: (context) => const HomePage(isAdmin: true)),
                               );
                           } else {
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
                                   content:
@@ -391,9 +393,9 @@ class _BookFormState extends State<BookForm> {
           } else if (value == 1) {
             // navigate ke bookmark
           } else if (value == 2) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookForm()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BookForm()));
           } else if (value == 3) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListUserPage()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ListUserPage()));
           }
           setState(() {
             index = value;

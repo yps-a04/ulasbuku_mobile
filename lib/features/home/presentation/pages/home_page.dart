@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/users/list_user.dart';
-import 'package:ulas_buku_mobile/features/home/data/data_source/book_list_remote_data_source.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/login/login_page.dart';
-import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 // ignore: unnecessary_import
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
@@ -303,9 +300,9 @@ class _HomePageState extends State<HomePage> {
           } else if (value == 1) {
             // navigate ke bookmark
           } else if (value == 2) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookForm()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BookForm()));
           } else if (value == 3) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListUserPage()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ListUserPage()));
           }
           setState(() {
             index = value;

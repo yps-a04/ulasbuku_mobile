@@ -18,15 +18,15 @@ class _ListUserPageState extends State<ListUserPage> {
 
   Future<List<User>> fetchUsers(CookieRequest cookieRequest) async {
     try {
-      final List<User> list_user = [];
+      final List<User> listUser = [];
       final response = await cookieRequest.get(EndPoints.getUser);
 
       for (var i in response) {
         User user = User.fromJson(i);
-        list_user.add(user);
+        listUser.add(user);
       }
 
-      return list_user;
+      return listUser;
     } catch (e) {
       throw Exception('Error : $e');
     }
@@ -35,7 +35,7 @@ class _ListUserPageState extends State<ListUserPage> {
   void _deleteUser(int id, CookieRequest cookieRequest) async {
     try {
       final response = await cookieRequest 
-          .post('http://127.0.0.1:8000/show-admin/delete-user/$id/', {});
+          .post('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id//show-admin/delete-user/$id/', {});
       if (response["status"] == true) {
         setState(() {
           
@@ -54,14 +54,14 @@ class _ListUserPageState extends State<ListUserPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete User'),
+          title: const Text('Delete User'),
           content: Text('Apakah Anda yakin ingin menghapus user $username?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () async {
@@ -98,7 +98,7 @@ class _ListUserPageState extends State<ListUserPage> {
                     ),
                   );
               },
-              child: Text('Delete'),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -122,7 +122,7 @@ class _ListUserPageState extends State<ListUserPage> {
             ),
           ),
         ),
-        backgroundColor: Color(0xFFffcc80),
+        backgroundColor: const Color(0xFFffcc80),
         foregroundColor: Colors.black,
       ),
       body: FutureBuilder(
@@ -183,15 +183,15 @@ class _ListUserPageState extends State<ListUserPage> {
                           ),
                         ),
                         // Right column with delete button
-                        Text(
+                        const Text(
                           "Delete",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           onPressed: () {
                             _showDeleteConfirmationDialog(snapshot.data![index].username, snapshot.data![index].id, request);
                           },
@@ -214,9 +214,9 @@ class _ListUserPageState extends State<ListUserPage> {
           } else if (value == 1) {
             // navigate ke bookmark
           } else if (value == 2) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookForm()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BookForm()));
           } else if (value == 3) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListUserPage()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ListUserPage()));
           }
           setState(() {
             index = value;

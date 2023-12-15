@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -62,7 +64,7 @@ class _EditBookPageState extends State<EditBookPage> {
             ),
           ),
         ),
-        backgroundColor: Color(0xffb2dfdc),
+        backgroundColor: const Color(0xffc5cae8),
         foregroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
@@ -360,7 +362,7 @@ class _EditBookPageState extends State<EditBookPage> {
                   ),
                   onPressed: () async {
                     final response = await request.postJson(
-                    "http://10.0.2.2:8000/show-admin/edit-flutter/${widget.book.pk}",
+                    "https://ulasbuku-a04-tk.pbp.cs.ui.ac.id//show-admin/edit-flutter/${widget.book.pk}",
                     jsonEncode(<String, String>{
                         'title': _title!,
                         'author': _author!,
@@ -392,7 +394,7 @@ class _EditBookPageState extends State<EditBookPage> {
                     }
                   },
                   child: const Text(
-                    "Edit Book",
+                    "Save",
                     style: TextStyle(fontSize: 16 ,color: Colors.white),
                   ),
                 ),
