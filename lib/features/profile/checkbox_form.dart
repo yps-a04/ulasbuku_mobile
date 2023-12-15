@@ -5,13 +5,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
+// ignore: must_be_immutable
 class CheckboxList extends StatefulWidget {
   final List<String> data;
 
   // ignore: use_key_in_widget_constructors
-  const CheckboxList({required this.data});
+  CheckboxList({this.isLightMode = true, required this.data});
+  bool isLightMode;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -19,6 +22,8 @@ class CheckboxList extends StatefulWidget {
 }
 
 class _CheckboxListState extends State<CheckboxList> {
+  late bool isLightMode;
+
   List<bool>? isCheckedList;
   List<String>? listNama = [];
   List<String>? validNya = [];
@@ -56,7 +61,7 @@ class _CheckboxListState extends State<CheckboxList> {
             ));
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const ProfilePage(),
+                builder: (context) => ProfilePage(isLightMode: isLightMode,),
               ),
             );
         } else {
@@ -73,10 +78,13 @@ class _CheckboxListState extends State<CheckboxList> {
   void initState() {
     super.initState();
     isCheckedList = List<bool>.filled(8, false);
+    isLightMode = widget.isLightMode;
   }
 
   @override
   Widget build(BuildContext context) {
+    Color textColor = isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
+    Color textRevert = !isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
     for (int i = 0; i< widget.data.length; i++)
     {
       listNama!.add(widget.data[i]);
@@ -85,7 +93,7 @@ class _CheckboxListState extends State<CheckboxList> {
       children: <Widget>[
         for (int i = 0; i < widget.data.length; i++)
           CheckboxListTile(
-            title: Text(widget.data[i]),
+            title: Text(widget.data[i], style: TextStyle(color:textColor)),
             value: isCheckedList?[i],
             onChanged: (bool? value) {
               setState(() {
@@ -103,7 +111,7 @@ class _CheckboxListState extends State<CheckboxList> {
                 },
                 child: const Text('Kembali'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
+                  primary: textRevert,
                   onPrimary: Colors.blue,
                   side: const BorderSide(color: Color(0xffacdcf2), width: 2),
                 ),
@@ -115,7 +123,7 @@ class _CheckboxListState extends State<CheckboxList> {
                 },
                 child: const Text('Simpan'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
+                  primary: textRevert,
                   onPrimary: Colors.blue,
                   side: const BorderSide(color: Color(0xffacdcf2), width: 2),
                 ),

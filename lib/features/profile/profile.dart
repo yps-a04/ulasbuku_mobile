@@ -4,20 +4,31 @@
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/profile/change_pref.dart';
 import 'package:ulas_buku_mobile/features/profile/preference.dart';
 
+// ignore: must_be_immutable
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
-
+  ProfilePage({this.isLightMode = true, super.key});
+  bool isLightMode;
+  
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  
   var user;
   var role;
+  late bool isLightMode;
+  @override
+  void initState() {
+    super.initState();
+    isLightMode = widget.isLightMode;
+  }
 
   
   Future<List<String>> fetchUser(CookieRequest request) async{
@@ -46,30 +57,34 @@ class _ProfilePageState extends State<ProfilePage> {
 
     }
   Future<Map<String, dynamic>> fetchReview(CookieRequest request) async{
-    try {
-        final response = await request.get('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/ret_review/');
-        return response;
-      } 
-      catch (e) {
-        throw Exception('error : $e');
-      }
-
+    try 
+    {
+      final response = await request.get('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/ret_review/');
+      return response;
+    } 
+    
+    catch (e) {
+      throw Exception('error : $e');
     }
+
+  }
   int index = 4;
-  bool isLightMode = true;
   
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    
+    List<Color> cardColors =
+        isLightMode ? UBColor.lightCardColors : UBColor.darkCardColors;
+
+    Color textColor = isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
     double height = MediaQuery.of(context).size.height;
-    
+    cardColors.shuffle();
     final scaffoldKey = GlobalKey<ScaffoldState>();
 
 
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Colors.white,
+      backgroundColor: isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: const Color(0xffacdcf2),
@@ -79,13 +94,15 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         leading: IconButton(
-          onPressed: () {
-            scaffoldKey.currentState!.openDrawer();
-          },
-          icon: const Icon(
-            Icons.menu,
+          icon: Icon(
+            isLightMode ? Icons.light_mode : Icons.dark_mode,
             color: Colors.black,
           ),
+          onPressed: (() {
+            setState(() {
+              isLightMode = !isLightMode;
+            });
+          }),
         ),
         centerTitle: true,
         title: const Text(
@@ -114,14 +131,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center, // Center the text vertically
                       children: [
                         Text(
                           "Profile",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: textColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
@@ -143,14 +160,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 24,),
 
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           "Username", // Replace with your actual username
                           style: TextStyle(
-                            color: Colors.black,
+                            color: textColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -183,6 +200,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 borderRadius: BorderRadius.circular(30.0), // Adjust the radius as needed
                                               ),
                                               labelText: snapshot.data[0],
+                                              labelStyle: TextStyle(color: textColor),
                                               hintStyle: const TextStyle(color: Colors.grey),
                                             ),
                                             // Provide a controller when using obscureText
@@ -196,14 +214,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 24,),
 
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           "Role", // Replace with your actual username
                           style: TextStyle(
-                            color: Colors.black,
+                            color: textColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -235,6 +253,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           borderRadius: BorderRadius.circular(30.0), // Adjust the radius as needed
                                                       ),
                                                       labelText: snapshot.data[1], // Use the role here
+                                                      labelStyle: TextStyle(color: textColor),
                                                   ),
                                                   // Provide a controller when using obscureText
                                                   controller: TextEditingController(),
@@ -251,10 +270,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           "My Preferences", // Replace with your actual username
                           style: TextStyle(
-                            color: Colors.black,
+                            color: textColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -262,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         TextButton(onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const PreferencePage(),
+                              builder: (context) => PreferencePage(isLightMode: isLightMode,),
                             ),
                           );
                         },
@@ -302,9 +321,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                   itemBuilder: (context, index) {
                                     return Text(
                                       "${snapshot.data![index].fields.author}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold,
+                                          color: textColor,
                                       ),
                                       );
                                   },
@@ -360,17 +380,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ),
                                           Text(
                                             "${snapshot.data!['title'][index]}",
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
                                           ),
                                           Text(
                                             "${snapshot.data!['reviewnya'][index]}",
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
                                           ),
                                           Text(
                                             "${snapshot.data!['author'][index]}",
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 6,
                                             textAlign: TextAlign.justify,
+                                            style: TextStyle(color: textColor),
                                           )
                                         ],
                                       ),
@@ -405,7 +426,16 @@ class _ProfilePageState extends State<ProfilePage> {
           {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const ProfilePage(),
+                builder: (context) => ProfilePage(isLightMode: isLightMode,),
+              ),
+            );
+          }
+
+          else if (value == 0)
+          {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => HomePage(isLightMode: isLightMode,),
               ),
             );
           }

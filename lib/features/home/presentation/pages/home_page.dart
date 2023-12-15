@@ -14,7 +14,8 @@ import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.d
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  HomePage({this.isLightMode = true, super.key});
+  bool isLightMode;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -22,7 +23,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
-  bool isLightMode = true;
+  late bool isLightMode;
+  @override
+  void initState() {
+    super.initState();
+    isLightMode = widget.isLightMode;
+  }
   ScrollController homeController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -303,7 +309,7 @@ class _HomePageState extends State<HomePage> {
           {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const ProfilePage(),
+                builder: (context) => ProfilePage(isLightMode: isLightMode,),
               ),
             );
           }
