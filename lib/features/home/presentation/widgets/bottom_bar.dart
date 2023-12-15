@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:unicons/unicons.dart';
-import 'package:ulas_buku_mobile/features/profile/profile.dart';
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({
     super.key,
