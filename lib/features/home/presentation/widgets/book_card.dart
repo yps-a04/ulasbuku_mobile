@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/detail/presentation/pages/detail_page.dart';
+import 'package:ulas_buku_mobile/features/detail/presentation/add_review.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 
 class BookCard extends StatelessWidget {
@@ -151,6 +152,13 @@ class BookCard extends StatelessWidget {
                       secondaryColor: Colors.white,
                       text: "Add a review",
                       icon: Icons.edit,
+                      onTap: () =>
+                          Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AddReview(
+                          book: book,
+                          bgColor: cardColor,
+                        ),
+                      )),
                     )
                   ],
                 ),
