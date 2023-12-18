@@ -1,28 +1,34 @@
-import 'dart:convert';
+
+// ignore_for_file: prefer_typing_uninitialized_variables, curly_braces_in_flow_control_structures, duplicate_ignore
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:ulas_buku_mobile/features/detail/presentation/widgets/review_card.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/profile/change_pref.dart';
 import 'package:ulas_buku_mobile/features/profile/preference.dart';
-import 'package:unicons/unicons.dart';
-import 'package:http/http.dart' as http;
 
+// ignore: must_be_immutable
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
-
+  ProfilePage({this.isLightMode = true, super.key});
+  bool isLightMode;
+  
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  
   var user;
   var role;
+  late bool isLightMode;
+  @override
+  void initState() {
+    super.initState();
+    isLightMode = widget.isLightMode;
+  }
 
   
   Future<List<String>> fetchUser(CookieRequest request) async{
@@ -51,76 +57,75 @@ class _ProfilePageState extends State<ProfilePage> {
 
     }
   Future<Map<String, dynamic>> fetchReview(CookieRequest request) async{
-    try {
-        final response = await request.get('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/ret_review/');
-        return response;
-      } 
-      catch (e) {
-        throw Exception('error : $e');
-      }
-
+    try 
+    {
+      final response = await request.get('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/ret_review/');
+      return response;
+    } 
+    
+    catch (e) {
+      throw Exception('error : $e');
     }
+
+  }
   int index = 4;
-  bool isLightMode = true;
   
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    
+    List<Color> cardColors =
+        isLightMode ? UBColor.lightCardColors : UBColor.darkCardColors;
+
+    Color textColor = isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    
+    cardColors.shuffle();
     final scaffoldKey = GlobalKey<ScaffoldState>();
 
-    List<Color> cardColors = [
-      Color(0xffacdcf2),
-      Color(0xffFf9bbd0),
-      Color(0xffb2dfdc),
-      Color(0xFFffcc80),
-      Color(0xffc5cae8),
-    ];
 
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: Colors.white,
+      backgroundColor: isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Color(0xffacdcf2),
-        shape: RoundedRectangleBorder(
+        backgroundColor: const Color(0xffacdcf2),
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10), // Adjust the radius as needed
           ),
         ),
         leading: IconButton(
-          onPressed: () {
-            scaffoldKey.currentState!.openDrawer();
-          },
           icon: Icon(
-            Icons.menu,
+            isLightMode ? Icons.light_mode : Icons.dark_mode,
             color: Colors.black,
           ),
+          onPressed: (() {
+            setState(() {
+              isLightMode = !isLightMode;
+            });
+          }),
         ),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           "Ulas Buku",
           style: TextStyle(color: Colors.black),
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.search,
               color: Colors.black,
             ),
           ),
         ],
       ),
-      drawer: Drawer(),
+      drawer: const Drawer(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             children: [
+              // ignore: sized_box_for_whitespace
               Container(
                 height: 1000,
                 child: Column(
@@ -133,14 +138,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Profile",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: textColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 24,),
+                    const SizedBox(height: 24,),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -153,7 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 24,),
+                    const SizedBox(height: 24,),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -162,7 +167,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "Username", // Replace with your actual username
                           style: TextStyle(
-                            color: Colors.black,
+                            color: textColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -170,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
 
-                    SizedBox(height: 12,),
+                    const SizedBox(height: 12,),
                     FutureBuilder(
                       future: fetchUser(request), // Assume this is your function to fetch the role
                       builder: (context, AsyncSnapshot snapshot) 
@@ -179,6 +184,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               return const Center(child: CircularProgressIndicator()); // Show a loading spinner while waiting
                           } else {
                               if (snapshot.hasError)
+                                  // ignore: curly_braces_in_flow_control_structures
                                   return Text('Error: ${snapshot.error}');
                               else
                                   return Row(
@@ -194,6 +200,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 borderRadius: BorderRadius.circular(30.0), // Adjust the radius as needed
                                               ),
                                               labelText: snapshot.data[0],
+                                              labelStyle: TextStyle(color: textColor),
                                               hintStyle: const TextStyle(color: Colors.grey),
                                             ),
                                             // Provide a controller when using obscureText
@@ -207,14 +214,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 24,),
 
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           "Role", // Replace with your actual username
                           style: TextStyle(
-                            color: Colors.black,
+                            color: textColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -222,7 +229,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
 
-                    SizedBox(height: 12,),
+                    const SizedBox(height: 12,),
                     FutureBuilder(
                       future: fetchUser(request), // Assume this is your function to fetch the role
                       builder: (context, AsyncSnapshot snapshot) 
@@ -246,6 +253,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           borderRadius: BorderRadius.circular(30.0), // Adjust the radius as needed
                                                       ),
                                                       labelText: snapshot.data[1], // Use the role here
+                                                      labelStyle: TextStyle(color: textColor),
                                                   ),
                                                   // Provide a controller when using obscureText
                                                   controller: TextEditingController(),
@@ -265,7 +273,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Text(
                           "My Preferences", // Replace with your actual username
                           style: TextStyle(
-                            color: Colors.black,
+                            color: textColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -273,11 +281,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         TextButton(onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => PreferencePage(),
+                              builder: (context) => PreferencePage(isLightMode: isLightMode,),
                             ),
                           );
                         },
-                        child: Text("Ubah Preference"))
+                        child: const Text("Ubah Preference"))
                       ],
                     ),
 
@@ -313,9 +321,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                   itemBuilder: (context, index) {
                                     return Text(
                                       "${snapshot.data![index].fields.author}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold,
+                                          color: textColor,
                                       ),
                                       );
                                   },
@@ -371,24 +380,25 @@ class _ProfilePageState extends State<ProfilePage> {
                                           ),
                                           Text(
                                             "${snapshot.data!['title'][index]}",
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
                                           ),
                                           Text(
                                             "${snapshot.data!['reviewnya'][index]}",
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            style: TextStyle(fontWeight: FontWeight.bold, color: textColor),
                                           ),
                                           Text(
                                             "${snapshot.data!['author'][index]}",
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 6,
                                             textAlign: TextAlign.justify,
+                                            style: TextStyle(color: textColor),
                                           )
                                         ],
                                       ),
                                     );
                                   },
                                 ),
-                              );;
+                              );
                               }
                           }
                       }),
@@ -416,7 +426,16 @@ class _ProfilePageState extends State<ProfilePage> {
           {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProfilePage(),
+                builder: (context) => ProfilePage(isLightMode: isLightMode,),
+              ),
+            );
+          }
+
+          else if (value == 0)
+          {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => HomePage(isLightMode: isLightMode,),
               ),
             );
           }

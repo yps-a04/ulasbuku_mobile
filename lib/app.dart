@@ -4,8 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/login/login_page.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
-import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
 import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 import 'package:sizer/sizer.dart';

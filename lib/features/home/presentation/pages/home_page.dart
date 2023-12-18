@@ -8,17 +8,18 @@ import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/login/login_page.dart';
+import 'package:ulas_buku_mobile/features/bookmark/presentation/pages/bookmark_page.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 // ignore: unnecessary_import
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_view.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
-import 'package:ulas_buku_mobile/features/bookmark/presentation/pages/bookmark_page.dart';
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.isAdmin});
+  const HomePage({this.isLightMode = true, super.key, required this.isAdmin});
   final bool isAdmin;
+  final bool isLightMode;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -26,7 +27,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
-  bool isLightMode = true;
+  late bool isLightMode;
+  @override
+  void initState() {
+    super.initState();
+    isLightMode = widget.isLightMode;
+  }
   ScrollController homeController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -325,7 +331,7 @@ class _HomePageState extends State<HomePage> {
           {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProfilePage(),
+                builder: (context) => ProfilePage(isLightMode: isLightMode,),
               ),
             );
           }

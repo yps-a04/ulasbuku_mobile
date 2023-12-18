@@ -1,20 +1,29 @@
+// ignore_for_file: use_build_context_synchronously, sort_child_properties_last, deprecated_member_use
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
+// ignore: must_be_immutable
 class CheckboxList extends StatefulWidget {
   final List<String> data;
 
-  CheckboxList({required this.data});
+  // ignore: use_key_in_widget_constructors
+  CheckboxList({this.isLightMode = true, required this.data});
+  bool isLightMode;
 
   @override
+  // ignore: library_private_types_in_public_api
   _CheckboxListState createState() => _CheckboxListState();
 }
 
 class _CheckboxListState extends State<CheckboxList> {
+  late bool isLightMode;
+
   List<bool>? isCheckedList;
   List<String>? listNama = [];
   List<String>? validNya = [];
@@ -43,10 +52,8 @@ class _CheckboxListState extends State<CheckboxList> {
 
     else
     {
-      print(validNya);
       final response = await request.postJson(
         "https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/set_pref/", jsonEncode(<String, List<String>?>{'valid': validNya}));
-        print("Masuk lo");
         if (response['status'] == 'success') {
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(
@@ -54,7 +61,7 @@ class _CheckboxListState extends State<CheckboxList> {
             ));
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProfilePage(),
+                builder: (context) => ProfilePage(isLightMode: isLightMode,),
               ),
             );
         } else {
@@ -71,10 +78,13 @@ class _CheckboxListState extends State<CheckboxList> {
   void initState() {
     super.initState();
     isCheckedList = List<bool>.filled(8, false);
+    isLightMode = widget.isLightMode;
   }
 
   @override
   Widget build(BuildContext context) {
+    Color textColor = isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
+    Color textRevert = !isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
     for (int i = 0; i< widget.data.length; i++)
     {
       listNama!.add(widget.data[i]);
@@ -83,7 +93,7 @@ class _CheckboxListState extends State<CheckboxList> {
       children: <Widget>[
         for (int i = 0; i < widget.data.length; i++)
           CheckboxListTile(
-            title: Text(widget.data[i]),
+            title: Text(widget.data[i], style: TextStyle(color:textColor)),
             value: isCheckedList?[i],
             onChanged: (bool? value) {
               setState(() {
@@ -99,11 +109,11 @@ class _CheckboxListState extends State<CheckboxList> {
                 onPressed: () {
                   Navigator.pop(context); // This line will navigate to the previous screen.
                 },
-                child: Text('Kembali'),
+                child: const Text('Kembali'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
+                  primary: textRevert,
                   onPrimary: Colors.blue,
-                  side: BorderSide(color: Color(0xffacdcf2), width: 2),
+                  side: const BorderSide(color: Color(0xffacdcf2), width: 2),
                 ),
               ),
               const SizedBox(width: 10),
@@ -111,11 +121,11 @@ class _CheckboxListState extends State<CheckboxList> {
                 onPressed: () async {
                   savePreference();
                 },
-                child: Text('Simpan'),
+                child: const Text('Simpan'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
+                  primary: textRevert,
                   onPrimary: Colors.blue,
-                  side: BorderSide(color: Color(0xffacdcf2), width: 2),
+                  side: const BorderSide(color: Color(0xffacdcf2), width: 2),
                 ),
               ),
             ],
