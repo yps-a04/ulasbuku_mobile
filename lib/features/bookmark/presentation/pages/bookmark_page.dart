@@ -142,7 +142,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomePage(),
+                  builder: (context) => HomePage(),
                 ));
           } else if (value == 2) {
             // navigate ke add book
@@ -153,7 +153,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
           {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const ProfilePage(),
+                builder: (context) => ProfilePage(),
               ),
             );
           }

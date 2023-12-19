@@ -31,15 +31,10 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     isLightMode = widget.isLightMode;
+    fetchBookmark();
   }
   ScrollController homeController = ScrollController();
   List<Book> bookmarkedBooks = [];
-
-  @override
-  void initState() {
-    super.initState();
-    fetchBookmark();
-  }
 
   Future<void> fetchBookmark() async {
     final request = context.read<CookieRequest>();

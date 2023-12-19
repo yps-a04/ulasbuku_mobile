@@ -79,7 +79,7 @@ class _DetailPageState extends State<DetailPage> {
             onPressed: () {
               Navigator.pushReplacement(
                 context, 
-                MaterialPageRoute(builder: (context) => const HomePage()));
+                MaterialPageRoute(builder: (context) => HomePage()));
             },
             icon: const Icon(
               Icons.arrow_back_ios,

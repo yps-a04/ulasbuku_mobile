@@ -160,6 +160,7 @@ class BookCard extends StatelessWidget {
                         builder: (context) => AddReview(
                           book: book,
                           bgColor: cardColor,
+                          bookmarkedBooks: bookmarkedBooks,
                         ),
                       )),
                     )

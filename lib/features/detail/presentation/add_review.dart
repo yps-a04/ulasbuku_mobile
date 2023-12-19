@@ -10,7 +10,7 @@ import 'package:ulas_buku_mobile/features/detail/presentation/pages/detail_page.
 
 // ignore: must_be_immutable
 class AddReview extends StatelessWidget {
- AddReview({required this.bgColor, required this.book, super.key});
+ AddReview({required this.bgColor, required this.book, super.key, required this.bookmarkedBooks});
 
  final TextEditingController _titleController = TextEditingController();
  final TextEditingController _reviewController = TextEditingController();
@@ -19,6 +19,7 @@ class AddReview extends StatelessWidget {
 
   Color bgColor;
   Book book;
+  List<Book>? bookmarkedBooks;
 
   @override
   Widget build(BuildContext context) {
@@ -162,6 +163,7 @@ class AddReview extends StatelessWidget {
                                   isLightMode: true,
                                   book: book,
                                   bgColor: bgColor,
+                                  bookmarkedBooks: bookmarkedBooks,
                                 ),
                               ),
                             );
