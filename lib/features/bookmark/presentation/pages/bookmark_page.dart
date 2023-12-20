@@ -1,26 +1,40 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/widget/bookmark_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
-import 'package:ulas_buku_mobile/features/bookmark/data/data_source/bookmark_remote_data_source.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
-import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/core/widgets/bottom_bar.dart';
+import 'package:ulas_buku_mobile/features/profile/profile.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
+// import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ulas_buku_mobile/features/bookmark/data/data_source/bookmark_remote_data_source.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
+
+
 
 class BookmarkPage extends StatefulWidget {
-  const BookmarkPage({super.key, this.isLightMode = true});
+  const BookmarkPage({super.key, this.isLightMode = true, required this.isAdmin});
   final bool isLightMode;
+  final bool isAdmin;
+
   @override
   _BookmarkPageState createState() => _BookmarkPageState();
 }
 
 class _BookmarkPageState extends State<BookmarkPage> {
-  List<Book>? bookmarkedBooks;
-
+  int index = 1;
+  late bool isLightMode;
+  List<Book> bookmarkedBooks = []; 
+  
   @override
   void initState() {
     super.initState();
+    isLightMode = widget.isLightMode;
     fetchBookmark();
   }
 
@@ -39,44 +53,70 @@ class _BookmarkPageState extends State<BookmarkPage> {
     }
   }
 
+
+  Future<void> searchBooks(String query) async {
+    final request = context.read<CookieRequest>();
+    try { 
+      await fetchBookmark();
+      final List<Book> result = [];
+      final response = await request.get('${EndPoints.search}?q=$query');
+      for (var i in response) {
+        Book book = Book();
+        book.model = 'main.book';
+        book.pk = i['pk'];
+        book.fields = Fields.fromJson(i);
+        for (var j in bookmarkedBooks) {
+          if (j.pk == book.pk) {
+            result.add(book);
+          }
+        }
+      }
+      setState(() {
+        bookmarkedBooks = result;
+      });
+    } catch (e) {
+      throw Exception('error : $e');
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    Color textColor = isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor ;
+    Color textColorInverse = isLightMode ?  UBColor.darkBgColor : UBColor.lightBgColor ;
+
     return Scaffold(
+      backgroundColor: textColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        elevation: 0,
+        backgroundColor: const Color(0xffacdcf2),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10), // Adjust the radius as needed
+          ),
+        ),
         title: const Text(
           'Bookmarks',
           style: TextStyle(
-            fontFamily: 'Outfit',
             color: Colors.black,
-            fontSize: 22,
           ),
         ),
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_rounded,
-            color: Colors.black,
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: UBColor.darkBgColor,
             size: 30,
           ),
           onPressed: () {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const HomePage(isAdmin: true),
+                  builder: (context) => HomePage(isAdmin: true, isLightMode: isLightMode,),
                 ));
           },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.tune_rounded,
-              color: Colors.black,
-              size: 24,
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
+      
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,35 +126,41 @@ class _BookmarkPageState extends State<BookmarkPage> {
               child: Container(
                 height: 60,
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: (isLightMode) ?Colors.grey[200] : UBColor.darkBgColor,
                   borderRadius: BorderRadius.circular(40),
                   border: Border.all(
-                    color: Colors.black,
+                    color: widget.isLightMode
+                        ? UBColor.darkBgColor
+                        : UBColor.lightBgColor,
                   ),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 0, 12, 0),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 12, 0),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.search_rounded,
                         color: Colors.grey,
                         size: 24,
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(left: 4),
+                          padding: const EdgeInsets.only(left: 4),
                           child: TextField(
                             decoration: InputDecoration(
                               labelText: 'Search bookmarks...',
                               labelStyle: TextStyle(
-                                fontSize: 16,
+                              fontSize: 16,
+                              color: textColorInverse,
                               ),
                               border: InputBorder.none,
                             ),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                             ),
+                            onSubmitted: (value) {
+                              searchBooks(value);
+                            },
                           ),
                         ),
                       ),
@@ -123,34 +169,85 @@ class _BookmarkPageState extends State<BookmarkPage> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16, 12, 0, 4),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 0, 4),
               child: Text(
                 'My Bookmarks',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: textColorInverse,
                 ),
               ),
             ),
             Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                child: (bookmarkedBooks == null)
-                    ? const Center(child: CircularProgressIndicator())
-                    : Expanded(
-                        child: SizedBox(
-                          height: 200,
-                          child: ListView.builder(
-                            itemCount: bookmarkedBooks!.length,
-                            itemBuilder: (context, index) {
-                              return BookmarkCard(
-                                  book: bookmarkedBooks![index]);
-                            },
-                          ),
-                        ),
-                      )),
-          ],
+                child: Expanded(
+                  child: SizedBox(
+                    height: 60.h,
+                    child: ListView.builder(
+                      itemCount: bookmarkedBooks.length,
+                      itemBuilder: (context, index) {
+                        return BookmarkCard(
+                            book: bookmarkedBooks[index]
+                            , isAdmin: widget.isAdmin,
+                            );
+                      },
+                    ),
+          )),
+        )],
         ),
+      ),
+      bottomNavigationBar: BottomNavBar(
+        isLightMode: isLightMode,
+        currentIndex: index,
+        isAdmin: widget.isAdmin,
+        onTap: (value) {
+          // print(value);
+          if (!widget.isAdmin)
+          {
+            if (value == 1)
+            {
+            }
+
+            else if (value == 2)
+            {
+              Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ProfilePage(
+                  isAdmin: widget.isAdmin,
+                  isLightMode: isLightMode,
+                ),
+              ),
+            );
+            }
+          }
+
+          else
+          {
+            if (value == 1) {
+              
+            } else if (value == 2) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
+            } else if (value == 3) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
+            }
+            else if (value == 4)
+            {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                    isAdmin: widget.isAdmin,
+                    isLightMode: isLightMode,
+                  ),
+                ),
+              );
+            }
+          }
+          setState(() {
+            index = value;
+          });
+        },
       ),
     );
   }

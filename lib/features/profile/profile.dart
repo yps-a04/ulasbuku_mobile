@@ -128,6 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+      
       drawer: const Drawer(),
       body: SingleChildScrollView(
         child: Padding(
@@ -481,6 +482,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 MaterialPageRoute(
                   builder: (context) => BookmarkPage(
                     isLightMode: isLightMode,
+                    isAdmin: widget.isAdmin,
                   ),
                 ));
             }
@@ -506,6 +508,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   MaterialPageRoute(
                     builder: (context) => BookmarkPage(
                       isLightMode: isLightMode,
+                      isAdmin: widget.isAdmin,
                     ),
                   ));
             } else if (value == 2) {

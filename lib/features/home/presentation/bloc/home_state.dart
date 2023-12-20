@@ -45,3 +45,12 @@ final class HomeSearchLoaded extends HomeState {
 }
 
 final class HomeSearchError extends HomeState {}
+
+final class HomeBookmarkedBooksUpdated extends HomeState {
+  final List<Book> bookmarkedBooks;
+
+  const HomeBookmarkedBooksUpdated({required this.bookmarkedBooks});
+
+  @override
+  List<Object> get props => [bookmarkedBooks];
+}

@@ -25,3 +25,13 @@ class HomeSearchEvent extends HomeEvent {
   @override
   List<Object> get props => [request, query];
 }
+
+class UpdateBookmarkedBooksEvent extends HomeEvent {
+  final List<Book> bookmarkedBooks;
+
+  const UpdateBookmarkedBooksEvent({required this.bookmarkedBooks});
+
+  @override
+  List<Object> get props => [bookmarkedBooks];
+}
+
