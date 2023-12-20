@@ -119,6 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+      
       drawer: const Drawer(),
       body: SingleChildScrollView(
         child: Padding(

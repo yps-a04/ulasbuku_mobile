@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/widget/bookmark_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
@@ -11,10 +12,11 @@ import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ulas_buku_mobile/features/bookmark/data/data_source/bookmark_remote_data_source.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 
 
 class BookmarkPage extends StatefulWidget {
-  const BookmarkPage({super.key, this.isLightMode = true});
+  const BookmarkPage({super.key, this.isLightMode = true,});
   final bool isLightMode;
 
   @override
@@ -48,49 +50,70 @@ class _BookmarkPageState extends State<BookmarkPage> {
     }
   }
 
+
+  Future<void> searchBooks(String query) async {
+    final request = context.read<CookieRequest>();
+    try { 
+      await fetchBookmark();
+      final List<Book> result = [];
+      final response = await request.get('${EndPoints.search}?q=$query');
+      for (var i in response) {
+        Book book = Book();
+        book.model = 'main.book';
+        book.pk = i['pk'];
+        book.fields = Fields.fromJson(i);
+        for (var j in bookmarkedBooks) {
+          if (j.pk == book.pk) {
+            result.add(book);
+          }
+        }
+      }
+      setState(() {
+        bookmarkedBooks = result;
+      });
+    } catch (e) {
+      throw Exception('error : $e');
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    
+    Color textColor = isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor ;
+    Color textColorInverse = isLightMode ?  UBColor.darkBgColor : UBColor.lightBgColor ;
+
     return Scaffold(
+      backgroundColor: textColor,
       appBar: AppBar(
-        backgroundColor:
-            widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
+        elevation: 0,
+        backgroundColor: const Color(0xffacdcf2),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10), // Adjust the radius as needed
+          ),
+        ),
         title: const Text(
           'Bookmarks',
           style: TextStyle(
-            fontFamily: 'Outfit',
             color: Colors.black,
-            fontSize: 22,
           ),
         ),
         leading: IconButton(
           icon: Icon(
-            Icons.arrow_back_rounded,
-            color:
-                widget.isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor,
+            Icons.arrow_back_ios,
+            color: UBColor.darkBgColor,
             size: 30,
           ),
           onPressed: () {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => HomePage(isLightMode: isLightMode,),
                 ));
           },
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.tune_rounded,
-              color: widget.isLightMode
-                  ? UBColor.lightBgColor
-                  : UBColor.darkBgColor,
-              size: 24,
-            ),
-            onPressed: () {},
-          ),
-        ],
       ),
+      
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +123,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
               child: Container(
                 height: 60,
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: (isLightMode) ?Colors.grey[200] : UBColor.darkBgColor,
                   borderRadius: BorderRadius.circular(40),
                   border: Border.all(
                     color: widget.isLightMode
@@ -108,29 +131,33 @@ class _BookmarkPageState extends State<BookmarkPage> {
                         : UBColor.lightBgColor,
                   ),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 0, 12, 0),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 12, 0),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.search_rounded,
                         color: Colors.grey,
                         size: 24,
                       ),
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.only(left: 4),
+                          padding: const EdgeInsets.only(left: 4),
                           child: TextField(
                             decoration: InputDecoration(
                               labelText: 'Search bookmarks...',
                               labelStyle: TextStyle(
-                                fontSize: 16,
+                              fontSize: 16,
+                              color: textColorInverse,
                               ),
                               border: InputBorder.none,
                             ),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                             ),
+                            onSubmitted: (value) {
+                              searchBooks(value);
+                            },
                           ),
                         ),
                       ),
@@ -139,32 +166,32 @@ class _BookmarkPageState extends State<BookmarkPage> {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16, 12, 0, 4),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 0, 4),
               child: Text(
                 'My Bookmarks',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
+                  color: textColorInverse,
                 ),
               ),
             ),
             Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                 child: Expanded(
-                        child: SizedBox(
-                          height: 200,
-                          child: ListView.builder(
-                            itemCount: bookmarkedBooks.length,
-                            itemBuilder: (context, index) {
-                              return BookmarkCard(
-                                  book: bookmarkedBooks[index]
-                                  );
-                            },
-                          ),
-                        ),
-                )),
-          ],
+                  child: SizedBox(
+                    height: 60.h,
+                    child: ListView.builder(
+                      itemCount: bookmarkedBooks.length,
+                      itemBuilder: (context, index) {
+                        return BookmarkCard(
+                            book: bookmarkedBooks[index]
+                            );
+                      },
+                    ),
+          )),
+        )],
         ),
       ),
       bottomNavigationBar: BottomNavBar(
@@ -178,7 +205,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => HomePage(isLightMode: isLightMode,),
                 ));
           } else if (value == 2) {
             // navigate ke add book
@@ -187,7 +214,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
           } else if (value == 4) {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProfilePage(),
+                builder: (context) => ProfilePage(isLightMode: isLightMode,),
               ),
             );
           }

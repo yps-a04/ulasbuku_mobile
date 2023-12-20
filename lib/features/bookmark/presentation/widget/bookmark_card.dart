@@ -31,17 +31,9 @@ class _BookmarkCardState extends State<BookmarkCard> {
     user.forEach((key, value) {
       profile.add(value);
     });
-    final response = await request.postJson(
+    await request.postJson(
         "${EndPoints.baseUrl}/b/${profile[0]}/delete/",
         jsonEncode({"pk": widget.book.pk}));
-
-    if (response.statusCode == 200) {
-      // If the server returns a 200 OK response,
-    } else {
-      // If the server returns an error response,
-      // then throw an exception.
-      throw Exception('Failed to send data.');
-    }
   }
 
   @override
@@ -51,8 +43,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
     return InkWell(
       onTap: () {
         showModalBottomSheet(
-          backgroundColor:
-              widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
+          backgroundColor:const Color(0xffacdcf2),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
@@ -72,9 +63,9 @@ class _BookmarkCardState extends State<BookmarkCard> {
                     Container(
                       width: 50,
                       height: 10,
-                      decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(50)),
+                      decoration: const BoxDecoration(
+                          color:Color(0xffacdcf2),
+                          ),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,8 +135,8 @@ class _BookmarkCardState extends State<BookmarkCard> {
                                 height: 50,
                                 width: width * 0.4,
                                 text: "More details",
-                                primaryColor: Colors.white,
-                                secondaryColor: Colors.white,
+                                primaryColor: UBColor.darkBgColor,
+                                secondaryColor: UBColor.lightBgColor,
                                 icon: Icons.arrow_forward_ios,
                                 onTap: () => Navigator.of(context)
                                     .push(MaterialPageRoute(
@@ -153,6 +144,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
                                     isLightMode: widget.isLightMode,
                                     book: widget.book,
                                     bgColor: Colors.white,
+                                    
                                   ),
                                 )),
                               )
@@ -164,8 +156,8 @@ class _BookmarkCardState extends State<BookmarkCard> {
                     UBButton(
                       width: width,
                       height: 50,
-                      primaryColor: Colors.white,
-                      secondaryColor: Colors.white,
+                      primaryColor: UBColor.darkBgColor,
+                      secondaryColor: UBColor.lightBgColor,
                       text: "Add a review",
                       icon: Icons.edit,
                     )
@@ -178,9 +170,8 @@ class _BookmarkCardState extends State<BookmarkCard> {
       },
       child: Container(
         height: 100,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+        decoration: const BoxDecoration(
+          color:Color(0xffacdcf2),
         ),
         child: Padding(
           padding: const EdgeInsets.all(8),
