@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/users/list_user.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
@@ -42,7 +43,8 @@ class _BookFormState extends State<BookForm> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-
+    Color backgroundColor = widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor;
+    Color secondaryColor = !widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor;
 
     return Scaffold(
       appBar: AppBar(
@@ -56,9 +58,10 @@ class _BookFormState extends State<BookForm> {
             ),
           ),
         ),
-        backgroundColor: const Color(0xffb2dfdc),
-        foregroundColor: Colors.black,
+        backgroundColor: backgroundColor,
+        foregroundColor: secondaryColor,
       ),
+      backgroundColor: backgroundColor,
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -68,8 +71,10 @@ class _BookFormState extends State<BookForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: secondaryColor),
                   decoration: InputDecoration(
                     labelText: "Title",
+                    labelStyle: TextStyle(color: secondaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -91,8 +96,10 @@ class _BookFormState extends State<BookForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: secondaryColor),
                   decoration: InputDecoration(
                     labelText: "Author",
+                    labelStyle: TextStyle(color: secondaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -115,8 +122,10 @@ class _BookFormState extends State<BookForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: secondaryColor),
                   decoration: InputDecoration(
                     labelText: "Average Rating (dalam float)",
+                    labelStyle: TextStyle(color: secondaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -141,8 +150,10 @@ class _BookFormState extends State<BookForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: secondaryColor),
                   decoration: InputDecoration(
                     labelText: "ISBN",
+                    labelStyle: TextStyle(color: secondaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -164,8 +175,10 @@ class _BookFormState extends State<BookForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: secondaryColor),
                   decoration: InputDecoration(
                     labelText: "ISBN13",
+                    labelStyle: TextStyle(color: secondaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -187,8 +200,10 @@ class _BookFormState extends State<BookForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: secondaryColor),
                   decoration: InputDecoration(
                     labelText: "Language Code (max 10 char)",
+                    labelStyle: TextStyle(color: secondaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -210,8 +225,10 @@ class _BookFormState extends State<BookForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: secondaryColor),
                   decoration: InputDecoration(
                     labelText: "Num Pages",
+                    labelStyle: TextStyle(color: secondaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -236,8 +253,10 @@ class _BookFormState extends State<BookForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: secondaryColor),
                   decoration: InputDecoration(
                     labelText: "Rating Count",
+                    labelStyle: TextStyle(color: secondaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -262,8 +281,10 @@ class _BookFormState extends State<BookForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: secondaryColor),
                   decoration: InputDecoration(
                     labelText: "Text Review Count",
+                    labelStyle: TextStyle(color: secondaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -288,8 +309,10 @@ class _BookFormState extends State<BookForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: secondaryColor),
                   decoration: InputDecoration(
                     labelText: "Publication Date",
+                    labelStyle: TextStyle(color: secondaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -311,8 +334,10 @@ class _BookFormState extends State<BookForm> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
+                  style: TextStyle(color: secondaryColor),
                   decoration: InputDecoration(
                     labelText: "Publisher",
+                    labelStyle: TextStyle(color: secondaryColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -338,7 +363,7 @@ class _BookFormState extends State<BookForm> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       elevation: 4,
-                      backgroundColor: Colors.black,
+                      backgroundColor: secondaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       )
@@ -382,9 +407,9 @@ class _BookFormState extends State<BookForm> {
                           }
                         }
                     },
-                    child: const Text(
+                    child: Text(
                       "Add Book",
-                      style: TextStyle(fontSize: 16 ,color: Colors.white),
+                      style: TextStyle(fontSize: 16 ,color: backgroundColor),
                     ),
                   ),
                 ),

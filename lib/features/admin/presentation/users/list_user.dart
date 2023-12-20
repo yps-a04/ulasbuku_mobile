@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/admin/models/user.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
@@ -120,7 +121,8 @@ class _ListUserPageState extends State<ListUserPage> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    bool isLightMode = true;
+    Color backgroundColor = widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor;
+    Color secondaryColor = !widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -133,9 +135,10 @@ class _ListUserPageState extends State<ListUserPage> {
             ),
           ),
         ),
-        backgroundColor: const Color(0xFFffcc80),
-        foregroundColor: Colors.black,
+        backgroundColor: backgroundColor,
+        foregroundColor: secondaryColor,
       ),
+      backgroundColor: backgroundColor,
       body: FutureBuilder(
         future: fetchUsers(request),
         builder: (context, AsyncSnapshot snapshot) {
@@ -143,74 +146,83 @@ class _ListUserPageState extends State<ListUserPage> {
             return const Center(child: CircularProgressIndicator());
           } else {
             if (!snapshot.hasData) {
-              return const Column(
+              return Column(
                 children: [
                 Text(
                     "Tidak ada user yang telah register.",
                     style:
-                        TextStyle(color: Color(0xFFffcc80), fontSize: 20),
+                        TextStyle(color: secondaryColor, fontSize: 20),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 ],
               );
             } else {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
-                itemBuilder: (_, index) => Card(
-                  elevation: 3,
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Left column with username, date joined, and last login
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${snapshot.data![index].username}",
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
+                itemBuilder: (_, index) {
+                  Color cardColors = UBColor.darkCardColors[index%5];
+                  return
+                  Card(
+                    color: cardColors,
+                    elevation: 3,
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Left column with username, date joined, and last login
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${snapshot.data![index].username}",
+                                  style: TextStyle(
+                                    color: backgroundColor,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                "Date Joined: ${snapshot.data![index].dateJoined}",
-                                style: const TextStyle(
-                                  fontSize: 18.0,
+                                const SizedBox(height: 8),
+                                Text(
+                                  "Date Joined: ${snapshot.data![index].dateJoined}",
+                                  style: TextStyle(
+                                    color: backgroundColor,
+                                    fontSize: 18.0,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                "Last Login: ${snapshot.data![index].lastLogin}",
-                                style: const TextStyle(
-                                  fontSize: 18.0,
+                                const SizedBox(height: 8),
+                                Text(
+                                  "Last Login: ${snapshot.data![index].lastLogin}",
+                                  style: TextStyle(
+                                    color: backgroundColor,
+                                    fontSize: 18.0,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        // Right column with delete button
-                        const Text(
-                          "Delete",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+                          // Right column with delete button
+                          Text(
+                            "Delete",
+                            style: TextStyle(
+                              color: backgroundColor,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            _showDeleteConfirmationDialog(snapshot.data![index].username, snapshot.data![index].id, request);
-                          },
-                        ),
-                      ],
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              _showDeleteConfirmationDialog(snapshot.data![index].username, snapshot.data![index].id, request);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
               );
             }
           }
