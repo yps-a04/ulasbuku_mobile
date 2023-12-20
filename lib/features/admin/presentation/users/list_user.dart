@@ -6,13 +6,13 @@ import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/admin/models/user.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
+import 'package:ulas_buku_mobile/core/widgets/bottom_bar.dart';
 
 // ignore: must_be_immutable
 class ListUserPage extends StatefulWidget {
-  ListUserPage({this.isLightMode = true, super.key});
+  ListUserPage({this.isAdmin = true, this.isLightMode = true, super.key});
   bool isLightMode;
-
+  bool isAdmin;
   @override
   State<ListUserPage> createState() => _ListUserPageState();
 }
@@ -44,20 +44,19 @@ class _ListUserPageState extends State<ListUserPage> {
 
   void _deleteUser(int id, CookieRequest cookieRequest) async {
     try {
-      final response = await cookieRequest 
+      final response = await cookieRequest
           .post('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id//show-admin/delete-user/$id/', {});
           // .post('http://10.0.2.2:8000/show-admin/delete-user/$id/', {});
       if (response["status"] == true) {
-        setState(() {
-          
-        });
+        setState(() {});
       }
     } catch (e) {
       throw Exception('Error : $e');
     }
   }
 
-  void _showDeleteConfirmationDialog(String username, int id, CookieRequest cookieRequest) {
+  void _showDeleteConfirmationDialog(
+      String username, int id, CookieRequest cookieRequest) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -87,8 +86,8 @@ class _ListUserPageState extends State<ListUserPage> {
                       ),
                       behavior: SnackBarBehavior.floating,
                       backgroundColor: Colors.white,
-                      margin: EdgeInsets.fromLTRB(width * 0.1,
-                          height * 0.1, width * 0.1, height * 0.75),
+                      margin: EdgeInsets.fromLTRB(width * 0.1, height * 0.1,
+                          width * 0.1, height * 0.75),
                       content: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -102,8 +101,7 @@ class _ListUserPageState extends State<ListUserPage> {
                           Text(
                             "User $username telah dihapus !",
                             overflow: TextOverflow.ellipsis,
-                            style:
-                                const TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                           ),
                         ],
                       ),
@@ -229,30 +227,29 @@ class _ListUserPageState extends State<ListUserPage> {
         }
       ),
       bottomNavigationBar: BottomNavBar(
+        isAdmin: widget.isAdmin,
         isLightMode: isLightMode,
         currentIndex: index,
         onTap: (value) {
           if (value == 0) {
             //navigate ke home
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => HomePage(isLightMode: isLightMode, isAdmin: true,)
-              )
-            );
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => HomePage(
+                      isLightMode: isLightMode,
+                      isAdmin: true,
+                    )));
           } else if (value == 1) {
             // navigate ke bookmark
           } else if (value == 2) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => BookForm(isLightMode: isLightMode,)
-              )
-            );
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => BookForm(
+                      isLightMode: isLightMode,
+                    )));
           } else if (value == 3) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ListUserPage(isLightMode: isLightMode,)
-              )
-            );
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ListUserPage(
+                      isLightMode: isLightMode,
+                    )));
           }
           setState(() {
             index = value;

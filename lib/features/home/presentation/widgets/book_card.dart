@@ -56,8 +56,8 @@ class BookCard extends StatelessWidget {
           context: context,
           builder: (context) {
             return SizedBox(
-              width: width,
-              height: height * 0.5,
+              width: 200.w,
+              height: 50.h,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -76,8 +76,8 @@ class BookCard extends StatelessWidget {
                         Column(
                           children: [
                             SizedBox(
-                              width: width * 0.4,
-                              height: height * 0.25,
+                              width: 30.w,
+                              height: 25.h,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: Image.network(
@@ -109,7 +109,6 @@ class BookCard extends StatelessWidget {
                           width: 30,
                         ),
                         SizedBox(
-                          width: width * 0.4,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -120,7 +119,7 @@ class BookCard extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: textColor,
-                                    fontSize: 20.sp,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -145,7 +144,7 @@ class BookCard extends StatelessWidget {
                               ),
                               UBButton(
                                 height: 50,
-                                width: width * 0.4,
+                                width: 200,
                                 text: "More details",
                                 primaryColor: cardColor,
                                 secondaryColor: Colors.white,
@@ -275,25 +274,24 @@ class BookCard extends StatelessWidget {
           },
         );
       },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      child: SizedBox(
         width: width * 1 / 2,
-        height: height * 1 / 3,
+        height: 35.h,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
-              height: height * 1 / 4,
-              width: width * 1 / 2,
+              height: 25.h,
+              width: 60.w,
               child: Stack(
                 children: [
                   Positioned(
-                    top: 60,
+                    top: 45,
                     left: 5,
                     right: 5,
                     child: Container(
-                      height: height * 1 / 6,
-                      width: width * 1 / 2.5,
+                      height: 16.h,
+                      width: 40.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(14),
                         color: cardColor,
@@ -301,15 +299,15 @@ class BookCard extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: 20,
+                    top: 5,
                     left: 35,
                     right: 35,
                     child: Material(
                       elevation: 10,
                       borderRadius: BorderRadius.circular(10),
                       child: Container(
-                        width: width * 1 / 3,
-                        height: height * 1 / 5,
+                        width: 33.w,
+                        height: 20.h,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10)),
                         child: ClipRRect(
@@ -325,20 +323,17 @@ class BookCard extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 12,
-            ),
             Text(
               book.fields!.title!,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 11.sp,
+                  fontSize: 9.sp,
                   color: textColor),
             ),
             Text(
               book.fields!.author!,
-              style: TextStyle(color: textColor, fontSize: 9.sp),
+              style: TextStyle(color: textColor, fontSize: 8.sp),
               overflow: TextOverflow.ellipsis,
             ),
           ],

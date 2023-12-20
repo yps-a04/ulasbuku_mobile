@@ -6,12 +6,13 @@ import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/users/list_user.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
+import 'package:ulas_buku_mobile/core/widgets/bottom_bar.dart';
 
 // ignore: must_be_immutable
 class BookForm extends StatefulWidget {
-  BookForm({this.isLightMode = true, super.key});
+  BookForm({this.isAdmin = true, this.isLightMode = true, super.key});
   bool isLightMode;
+  bool isAdmin;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -26,6 +27,7 @@ class _BookFormState extends State<BookForm> {
     super.initState();
     isLightMode = widget.isLightMode;
   }
+
   String _title = "";
   String _author = "";
   double _averageRating = 0.0;
@@ -92,7 +94,6 @@ class _BookFormState extends State<BookForm> {
                   },
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -118,7 +119,6 @@ class _BookFormState extends State<BookForm> {
                   },
                 ),
               ),
-              
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -146,7 +146,6 @@ class _BookFormState extends State<BookForm> {
                   },
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -171,7 +170,6 @@ class _BookFormState extends State<BookForm> {
                   },
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -196,7 +194,6 @@ class _BookFormState extends State<BookForm> {
                   },
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -221,7 +218,6 @@ class _BookFormState extends State<BookForm> {
                   },
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -249,7 +245,6 @@ class _BookFormState extends State<BookForm> {
                   },
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -277,7 +272,6 @@ class _BookFormState extends State<BookForm> {
                   },
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -305,7 +299,6 @@ class _BookFormState extends State<BookForm> {
                   },
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -330,7 +323,6 @@ class _BookFormState extends State<BookForm> {
                   },
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
@@ -355,7 +347,6 @@ class _BookFormState extends State<BookForm> {
                   },
                 ),
               ),
-
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
@@ -370,10 +361,10 @@ class _BookFormState extends State<BookForm> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                          final response = await request.postJson(
-                          "http://ulasbuku-a04-tk.pbp.cs.ui.ac.id/show-admin/create-flutter/",
-                          // "http://10.0.2.2:8000/show-admin/create-flutter/",
-                          jsonEncode(<String, String>{
+                        final response = await request.postJson(
+                            "http://ulasbuku-a04-tk.pbp.cs.ui.ac.id/show-admin/create-flutter/",
+                            // "http://10.0.2.2:8000/show-admin/create-flutter/",
+                            jsonEncode(<String, String>{
                               'title': _title,
                               'author': _author,
                               'averageRating': _averageRating.toString(),
@@ -385,27 +376,29 @@ class _BookFormState extends State<BookForm> {
                               'textReviewCount': _textReviewCount.toString(),
                               'publicationDate': _publicationDate,
                               'publisher': _publisher,
-                          }));
-                          if (response['status'] == 'success') {
-                              // ignore: use_build_context_synchronously
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                              content: Text("Buku baru berhasil disimpan!"),
-                              ));
-                              // ignore: use_build_context_synchronously
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const HomePage(isAdmin: true)),
-                              );
-                          } else {
-                              // ignore: use_build_context_synchronously
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                  content:
-                                      Text("Terdapat kesalahan, silakan coba lagi."),
-                              ));
-                          }
+                            }));
+                        if (response['status'] == 'success') {
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("Buku baru berhasil disimpan!"),
+                          ));
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const HomePage(isAdmin: true)),
+                          );
+                        } else {
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content:
+                                Text("Terdapat kesalahan, silakan coba lagi."),
+                          ));
                         }
+                      }
                     },
                     child: Text(
                       "Add Book",
@@ -419,6 +412,7 @@ class _BookFormState extends State<BookForm> {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
+        isAdmin: widget.isAdmin,
         isLightMode: isLightMode,
         currentIndex: index,
         onTap: (value) {
@@ -426,7 +420,8 @@ class _BookFormState extends State<BookForm> {
             //navigate ke home
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => HomePage(isLightMode: isLightMode, isAdmin: true),
+                builder: (context) =>
+                    HomePage(isLightMode: isLightMode, isAdmin: true),
               ),
             );
           } else if (value == 1) {
@@ -435,11 +430,10 @@ class _BookFormState extends State<BookForm> {
             // di add book
           } else if (value == 3) {
             // navigate ke list user
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ListUserPage(isLightMode: isLightMode,)
-              )
-            );
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => ListUserPage(
+                      isLightMode: isLightMode,
+                    )));
           }
           setState(() {
             index = value;
