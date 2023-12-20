@@ -7,6 +7,7 @@ import 'package:ulas_buku_mobile/features/admin/models/user.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/core/widgets/bottom_bar.dart';
+import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
 // ignore: must_be_immutable
 class ListUserPage extends StatefulWidget {
@@ -249,6 +250,11 @@ class _ListUserPageState extends State<ListUserPage> {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => ListUserPage(
                       isLightMode: isLightMode,
+                    )));
+          } else if (value == 4) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ProfilePage(
+                      isLightMode: isLightMode, isAdmin: true,
                     )));
           }
           setState(() {
