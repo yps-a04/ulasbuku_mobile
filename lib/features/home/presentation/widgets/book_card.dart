@@ -27,6 +27,7 @@ class BookCard extends StatelessWidget {
 
   void _deleteBook(int id, CookieRequest cookieRequest) async {
     try {
+      // ignore: unused_local_variable
       final response = await cookieRequest 
           // .post('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id//show-admin/delete-flutter/$id/', {});
           .post('http://10.0.2.2:8000/show-admin/delete-flutter/$id/', {});

@@ -7,6 +7,7 @@ import 'package:ulas_buku_mobile/features/admin/presentation/users/list_user.dar
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
+// ignore: must_be_immutable
 class BookForm extends StatefulWidget {
   BookForm({this.isLightMode = true, super.key});
   bool isLightMode;

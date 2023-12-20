@@ -5,10 +5,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:ulas_buku_mobile/features/admin/presentation/users/list_user.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
 class EditBookPage extends StatefulWidget {
   const EditBookPage({Key? key, required this.book}) : super(key: key);
