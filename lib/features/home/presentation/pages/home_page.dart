@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
         bookmarkedBooks = books;
       });
     } catch (e) {
+      // ignore: avoid_print
       print('error : $e');
     }
   }

@@ -28,6 +28,7 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  bool? isBookmarked = false;
   Future<void> deleteBookmark() async {
     final request = context.read<CookieRequest>();
     final user = await request.get('http://localhost:8000/ret_profile/');
@@ -35,13 +36,10 @@ class _DetailPageState extends State<DetailPage> {
     user.forEach((key, value) {
       profile.add(value);
     });
-    final response = await request.postJson(
+    await request.postJson(
         "${EndPoints.baseUrl}/b/${profile[0]}/delete/",
         jsonEncode({"pk": widget.book.pk}));
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to send data.');
-    }
   }
 
   Future<List<Data>> fetchReview(int pk, CookieRequest request) async {
@@ -57,8 +55,12 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   @override
+  void initState() {
+    isBookmarked = widget.book.fields!.isBookmarked;
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    bool? isBookmarked = widget.book.fields!.isBookmarked;
     final Color textColor =
         widget.isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
     final request = context.watch<CookieRequest>();
@@ -143,9 +145,9 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                         ),
                         IconButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              await deleteBookmark();
                               setState(() {
-                                deleteBookmark();
                                 isBookmarked = !isBookmarked!;
                               });
                             },

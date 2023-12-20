@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/widget/bookmark_card.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
@@ -44,6 +43,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
         bookmarkedBooks = books;
       });
     } catch (e) {
+      // ignore: avoid_print
       print('error : $e');
     }
   }
@@ -155,7 +155,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
                         child: SizedBox(
                           height: 200,
                           child: ListView.builder(
-                            itemCount: bookmarkedBooks!.length,
+                            itemCount: bookmarkedBooks.length,
                             itemBuilder: (context, index) {
                               return BookmarkCard(
                                   book: bookmarkedBooks[index]
@@ -171,6 +171,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
         isLightMode: widget.isLightMode,
         currentIndex: index,
         onTap: (value) {
+          // ignore: avoid_print
           print(value);
           if (value == 0) {
             //navigate ke bookmark

@@ -39,8 +39,6 @@ class BookListRemoteDataSource {
     try {
       final List<Book> result = [];
       final response = await request.get(EndPoints.getAllBooks);
-
-      print(response);
       for (var i in response) {
         Book book = Book.fromJson(i);
         result.add(book);
