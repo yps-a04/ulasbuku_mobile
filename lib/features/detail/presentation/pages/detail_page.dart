@@ -77,7 +77,7 @@ class _DetailPageState extends State<DetailPage> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => HomePage(
+                      builder: (context) => const HomePage(
                             isAdmin: true,
                           )));
             },
