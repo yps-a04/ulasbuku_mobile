@@ -116,12 +116,49 @@ class _LoginPageState extends State<LoginPage> {
                         bool isStaff = response['is_staff'][0];
 
                         if (isStaff) {
-                          //pushreplacemant ke admin page
-                        } else {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const HomePage(isAdmin: true,)),
+                          );
+
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              SnackBar(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.white,
+                                margin: EdgeInsets.fromLTRB(width * 0.1,
+                                    height * 0.1, width * 0.1, height * 0.75),
+                                content: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                    ),
+                                    const SizedBox(
+                                      width: 16,
+                                    ),
+                                    Text(
+                                      "Selamat datang, $uname.",
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                        
+                        } 
+                        else {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage(isAdmin: false,)),
                           );
 
                           ScaffoldMessenger.of(context)
