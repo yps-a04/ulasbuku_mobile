@@ -78,7 +78,7 @@ class _DetailPageState extends State<DetailPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => HomePage(
-                            isAdmin: true,
+                            isAdmin: widget.isAdmin,
                           )));
             },
             icon: const Icon(
