@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     isLightMode = widget.isLightMode;
   }
+
   ScrollController homeController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -59,7 +60,6 @@ class _HomePageState extends State<HomePage> {
         controller: homeController,
         child: SizedBox(
           height: 200.h,
-          width: 100.w,
           child: Stack(
             children: <Widget>[
               Container(
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: const BorderRadius.vertical(
                         bottom: Radius.elliptical(30, 30))),
                 height: 25.h,
-                width: 100.w,
+
                 // Background
                 child: Center(
                   child: Row(
@@ -109,7 +109,8 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                   backgroundColor: Colors.white,
-                                  margin: EdgeInsets.fromLTRB(10.w, 10.h, 10.w, 10.h),
+                                  margin: EdgeInsets.fromLTRB(
+                                      10.w, 10.h, 10.w, 10.h),
                                   content: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
@@ -194,24 +195,38 @@ class _HomePageState extends State<HomePage> {
                 child: BlocBuilder<HomeBloc, HomeState>(
                   builder: (context, state) {
                     if (state is HomeSearchLoading) {
-                      return const Center(
+                      return Center(
                         child: CircularProgressIndicator(
-                          color: Colors.black,
+                          color: !widget.isLightMode
+                              ? UBColor.darkBgColor
+                              : UBColor.lightBgColor,
                         ),
                       );
                     }
 
                     if (state is HomeSearchError) {
-                      return const Center(
+                      return Center(
                         child: Text(
-                            "Terjadi Kesalahan. Cek kembali koneksi internet anda."),
+                          "Terjadi Kesalahan. Cek kembali koneksi internet anda.",
+                          style: TextStyle(
+                              color: !widget.isLightMode
+                                  ? UBColor.darkBgColor
+                                  : UBColor.lightBgColor),
+                        ),
                       );
                     }
 
                     if (state is HomeSearchLoaded) {
                       if (state.results.isEmpty) {
-                        return const Center(
-                          child: Text("Buku tidak ditemukan :("),
+                        print("osonng mas ");
+                        return Center(
+                          child: Text(
+                            "Buku tidak ditemukan :(",
+                            style: TextStyle(
+                                color: !widget.isLightMode
+                                    ? UBColor.darkBgColor
+                                    : UBColor.lightBgColor),
+                          ),
                         );
                       }
                       return SizedBox(
@@ -233,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                     return Column(
                       children: [
                         SizedBox(
-                          height: 40.h,
+                          height: 42.h,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -268,7 +283,6 @@ class _HomePageState extends State<HomePage> {
                               ),
                               SizedBox(
                                 height: 33.h,
-                                width: 100.w,
                                 child: ListView.builder(
                                   physics: const BouncingScrollPhysics(),
                                   scrollDirection: Axis.horizontal,
@@ -307,7 +321,6 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavBar(
         isLightMode: isLightMode,
         currentIndex: index,
-
         onTap: (value) {
           // ignore: avoid_print
           if (value == 1) {
@@ -323,12 +336,12 @@ class _HomePageState extends State<HomePage> {
             // navigate ke add book
           } else if (value == 3) {
             // navigate ke add book
-          }
-          else if (value == 4)
-          {
+          } else if (value == 4) {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProfilePage(isLightMode: isLightMode,),
+                builder: (context) => ProfilePage(
+                  isLightMode: isLightMode,
+                ),
               ),
             );
           }

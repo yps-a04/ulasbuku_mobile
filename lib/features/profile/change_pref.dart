@@ -20,7 +20,7 @@ class _PreferenceState extends State<PreferencePage> {
   late Future<List<String>> authorsFuture;
   List<String>? authors;
   late bool isLightMode;
-  
+
   @override
   void initState() {
     super.initState();
@@ -33,25 +33,24 @@ class _PreferenceState extends State<PreferencePage> {
       });
     });
   }
-  
-  Future<List<String>> fetchAuthors(CookieRequest request) async{
+
+  Future<List<String>> fetchAuthors(CookieRequest request) async {
     try {
-        final response = await request.get('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/change_pref/');
-        final List<String> authors = [];
-        for (var i in response['author']) {
-          authors.add(i['author']);
-          // ignore: avoid_print
-        }
-        return authors;  // Assuming 'author' is a list of strings
-      } 
-      catch (e) {
-        throw Exception('error : $e');
+      final response = await request
+          .get('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/change_pref/');
+      final List<String> authors = [];
+      for (var i in response['author']) {
+        authors.add(i['author']);
+        // ignore: avoid_print
       }
+      return authors; // Assuming 'author' is a list of strings
+    } catch (e) {
+      throw Exception('error : $e');
+    }
   }
-   //List<bool> isCheckedList = List<bool>.filled(8, false);
+  //List<bool> isCheckedList = List<bool>.filled(8, false);
 
   int index = 4;
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +59,7 @@ class _PreferenceState extends State<PreferencePage> {
         isLightMode ? UBColor.lightCardColors : UBColor.darkCardColors;
 
     Color textColor = isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
-    
+
     cardColors.shuffle();
 
     return Scaffold(
@@ -91,18 +90,29 @@ class _PreferenceState extends State<PreferencePage> {
       ),
 
       // ignore: unnecessary_null_comparison
-      body: authors != null ? Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Center(
-                    child: Text("Ubah Preference Author Anda!", style: TextStyle(fontSize: 24, color: textColor)),
+      body: authors != null
+          ? SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      Center(
+                        child: Text("Ubah Preference Author Anda!",
+                            style: TextStyle(fontSize: 24, color: textColor)),
+                      ),
+                      // Loop over each author and create a checkbox
+                      CheckboxList(
+                        data: authors ?? [],
+                        isLightMode: isLightMode,
+                      ),
+                    ],
                   ),
-                  // Loop over each author and create a checkbox
-                  CheckboxList(data: authors??[], isLightMode: isLightMode,),
-                ],
+                ),
               ),
-            ) : const CircularProgressIndicator(),
+            )
+          : const CircularProgressIndicator(),
       bottomNavigationBar: BottomNavBar(
         isLightMode: isLightMode,
         currentIndex: index,
