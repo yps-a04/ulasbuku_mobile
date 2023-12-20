@@ -5,15 +5,18 @@ import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
+import 'package:ulas_buku_mobile/features/bookmark/presentation/pages/bookmark_page.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
+import 'package:ulas_buku_mobile/core/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/profile/change_pref.dart';
 import 'package:ulas_buku_mobile/features/profile/preference.dart';
 
 // ignore: must_be_immutable
 class ProfilePage extends StatefulWidget {
-  ProfilePage({this.isLightMode = true, super.key});
+  ProfilePage({required this.isAdmin, this.isLightMode = true, super.key});
   bool isLightMode;
+  bool isAdmin;
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -455,26 +458,34 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       bottomNavigationBar: BottomNavBar(
         isLightMode: isLightMode,
+        isAdmin: widget.isAdmin,
         currentIndex: index,
         onTap: (value) {
           if (value == 1) {
-            //navigate ke home
+            //navigate ke bookmark
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BookmarkPage(
+                    isLightMode: isLightMode,
+                  ),
+                ));
           } else if (value == 2) {
-            // navigate ke bookmark
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => BookForm(
+                      isLightMode: isLightMode,
+                    )));
           } else if (value == 3) {
-            // navigate ke add book
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => BookForm(
+                      isLightMode: isLightMode,
+                    )));
           } else if (value == 4) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ProfilePage(
-                  isLightMode: isLightMode,
-                ),
-              ),
-            );
           } else if (value == 0) {
-            Navigator.of(context).push(
+            Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => HomePage(isLightMode: isLightMode, isAdmin: true),
+                builder: (context) =>
+                    HomePage(isLightMode: isLightMode, isAdmin: true),
               ),
             );
           }

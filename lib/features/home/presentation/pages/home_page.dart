@@ -15,7 +15,7 @@ import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart'
 // ignore: unnecessary_import
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_view.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
+import 'package:ulas_buku_mobile/core/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
@@ -326,6 +326,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavBar(
         isLightMode: isLightMode,
         currentIndex: index,
+        isAdmin: widget.isAdmin,
         onTap: (value) {
           // print(value);
           if (value == 1) {
@@ -338,15 +339,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ));
           } else if (value == 2) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
           } else if (value == 3) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListUserPage(isLightMode: isLightMode,)));
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
           }
           else if (value == 4)
           {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ProfilePage(
+                  isAdmin: widget.isAdmin,
                   isLightMode: isLightMode,
                 ),
               ),
