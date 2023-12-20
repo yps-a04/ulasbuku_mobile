@@ -17,7 +17,8 @@ class DetailPage extends StatefulWidget {
       {this.isLightMode = true,
       required this.bgColor,
       required this.book,
-      super.key});
+      super.key
+      });
 
   Book book;
   Color bgColor;

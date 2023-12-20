@@ -4,8 +4,9 @@ class EndPoints {
   static const String baseUrl = 'http://localhost:8000';
   static const String login = '$baseUrl/auth/login/';
   static const String logout = '$baseUrl/auth/logout/';
-  static const String getAllBooks = '$baseUrl/books-json/';
+  static const String getAllBooks = '$baseUrl/books-json';
   static const String search = '$baseUrl/search/';
+  static const String getUser = '$baseUrl/show-admin/api/users/';
   static const String sort = "$baseUrl/sort-books";
   static const String getUserBookmark = "$baseUrl/bookmarks-json/";
   static const String addReview = '$baseUrl/add-review-flutter/';

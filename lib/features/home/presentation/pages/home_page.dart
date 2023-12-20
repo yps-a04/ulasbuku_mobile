@@ -3,24 +3,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/users/list_user.dart';
+import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/login/login_page.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/pages/bookmark_page.dart';
-import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 // ignore: unnecessary_import
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_view.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
-
+import 'package:ulas_buku_mobile/core/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
 import 'package:ulas_buku_mobile/features/bookmark/data/data_source/bookmark_remote_data_source.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({this.isLightMode = true, super.key});
-  bool isLightMode;
+  const HomePage({this.isLightMode = true, super.key, required this.isAdmin});
+  final bool isAdmin;
+  final bool isLightMode;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -35,6 +37,7 @@ class _HomePageState extends State<HomePage> {
     isLightMode = widget.isLightMode;
     fetchBookmark();
   }
+
 
   ScrollController homeController = ScrollController();
   List<Book> bookmarkedBooks = [];
@@ -80,7 +83,6 @@ class _HomePageState extends State<HomePage> {
         controller: homeController,
         child: SizedBox(
           height: 200.h,
-          width: 100.w,
           child: Stack(
             children: <Widget>[
               Container(
@@ -90,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: const BorderRadius.vertical(
                         bottom: Radius.elliptical(30, 30))),
                 height: 25.h,
-                width: 100.w,
+
                 // Background
                 child: Center(
                   child: Row(
@@ -215,24 +217,38 @@ class _HomePageState extends State<HomePage> {
                 child: BlocBuilder<HomeBloc, HomeState>(
                   builder: (context, state) {
                     if (state is HomeSearchLoading) {
-                      return const Center(
+                      return Center(
                         child: CircularProgressIndicator(
-                          color: Colors.black,
+                          color: !widget.isLightMode
+                              ? UBColor.darkBgColor
+                              : UBColor.lightBgColor,
                         ),
                       );
                     }
 
                     if (state is HomeSearchError) {
-                      return const Center(
+                      return Center(
                         child: Text(
-                            "Terjadi Kesalahan. Cek kembali koneksi internet anda."),
+                          "Terjadi Kesalahan. Cek kembali koneksi internet anda.",
+                          style: TextStyle(
+                              color: !widget.isLightMode
+                                  ? UBColor.darkBgColor
+                                  : UBColor.lightBgColor),
+                        ),
                       );
                     }
 
                     if (state is HomeSearchLoaded) {
                       if (state.results.isEmpty) {
-                        return const Center(
-                          child: Text("Buku tidak ditemukan :("),
+                        print("osonng mas ");
+                        return Center(
+                          child: Text(
+                            "Buku tidak ditemukan :(",
+                            style: TextStyle(
+                                color: !widget.isLightMode
+                                    ? UBColor.darkBgColor
+                                    : UBColor.lightBgColor),
+                          ),
                         );
                       }
                       return SizedBox(
@@ -244,6 +260,7 @@ class _HomePageState extends State<HomePage> {
                           itemCount: state.results.length,
                           itemBuilder: (context, index) {
                             return BookCard(
+                                isAdmin: widget.isAdmin,
                                 textColor: textColor,
                                 cardColor: cardColors[index % 5],
                                 book: state.results[index],
@@ -255,7 +272,7 @@ class _HomePageState extends State<HomePage> {
                     return Column(
                       children: [
                         SizedBox(
-                          height: 40.h,
+                          height: 42.h,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -276,7 +293,7 @@ class _HomePageState extends State<HomePage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  BookmarkPage(isLightMode: isLightMode,)));
+                                                  BookmarkPage(isAdmin: widget.isAdmin, isLightMode: isLightMode,)));
                                     },
                                     child: const Text(
                                       "Show All",
@@ -297,6 +314,7 @@ class _HomePageState extends State<HomePage> {
                                   itemCount: (bookmarkedBooks.length < 10) ? bookmarkedBooks.length : 10,
                                   itemBuilder: (context, index) {
                                     return BookCard(
+                                      isAdmin: widget.isAdmin,
                                       cardColor: cardColors[index % 5],
                                       textColor: textColor,
                                       book: bookmarkedBooks[index],
@@ -308,7 +326,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         BookListView(
-                            isLightMode: isLightMode,
+                            isAdmin: widget.isAdmin,
+                            isLightMode : isLightMode,
                             homeScrollController: homeController,
                             bloc: bloc,
                             cardColors: cardColors,
@@ -325,9 +344,9 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavBar(
         isLightMode: isLightMode,
         currentIndex: index,
-
+        isAdmin: widget.isAdmin,
         onTap: (value) {
-          // ignore: avoid_print
+          // print(value);
           if (value == 1) {
             //navigate ke bookmark
             Navigator.pushReplacement(
@@ -335,18 +354,22 @@ class _HomePageState extends State<HomePage> {
                 MaterialPageRoute(
                   builder: (context) => BookmarkPage(
                     isLightMode: isLightMode,
+                    isAdmin: widget.isAdmin,
                   ),
                 ));
           } else if (value == 2) {
-            // navigate ke add book
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
           } else if (value == 3) {
-            // navigate ke add book
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
           }
           else if (value == 4)
           {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProfilePage(isLightMode: isLightMode,),
+                builder: (context) => ProfilePage(
+                  isAdmin: widget.isAdmin,
+                  isLightMode: isLightMode,
+                ),
               ),
             );
           }

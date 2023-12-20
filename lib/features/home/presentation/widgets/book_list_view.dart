@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/scroll_parent.dart';
@@ -12,7 +13,9 @@ class BookListView extends StatelessWidget {
     required this.textColor,
     required this.homeScrollController,
     required this.isLightMode,
+    required this.isAdmin,
   });
+  final bool isAdmin;
   final bool isLightMode;
   final ScrollController homeScrollController;
   final Color textColor;
@@ -22,7 +25,6 @@ class BookListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return DefaultTabController(
       length: 3,
       child: SizedBox(
@@ -60,20 +62,19 @@ class BookListView extends StatelessWidget {
                       ScrollParent(
                         controller: homeScrollController,
                         child: GridView.builder(
-                          padding: const EdgeInsets.all(0),
                           physics: const ClampingScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: state.allBooks.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  childAspectRatio:
-                                      (height * 1 / 6) / (width * 1 / 2),
+                                  childAspectRatio: 40.w / 33.h,
                                   crossAxisCount: 2),
                           itemBuilder: (context, index) {
                             cardColors.shuffle();
                             Color cardColor = cardColors[index % 5];
 
                             return BookCard(
+                              isAdmin: isAdmin,
                               isLightMode: isLightMode,
                               textColor: textColor,
                               cardColor: cardColor,
@@ -85,19 +86,18 @@ class BookListView extends StatelessWidget {
                       ScrollParent(
                         controller: homeScrollController,
                         child: GridView.builder(
-                          padding: const EdgeInsets.all(0),
                           physics: const ClampingScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: state.mostReviewedBooks.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  childAspectRatio:
-                                      (height * 1 / 6) / (width * 1 / 2),
+                                  childAspectRatio: 40.w / 33.h,
                                   crossAxisCount: 2),
                           itemBuilder: (context, index) {
                             cardColors.shuffle();
                             Color cardColor = cardColors[index % 5];
                             return BookCard(
+                              isAdmin: isAdmin,
                               isLightMode: isLightMode,
                               textColor: textColor,
                               cardColor: cardColor,
@@ -109,19 +109,18 @@ class BookListView extends StatelessWidget {
                       ScrollParent(
                         controller: homeScrollController,
                         child: GridView.builder(
-                          padding: const EdgeInsets.all(0),
                           physics: const ClampingScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: state.byPrefBooks.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  childAspectRatio:
-                                      (height * 1 / 6) / (width * 1 / 2),
+                                  childAspectRatio: 40.w / 33.h,
                                   crossAxisCount: 2),
                           itemBuilder: (context, index) {
                             cardColors.shuffle();
                             Color cardColor = cardColors[index % 5];
                             return BookCard(
+                              isAdmin: isAdmin,
                               isLightMode: isLightMode,
                               textColor: textColor,
                               cardColor: cardColor,

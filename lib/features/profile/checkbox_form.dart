@@ -29,48 +29,34 @@ class _CheckboxListState extends State<CheckboxList> {
   List<String>? validNya = [];
   bool flag = false;
 
-  void savePreference() async
-  {
+  void savePreference() async {
     final request = context.read<CookieRequest>();
-    for (int i = 0; i < widget.data.length; i++)
-    {
-      if (isCheckedList?[i] == true)
-      {
+    for (int i = 0; i < widget.data.length; i++) {
+      if (isCheckedList?[i] == true) {
         validNya?.add(listNama![i]);
         flag = true;
       }
     }
 
-    if (flag == false)
-    {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(
-      content: Text("Tidak ada yang disimpan!"),
+    if (flag == false) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Tidak ada yang disimpan!"),
       ));
       Navigator.pop(context);
-    }
-
-    else
-    {
+    } else {
       final response = await request.postJson(
-        "https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/set_pref/", jsonEncode(<String, List<String>?>{'valid': validNya}));
-        if (response['status'] == 'success') {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(
-            content: Text("Berhasil mengubah preference!"),
-            ));
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ProfilePage(isLightMode: isLightMode,),
-              ),
-            );
-        } else {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(
-                content:
-                    Text("Terdapat kesalahan, silakan coba lagi."),
-            ));
-        }
+          "https://ulasbuku-a04-tk.pbp.cs.ui.ac.id/set_pref/",
+          jsonEncode(<String, List<String>?>{'valid': validNya}));
+      if (response['status'] == 'success') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Berhasil mengubah preference!"),
+        ));
+        Navigator.of(context).pop();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Terdapat kesalahan, silakan coba lagi."),
+        ));
+      }
     }
   }
 
@@ -84,16 +70,16 @@ class _CheckboxListState extends State<CheckboxList> {
   @override
   Widget build(BuildContext context) {
     Color textColor = isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
-    Color textRevert = !isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
-    for (int i = 0; i< widget.data.length; i++)
-    {
+    Color textRevert =
+        !isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
+    for (int i = 0; i < widget.data.length; i++) {
       listNama!.add(widget.data[i]);
     }
     return Column(
       children: <Widget>[
         for (int i = 0; i < widget.data.length; i++)
           CheckboxListTile(
-            title: Text(widget.data[i], style: TextStyle(color:textColor)),
+            title: Text(widget.data[i], style: TextStyle(color: textColor)),
             value: isCheckedList?[i],
             onChanged: (bool? value) {
               setState(() {
@@ -101,36 +87,35 @@ class _CheckboxListState extends State<CheckboxList> {
               });
             },
           ),
-          
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // This line will navigate to the previous screen.
-                },
-                child: const Text('Kembali'),
-                style: ElevatedButton.styleFrom(
-                  primary: textRevert,
-                  onPrimary: Colors.blue,
-                  side: const BorderSide(color: Color(0xffacdcf2), width: 2),
-                ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(
+                    context); // This line will navigate to the previous screen.
+              },
+              child: const Text('Kembali'),
+              style: ElevatedButton.styleFrom(
+                primary: textRevert,
+                onPrimary: Colors.blue,
+                side: const BorderSide(color: Color(0xffacdcf2), width: 2),
               ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () async {
-                  savePreference();
-                },
-                child: const Text('Simpan'),
-                style: ElevatedButton.styleFrom(
-                  primary: textRevert,
-                  onPrimary: Colors.blue,
-                  side: const BorderSide(color: Color(0xffacdcf2), width: 2),
-                ),
+            ),
+            const SizedBox(width: 10),
+            ElevatedButton(
+              onPressed: () async {
+                savePreference();
+              },
+              child: const Text('Simpan'),
+              style: ElevatedButton.styleFrom(
+                primary: textRevert,
+                onPrimary: Colors.blue,
+                side: const BorderSide(color: Color(0xffacdcf2), width: 2),
               ),
-            ],
-          ),
-          
+            ),
+          ],
+        ),
       ],
     );
   }

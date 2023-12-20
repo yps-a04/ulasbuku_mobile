@@ -5,7 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/widget/bookmark_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
+import 'package:ulas_buku_mobile/core/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 // import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -13,11 +13,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ulas_buku_mobile/features/bookmark/data/data_source/bookmark_remote_data_source.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
+
 
 
 class BookmarkPage extends StatefulWidget {
-  const BookmarkPage({super.key, this.isLightMode = true,});
+  const BookmarkPage({super.key, this.isLightMode = true, required this.isAdmin});
   final bool isLightMode;
+  final bool isAdmin;
 
   @override
   _BookmarkPageState createState() => _BookmarkPageState();
@@ -108,7 +111,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(isLightMode: isLightMode,),
+                  builder: (context) => HomePage(isAdmin: true, isLightMode: isLightMode,),
                 ));
           },
         ),
@@ -195,28 +198,50 @@ class _BookmarkPageState extends State<BookmarkPage> {
         ),
       ),
       bottomNavigationBar: BottomNavBar(
-        isLightMode: widget.isLightMode,
+        isLightMode: isLightMode,
         currentIndex: index,
+        isAdmin: widget.isAdmin,
         onTap: (value) {
-          // ignore: avoid_print
-          print(value);
-          if (value == 0) {
-            //navigate ke bookmark
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomePage(isLightMode: isLightMode,),
-                ));
-          } else if (value == 2) {
-            // navigate ke add book
-          } else if (value == 3) {
-            // navigate ke add book
-          } else if (value == 4) {
-            Navigator.of(context).push(
+          // print(value);
+          if (!widget.isAdmin)
+          {
+            if (value == 1)
+            {
+            }
+
+            else if (value == 2)
+            {
+              Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ProfilePage(isLightMode: isLightMode,),
+                builder: (context) => ProfilePage(
+                  isAdmin: widget.isAdmin,
+                  isLightMode: isLightMode,
+                ),
               ),
             );
+            }
+          }
+
+          else
+          {
+            if (value == 1) {
+              
+            } else if (value == 2) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
+            } else if (value == 3) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
+            }
+            else if (value == 4)
+            {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                    isAdmin: widget.isAdmin,
+                    isLightMode: isLightMode,
+                  ),
+                ),
+              );
+            }
           }
           setState(() {
             index = value;
