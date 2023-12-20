@@ -474,9 +474,7 @@ class _ProfilePageState extends State<ProfilePage> {
           } else if (value == 0) {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => HomePage(
-                  isLightMode: isLightMode,
-                ),
+                builder: (context) => HomePage(isLightMode: isLightMode, isAdmin: true),
               ),
             );
           }

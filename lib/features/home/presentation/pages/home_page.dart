@@ -3,23 +3,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
+import 'package:ulas_buku_mobile/features/admin/presentation/users/list_user.dart';
+import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/login/login_page.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/pages/bookmark_page.dart';
-import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 // ignore: unnecessary_import
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_card.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/book_list_view.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
-
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({this.isLightMode = true, super.key});
-  bool isLightMode;
+  const HomePage({this.isLightMode = true, super.key, required this.isAdmin});
+  final bool isAdmin;
+  final bool isLightMode;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -238,6 +240,7 @@ class _HomePageState extends State<HomePage> {
                           itemCount: state.results.length,
                           itemBuilder: (context, index) {
                             return BookCard(
+                                isAdmin: widget.isAdmin,
                                 textColor: textColor,
                                 cardColor: cardColors[index % 5],
                                 book: state.results[index]);
@@ -289,6 +292,7 @@ class _HomePageState extends State<HomePage> {
                                   itemCount: 10,
                                   itemBuilder: (context, index) {
                                     return BookCard(
+                                      isAdmin: widget.isAdmin,
                                       cardColor: cardColors[index % 5],
                                       textColor: textColor,
                                       book: Book(
@@ -304,7 +308,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         BookListView(
-                            isLightMode: isLightMode,
+                            isAdmin: widget.isAdmin,
+                            isLightMode : isLightMode,
                             homeScrollController: homeController,
                             bloc: bloc,
                             cardColors: cardColors,
@@ -322,7 +327,7 @@ class _HomePageState extends State<HomePage> {
         isLightMode: isLightMode,
         currentIndex: index,
         onTap: (value) {
-          // ignore: avoid_print
+          // print(value);
           if (value == 1) {
             //navigate ke bookmark
             Navigator.pushReplacement(
@@ -333,10 +338,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ));
           } else if (value == 2) {
-            // navigate ke add book
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
           } else if (value == 3) {
-            // navigate ke add book
-          } else if (value == 4) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListUserPage(isLightMode: isLightMode,)));
+          }
+          else if (value == 4)
+          {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ProfilePage(
