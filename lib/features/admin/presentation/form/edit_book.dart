@@ -5,19 +5,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 
 class EditBookPage extends StatefulWidget {
-  const EditBookPage({Key? key, required this.book}) : super(key: key);
+  const EditBookPage({Key? key, required this.book, required this.isLightMode}) : super(key: key);
   final Book book;
+  final bool isLightMode;
 
   @override
   _EditBookPageState createState() => _EditBookPageState();
 }
 
 class _EditBookPageState extends State<EditBookPage> {
-  bool isLightMode = true;
   String? _title = "";
   String? _author = "";
   double? _averageRating = 0.0;
@@ -50,21 +51,23 @@ class _EditBookPageState extends State<EditBookPage> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+    Color backgroundColor = widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor;
+    Color secondaryColor = !widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-          child: Text(
-            'Edit Book',
-            style: TextStyle(
-              fontSize: 25.0,
-              fontWeight: FontWeight.w600,
-            ),
+        centerTitle: true,
+        title: Text(
+          'Edit Book',
+          style: TextStyle(
+            fontSize: 25.0,
+            fontWeight: FontWeight.w600,
           ),
         ),
-        backgroundColor: const Color(0xffc5cae8),
-        foregroundColor: Colors.black,
+        backgroundColor: backgroundColor,
+        foregroundColor: secondaryColor,
       ),
+      backgroundColor: backgroundColor,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,8 +76,10 @@ class _EditBookPageState extends State<EditBookPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 initialValue: widget.book.fields!.title,
+                style: TextStyle(color: secondaryColor),
                 decoration: InputDecoration(
                   labelText: "Title",
+                  labelStyle: TextStyle(color: secondaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -97,8 +102,10 @@ class _EditBookPageState extends State<EditBookPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 initialValue: widget.book.fields!.author,
+                style: TextStyle(color: secondaryColor),
                 decoration: InputDecoration(
                   labelText: "Author",
+                  labelStyle: TextStyle(color: secondaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -122,8 +129,10 @@ class _EditBookPageState extends State<EditBookPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 initialValue: widget.book.fields!.averageRating.toString(),
+                style: TextStyle(color: secondaryColor),
                 decoration: InputDecoration(
                   labelText: "Average Rating (dalam float)",
+                  labelStyle: TextStyle(color: secondaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -149,8 +158,10 @@ class _EditBookPageState extends State<EditBookPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 initialValue: widget.book.fields!.isbn,
+                style: TextStyle(color: secondaryColor),
                 decoration: InputDecoration(
                   labelText: "ISBN",
+                  labelStyle: TextStyle(color: secondaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -173,8 +184,10 @@ class _EditBookPageState extends State<EditBookPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 initialValue: widget.book.fields!.isbn13,
+                style: TextStyle(color: secondaryColor),
                 decoration: InputDecoration(
                   labelText: "ISBN13",
+                  labelStyle: TextStyle(color: secondaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -197,8 +210,10 @@ class _EditBookPageState extends State<EditBookPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 initialValue: widget.book.fields!.languageCode,
+                style: TextStyle(color: secondaryColor),
                 decoration: InputDecoration(
                   labelText: "Language Code (max 10 char)",
+                  labelStyle: TextStyle(color: secondaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -221,8 +236,10 @@ class _EditBookPageState extends State<EditBookPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 initialValue: widget.book.fields!.numPages.toString(),
+                style: TextStyle(color: secondaryColor),
                 decoration: InputDecoration(
                   labelText: "Num Pages",
+                  labelStyle: TextStyle(color: secondaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -248,8 +265,10 @@ class _EditBookPageState extends State<EditBookPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 initialValue: widget.book.fields!.ratingCount.toString(),
+                style: TextStyle(color: secondaryColor),
                 decoration: InputDecoration(
                   labelText: "Rating Count",
+                  labelStyle: TextStyle(color: secondaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -275,8 +294,10 @@ class _EditBookPageState extends State<EditBookPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 initialValue: widget.book.fields!.textReviewCount.toString(),
+                style: TextStyle(color: secondaryColor),
                 decoration: InputDecoration(
                   labelText: "Text Review Count",
+                  labelStyle: TextStyle(color: secondaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -302,8 +323,10 @@ class _EditBookPageState extends State<EditBookPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 initialValue: widget.book.fields!.publicationDate,
+                style: TextStyle(color: secondaryColor),
                 decoration: InputDecoration(
                   labelText: "Publication Date",
+                  labelStyle: TextStyle(color: secondaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -326,8 +349,10 @@ class _EditBookPageState extends State<EditBookPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 initialValue: widget.book.fields!.publisher,
+                style: TextStyle(color: secondaryColor),
                 decoration: InputDecoration(
                   labelText: "Publisher",
+                  labelStyle: TextStyle(color: secondaryColor),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -353,7 +378,7 @@ class _EditBookPageState extends State<EditBookPage> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 4,
-                    backgroundColor: Colors.black,
+                    backgroundColor: secondaryColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     )
@@ -392,9 +417,9 @@ class _EditBookPageState extends State<EditBookPage> {
                         ));
                     }
                   },
-                  child: const Text(
+                  child: Text(
                     "Save",
-                    style: TextStyle(fontSize: 16 ,color: Colors.white),
+                    style: TextStyle(fontSize: 16 ,color: backgroundColor),
                   ),
                 ),
               ),

@@ -193,7 +193,7 @@ class BookCard extends StatelessWidget {
                             text: "Edit",
                             icon: Icons.edit,
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditBookPage(book: book,)));
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditBookPage(book: book, isLightMode: isLightMode,)));
                             },
                           ),
                           UBButton(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/admin/models/user.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
@@ -118,7 +119,8 @@ class _ListUserPageState extends State<ListUserPage> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
-    bool isLightMode = true;
+    Color backgroundColor = widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor;
+    Color secondaryColor = !widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -131,32 +133,37 @@ class _ListUserPageState extends State<ListUserPage> {
             ),
           ),
         ),
-        backgroundColor: const Color(0xFFffcc80),
-        foregroundColor: Colors.black,
+        backgroundColor: backgroundColor,
+        foregroundColor: secondaryColor,
       ),
+      backgroundColor: backgroundColor,
       body: FutureBuilder(
-          future: fetchUsers(request),
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.data == null) {
-              return const Center(child: CircularProgressIndicator());
+        future: fetchUsers(request),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.data == null) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            if (!snapshot.hasData) {
+              return Column(
+                children: [
+                Text(
+                    "Tidak ada user yang telah register.",
+                    style:
+                        TextStyle(color: secondaryColor, fontSize: 20),
+                ),
+                const SizedBox(height: 8),
+                ],
+              );
             } else {
-              if (!snapshot.hasData) {
-                return const Column(
-                  children: [
-                    Text(
-                      "Tidak ada user yang telah register.",
-                      style: TextStyle(color: Color(0xFFffcc80), fontSize: 20),
-                    ),
-                    SizedBox(height: 8),
-                  ],
-                );
-              } else {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (_, index) => Card(
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (_, index) {
+                  Color cardColors = UBColor.darkCardColors[index%5];
+                  return
+                  Card(
+                    color: cardColors,
                     elevation: 3,
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
@@ -169,7 +176,8 @@ class _ListUserPageState extends State<ListUserPage> {
                               children: [
                                 Text(
                                   "${snapshot.data![index].username}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
+                                    color: backgroundColor,
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -177,14 +185,16 @@ class _ListUserPageState extends State<ListUserPage> {
                                 const SizedBox(height: 8),
                                 Text(
                                   "Date Joined: ${snapshot.data![index].dateJoined}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
+                                    color: backgroundColor,
                                     fontSize: 18.0,
                                   ),
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
                                   "Last Login: ${snapshot.data![index].lastLogin}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
+                                    color: backgroundColor,
                                     fontSize: 18.0,
                                   ),
                                 ),
@@ -192,9 +202,10 @@ class _ListUserPageState extends State<ListUserPage> {
                             ),
                           ),
                           // Right column with delete button
-                          const Text(
+                          Text(
                             "Delete",
                             style: TextStyle(
+                              color: backgroundColor,
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -202,20 +213,19 @@ class _ListUserPageState extends State<ListUserPage> {
                           IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () {
-                              _showDeleteConfirmationDialog(
-                                  snapshot.data![index].username,
-                                  snapshot.data![index].id,
-                                  request);
+                              _showDeleteConfirmationDialog(snapshot.data![index].username, snapshot.data![index].id, request);
                             },
                           ),
                         ],
                       ),
                     ),
-                  ),
-                );
-              }
+                  );
+                },
+              );
             }
-          }),
+          }
+        }
+      ),
       bottomNavigationBar: BottomNavBar(
         isAdmin: widget.isAdmin,
         isLightMode: isLightMode,
