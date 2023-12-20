@@ -190,6 +190,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
                       itemBuilder: (context, index) {
                         return BookmarkCard(
                             book: bookmarkedBooks[index]
+                            , isAdmin: widget.isAdmin,
                             );
                       },
                     ),

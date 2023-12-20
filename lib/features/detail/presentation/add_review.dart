@@ -17,11 +17,13 @@ class AddReview extends StatelessWidget {
       {required this.bgColor,
       required this.isLightMode,
       required this.book,
-      super.key});
+      super.key,
+      required this.isAdmin,});
   final bool isLightMode;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _reviewController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final bool isAdmin;
 
   Color bgColor;
   Book book;
@@ -198,6 +200,7 @@ class AddReview extends StatelessWidget {
                                     isLightMode: true,
                                     book: book,
                                     bgColor: bgColor,
+                                    isAdmin: isAdmin,
                                   ),
                                 ),
                               );

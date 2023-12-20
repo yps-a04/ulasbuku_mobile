@@ -155,6 +155,7 @@ class BookCard extends StatelessWidget {
                                     isLightMode: isLightMode,
                                     book: book,
                                     bgColor: cardColor,
+                                    isAdmin: isAdmin,
                                   ),
                                 )),
                               )
@@ -177,6 +178,7 @@ class BookCard extends StatelessWidget {
                             book: book,
                             bgColor: cardColor,
                             isLightMode: true,
+                            isAdmin: isAdmin,
                           ),
                         )),
                       )

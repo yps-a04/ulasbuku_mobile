@@ -13,17 +13,18 @@ import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart
 
 // ignore: must_be_immutable
 class DetailPage extends StatefulWidget {
-  DetailPage(
-      {this.isLightMode = true,
-      required this.bgColor,
-      required this.book,
-      super.key
-      });
+  DetailPage({
+    this.isLightMode = true,
+    required this.bgColor,
+    required this.book,
+    super.key,
+    required this.isAdmin,
+  });
 
   Book book;
   Color bgColor;
   bool isLightMode;
-
+  bool isAdmin;
   @override
   State<StatefulWidget> createState() => _DetailPageState();
 }
@@ -37,10 +38,8 @@ class _DetailPageState extends State<DetailPage> {
     user.forEach((key, value) {
       profile.add(value);
     });
-    await request.postJson(
-        "${EndPoints.baseUrl}/b/${profile[0]}/delete/",
+    await request.postJson("${EndPoints.baseUrl}/b/${profile[0]}/delete/",
         jsonEncode({"pk": widget.book.pk}));
-
   }
 
   Future<List<Data>> fetchReview(int pk, CookieRequest request) async {
@@ -60,6 +59,7 @@ class _DetailPageState extends State<DetailPage> {
     isBookmarked = widget.book.fields!.isBookmarked;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final Color textColor =
@@ -75,7 +75,11 @@ class _DetailPageState extends State<DetailPage> {
         leading: IconButton(
             onPressed: () {
               Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomePage(
+                            isAdmin: true,
+                          )));
             },
             icon: const Icon(
               Icons.arrow_back_ios,
@@ -154,9 +158,8 @@ class _DetailPageState extends State<DetailPage> {
                             },
                             icon: Icon(
                               Icons.bookmark,
-                              color: (isBookmarked!)
-                                  ? Colors.black
-                                  : Colors.grey,
+                              color:
+                                  (isBookmarked!) ? Colors.black : Colors.grey,
                               size: 28,
                             ))
                       ],

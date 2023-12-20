@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
-import 'package:ulas_buku_mobile/features/admin/presentation/users/list_user.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:sizer/sizer.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
@@ -240,7 +239,6 @@ class _HomePageState extends State<HomePage> {
 
                     if (state is HomeSearchLoaded) {
                       if (state.results.isEmpty) {
-                        print("osonng mas ");
                         return Center(
                           child: Text(
                             "Buku tidak ditemukan :(",
@@ -347,9 +345,11 @@ class _HomePageState extends State<HomePage> {
         isAdmin: widget.isAdmin,
         onTap: (value) {
           // print(value);
-          if (value == 1) {
-            //navigate ke bookmark
-            Navigator.pushReplacement(
+          if (!widget.isAdmin)
+          {
+            if (value == 1)
+            {
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BookmarkPage(
@@ -357,14 +357,11 @@ class _HomePageState extends State<HomePage> {
                     isAdmin: widget.isAdmin,
                   ),
                 ));
-          } else if (value == 2) {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
-          } else if (value == 3) {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
-          }
-          else if (value == 4)
-          {
-            Navigator.of(context).push(
+            }
+
+            else if (value == 2)
+            {
+              Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ProfilePage(
                   isAdmin: widget.isAdmin,
@@ -372,6 +369,37 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             );
+            }
+          }
+
+          else
+          {
+            if (value == 1) {
+              //navigate ke bookmark
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookmarkPage(
+                      isLightMode: isLightMode,
+                      isAdmin: widget.isAdmin,
+                    ),
+                  ));
+            } else if (value == 2) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
+            } else if (value == 3) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
+            }
+            else if (value == 4)
+            {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                    isAdmin: widget.isAdmin,
+                    isLightMode: isLightMode,
+                  ),
+                ),
+              );
+            }
           }
           setState(() {
             index = value;

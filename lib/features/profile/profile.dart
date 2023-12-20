@@ -30,6 +30,14 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     isLightMode = widget.isLightMode;
+    if (widget.isAdmin)
+    {
+      index = 4;
+    }
+    else
+    {
+      index = 2;
+    }
   }
 
   Future<List<String>> fetchUser(CookieRequest request) async {
@@ -68,8 +76,9 @@ class _ProfilePageState extends State<ProfilePage> {
       throw Exception('error : $e');
     }
   }
+  late int index;
+  
 
-  int index = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -303,6 +312,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 MaterialPageRoute(
                                   builder: (context) => PreferencePage(
                                     isLightMode: isLightMode,
+                                    isAdmin: widget.isAdmin,
                                   ),
                                 ),
                               );
@@ -459,12 +469,15 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       bottomNavigationBar: BottomNavBar(
         isLightMode: isLightMode,
-        isAdmin: widget.isAdmin,
         currentIndex: index,
+        isAdmin: widget.isAdmin,
         onTap: (value) {
-          if (value == 1) {
-            //navigate ke bookmark
-            Navigator.pushReplacement(
+          // print(value);
+          if (!widget.isAdmin)
+          {
+            if (value == 1)
+            {
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BookmarkPage(
@@ -472,24 +485,47 @@ class _ProfilePageState extends State<ProfilePage> {
                     isAdmin: widget.isAdmin,
                   ),
                 ));
-          } else if (value == 2) {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => BookForm(
+            }
+
+            else if (value == 0)
+            {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(
+                    isLightMode: isLightMode, isAdmin: widget.isAdmin,
+                  ),
+                ));
+            }
+          }
+
+          else
+          {
+            if (value == 1) {
+              //navigate ke bookmark
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookmarkPage(
                       isLightMode: isLightMode,
-                    )));
-          } else if (value == 3) {
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => BookForm(
-                      isLightMode: isLightMode,
-                    )));
-          } else if (value == 4) {
-          } else if (value == 0) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) =>
-                    HomePage(isLightMode: isLightMode, isAdmin: true),
-              ),
-            );
+                      isAdmin: widget.isAdmin,
+                    ),
+                  ));
+            } else if (value == 2) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
+            } else if (value == 3) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
+            }
+            else if (value == 0)
+            {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(
+                    isLightMode: isLightMode, isAdmin: widget.isAdmin,
+                  ),
+                ));
+            }
           }
           setState(() {
             index = value;

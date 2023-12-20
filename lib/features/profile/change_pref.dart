@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
-import 'package:ulas_buku_mobile/core/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/profile/checkbox_form.dart';
 
 class PreferencePage extends StatefulWidget {
-  PreferencePage({ this.isLightMode = true, super.key});
+  PreferencePage({ this.isLightMode = true, required this.isAdmin, super.key});
+  bool isAdmin;
   bool isLightMode;
   @override
   State<PreferencePage> createState() => _PreferenceState();
@@ -105,6 +105,7 @@ class _PreferenceState extends State<PreferencePage> {
                       CheckboxList(
                         data: authors ?? [],
                         isLightMode: isLightMode,
+                        isAdmin: widget.isAdmin,
                       ),
                     ],
                   ),
