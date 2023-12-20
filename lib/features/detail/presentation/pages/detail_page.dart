@@ -77,8 +77,8 @@ class _DetailPageState extends State<DetailPage> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const HomePage(
-                            isAdmin: true,
+                      builder: (context) => HomePage(
+                            isAdmin: widget.isAdmin,
                           )));
             },
             icon: const Icon(

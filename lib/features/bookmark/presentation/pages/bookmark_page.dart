@@ -111,7 +111,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(isAdmin: true, isLightMode: isLightMode,),
+                  builder: (context) => HomePage(isAdmin: widget.isAdmin, isLightMode: isLightMode,),
                 ));
           },
         ),
@@ -206,8 +206,15 @@ class _BookmarkPageState extends State<BookmarkPage> {
           // print(value);
           if (!widget.isAdmin)
           {
-            if (value == 1)
+            if (value == 0)
             {
+             Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(
+                    isLightMode: isLightMode, isAdmin: widget.isAdmin,
+                  ),
+                ));              
             }
 
             else if (value == 2)
@@ -225,8 +232,14 @@ class _BookmarkPageState extends State<BookmarkPage> {
 
           else
           {
-            if (value == 1) {
-              
+            if (value == 0) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomePage(
+                    isLightMode: isLightMode, isAdmin: widget.isAdmin,
+                  ),
+                ));
             } else if (value == 2) {
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
             } else if (value == 3) {
