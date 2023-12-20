@@ -170,7 +170,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
         );
       },
       child: Container(
-        height: 100,
+        height: 20.h,
         decoration: const BoxDecoration(
           color:Color(0xffacdcf2),
         ),
