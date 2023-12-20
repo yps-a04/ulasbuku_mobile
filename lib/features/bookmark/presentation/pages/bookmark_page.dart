@@ -62,7 +62,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(),
+                  builder: (context) => const HomePage(isAdmin: true),
                 ));
           },
         ),

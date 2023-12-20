@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       if (request.loggedIn) {
                         String uname = response['username'];
-                        bool isStaff = response['is_staff'][0];
+                        bool isStaff = response['is_staff'];
 
                         if (isStaff) {
                           //pushreplacemant ke admin page
@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomePage()),
+                                builder: (context) => const HomePage(isAdmin: true,)),
                           );
 
                           ScaffoldMessenger.of(context)
