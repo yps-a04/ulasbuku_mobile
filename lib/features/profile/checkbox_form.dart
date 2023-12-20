@@ -13,7 +13,8 @@ class CheckboxList extends StatefulWidget {
   final List<String> data;
 
   // ignore: use_key_in_widget_constructors
-  CheckboxList({this.isLightMode = true, required this.data});
+  CheckboxList({this.isLightMode = true, required this.isAdmin, required this.data});
+  bool isAdmin;
   bool isLightMode;
 
   @override
@@ -51,7 +52,13 @@ class _CheckboxListState extends State<CheckboxList> {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Berhasil mengubah preference!"),
         ));
-        Navigator.of(context).pop();
+        Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                    isLightMode: isLightMode, isAdmin: widget.isAdmin,
+                  ),
+                ),
+              );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text("Terdapat kesalahan, silakan coba lagi."),
