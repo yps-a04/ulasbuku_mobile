@@ -10,6 +10,9 @@ import 'package:ulas_buku_mobile/features/profile/profile.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 // import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ulas_buku_mobile/features/bookmark/data/data_source/bookmark_remote_data_source.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+
 
 class BookmarkPage extends StatefulWidget {
   const BookmarkPage({super.key, this.isLightMode = true});
@@ -21,12 +24,32 @@ class BookmarkPage extends StatefulWidget {
 
 class _BookmarkPageState extends State<BookmarkPage> {
   int index = 1;
-  List<Book>?
-      bookmarkedBooks; 
+  late bool isLightMode;
+  List<Book> bookmarkedBooks = []; 
+  
+  @override
+  void initState() {
+    super.initState();
+    isLightMode = widget.isLightMode;
+    fetchBookmark();
+  }
+
+  Future<void> fetchBookmark() async {
+    final request = context.read<CookieRequest>();
+    final dataSource = BookmarkListRemoteDataSource(request: request);
+
+    try {
+      final books = await dataSource.fetchBooks();
+      setState(() {
+        bookmarkedBooks = books;
+      });
+    } catch (e) {
+      print('error : $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<HomeBloc>();
     
     return Scaffold(
       appBar: AppBar(
@@ -128,34 +151,19 @@ class _BookmarkPageState extends State<BookmarkPage> {
             ),
             Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                child: BlocBuilder<HomeBloc, HomeState>(
-                  bloc: bloc,
-                  builder: (context, state) {
-                  if (state is HomeBookmarkedBooksUpdated) {
-                    List<Book> bookmarkedBooks = state.bookmarkedBooks;
-                    if (bookmarkedBooks.isEmpty) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else {
-                    return Expanded(
+                child: Expanded(
                         child: SizedBox(
                           height: 200,
                           child: ListView.builder(
-                            itemCount: bookmarkedBooks.length,
+                            itemCount: bookmarkedBooks!.length,
                             itemBuilder: (context, index) {
                               return BookmarkCard(
-                                book: bookmarkedBooks[index],
-                              );
+                                  book: bookmarkedBooks[index]
+                                  );
                             },
                           ),
                         ),
-                      );
-                    } 
-                  }
-                  
-                return const Center(child: CircularProgressIndicator());
-                }
-                )
-              ),
+                )),
           ],
         ),
       ),

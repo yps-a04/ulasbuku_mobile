@@ -47,8 +47,6 @@ class _HomePageState extends State<HomePage> {
       final books = await dataSource.fetchBooks();
       setState(() {
         bookmarkedBooks = books;
-        final bloc = context.read<HomeBloc>();
-        bloc.add(UpdateBookmarkedBooksEvent(bookmarkedBooks: bookmarkedBooks));
       });
     } catch (e) {
       print('error : $e');

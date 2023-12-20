@@ -12,7 +12,6 @@ class BookmarkListRemoteDataSource {
       final List<Book> result = [];
       final response = await request.get(EndPoints.getUserBookmark);
 
-      // print(response);
       for (var i in response) {
         Book book = Book.fromJson(i); 
         result.add(book);

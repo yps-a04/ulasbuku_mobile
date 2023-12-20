@@ -10,8 +10,6 @@ import 'package:ulas_buku_mobile/features/detail/data/review_model.dart';
 import 'package:ulas_buku_mobile/features/detail/presentation/widgets/review_card.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
-
 
 // ignore: must_be_immutable
 class DetailPage extends StatefulWidget {
@@ -30,26 +28,6 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  bool isBookmarked = false;
-
-  @override
-  void initState() {
-    super.initState();
-    checkBookmarks();
-  }
-
-  Future<void> checkBookmarks() async {
-    final homeBloc = context.read<HomeBloc>();
-    final currentState = homeBloc.state;
-    if (currentState is HomeBookmarkedBooksUpdated) {
-      for (var element in currentState.bookmarkedBooks) { 
-        if (element.pk == widget.book.pk) {
-          isBookmarked = true;
-        }
-      }
-    }
-  }
-
   Future<void> deleteBookmark() async {
     final request = context.read<CookieRequest>();
     final user = await request.get('http://localhost:8000/ret_profile/');
@@ -66,8 +44,6 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
-
-
   Future<List<Data>> fetchReview(int pk, CookieRequest request) async {
     try {
       final response = await request.get('${EndPoints.getReview}$pk');
@@ -82,6 +58,7 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool? isBookmarked = widget.book.fields!.isBookmarked;
     final Color textColor =
         widget.isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
     final request = context.watch<CookieRequest>();
@@ -95,8 +72,7 @@ class _DetailPageState extends State<DetailPage> {
         leading: IconButton(
             onPressed: () {
               Navigator.pushReplacement(
-                context, 
-                MaterialPageRoute(builder: (context) => HomePage()));
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
             },
             icon: const Icon(
               Icons.arrow_back_ios,
@@ -170,12 +146,14 @@ class _DetailPageState extends State<DetailPage> {
                             onPressed: () {
                               setState(() {
                                 deleteBookmark();
-                                isBookmarked = !isBookmarked;
+                                isBookmarked = !isBookmarked!;
                               });
                             },
                             icon: Icon(
                               Icons.bookmark,
-                              color: (isBookmarked == true)? Colors.black : Colors.grey ,
+                              color: (isBookmarked!)
+                                  ? Colors.black
+                                  : Colors.grey,
                               size: 28,
                             ))
                       ],
