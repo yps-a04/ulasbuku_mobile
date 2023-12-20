@@ -27,7 +27,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
 
   Future<void> deleteBookmark() async {
     final request = context.read<CookieRequest>();
-    final user = await request.get('http://localhost:8000/ret_profile/');
+    final user = await request.get('${EndPoints.baseUrl}/ret_profile/');
     final List<String> profile = [];
     user.forEach((key, value) {
       profile.add(value);
