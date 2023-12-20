@@ -17,7 +17,7 @@ class ListUserPage extends StatefulWidget {
 }
 
 class _ListUserPageState extends State<ListUserPage> {
-  int index = 0;
+  int index = 3;
   late bool isLightMode;
   @override
   void initState() {
@@ -28,15 +28,12 @@ class _ListUserPageState extends State<ListUserPage> {
   Future<List<User>> fetchUsers(CookieRequest cookieRequest) async {
     try {
       final List<User> listUser = [];
-      print("sebelum");
       final response = await cookieRequest.get(EndPoints.getUser);
-      print(response);
 
       for (var i in response) {
         User user = User.fromJson(i);
         listUser.add(user);
       }
-      print(listUser);
 
       return listUser;
     } catch (e) {

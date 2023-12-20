@@ -36,7 +36,7 @@ class _BookFormState extends State<BookForm> {
   String _publicationDate = "";
   String _publisher = "";
 
-  int index = 0;
+  int index = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +45,7 @@ class _BookFormState extends State<BookForm> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Center(
           child: Text(
             'Add New Book',
@@ -405,6 +406,9 @@ class _BookFormState extends State<BookForm> {
           } else if (value == 1) {
             // navigate ke bookmark
           } else if (value == 2) {
+            // di add book
+          } else if (value == 3) {
+            // navigate ke list user
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ListUserPage(isLightMode: isLightMode,)
