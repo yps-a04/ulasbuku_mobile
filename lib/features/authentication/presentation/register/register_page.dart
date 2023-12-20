@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/login/login_page.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
@@ -14,12 +19,14 @@ class _RegisterPageState extends State<RegisterPage> {
   bool isObsecure = true;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordConfirmController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
+    CookieRequest request = context.watch<CookieRequest>();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -89,7 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     height: 16,
                   ),
                   TextField(
-                    controller: _passwordController,
+                    controller: _passwordConfirmController,
                     obscureText: isObsecure,
                     decoration: InputDecoration(
                         labelText: "Confirm Password",
@@ -126,10 +133,83 @@ class _RegisterPageState extends State<RegisterPage> {
                     primaryColor: Colors.black,
                     secondaryColor: Colors.white,
                     alignment: MainAxisAlignment.center,
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const HomePage(isAdmin: true),
-                      ));
+                    onTap: () async {
+                      final response = await request.post(
+                        EndPoints.register,
+                        jsonEncode(
+                          {
+                            'username': _usernameController.text,
+                            'password': _passwordController.text,
+                            'passwordConfirm': _passwordConfirmController.text
+                          },
+                        ),
+                      );
+                      print(response);
+                      if (response['status'] == true) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ));
+
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            SnackBar(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.white,
+                              margin: EdgeInsets.fromLTRB(width * 0.1,
+                                  height * 0.1, width * 0.1, height * 0.75),
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                  ),
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                  Text(
+                                    "Register berhasil! ",
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                      } else {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            SnackBar(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: Colors.white,
+                              margin: EdgeInsets.fromLTRB(width * 0.1,
+                                  height * 0.1, width * 0.1, height * 0.75),
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Icon(
+                                    Icons.close,
+                                    color: Colors.red,
+                                  ),
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                  Text(
+                                    "Register gagal! ",
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                      }
                     },
                   ),
                   Row(
@@ -137,7 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       const Text("Sudah punya akun? "),
                       TextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const LoginPage(),
                             ));
