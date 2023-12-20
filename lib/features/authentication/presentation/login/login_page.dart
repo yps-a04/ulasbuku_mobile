@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       if (request.loggedIn) {
                         String uname = response['username'];
-                        bool isStaff = response['is_staff'];
+                        bool isStaff = response['is_staff'][0];
 
                         if (isStaff) {
                           //pushreplacemant ke admin page

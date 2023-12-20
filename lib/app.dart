@@ -27,8 +27,6 @@ class App extends StatelessWidget {
       child: Sizer(
         builder: (context, orientation, deviceType) {
           return MaterialApp(
-            locale: DevicePreview.locale(context),
-            builder: DevicePreview.appBuilder,
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               textTheme: GoogleFonts.poppinsTextTheme(

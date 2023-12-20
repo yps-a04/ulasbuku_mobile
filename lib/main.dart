@@ -6,10 +6,7 @@ import 'app.dart';
 
 void main() {
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => const App(), // Wrap your app
-    ),
+    const App()
   );
 }
     
