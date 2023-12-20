@@ -38,7 +38,6 @@ class SortBooksRemoteDataSource {
     try {
       final List<Book> result = [];
       final response = await request.get('${EndPoints.sort}?sort_by=$sortBy');
-
       // print(response);
       for (var i in response) {
         Book book = Book();

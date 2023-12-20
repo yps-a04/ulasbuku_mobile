@@ -12,7 +12,9 @@ class BookListView extends StatelessWidget {
     required this.textColor,
     required this.homeScrollController,
     required this.isLightMode,
+    required this.isAdmin,
   });
+  final bool isAdmin;
   final bool isLightMode;
   final ScrollController homeScrollController;
   final Color textColor;
@@ -74,6 +76,7 @@ class BookListView extends StatelessWidget {
                             Color cardColor = cardColors[index % 5];
 
                             return BookCard(
+                              isAdmin: isAdmin,
                               isLightMode: isLightMode,
                               textColor: textColor,
                               cardColor: cardColor,
@@ -98,6 +101,7 @@ class BookListView extends StatelessWidget {
                             cardColors.shuffle();
                             Color cardColor = cardColors[index % 5];
                             return BookCard(
+                              isAdmin: isAdmin,
                               isLightMode: isLightMode,
                               textColor: textColor,
                               cardColor: cardColor,
@@ -122,6 +126,7 @@ class BookListView extends StatelessWidget {
                             cardColors.shuffle();
                             Color cardColor = cardColors[index % 5];
                             return BookCard(
+                              isAdmin: isAdmin,
                               isLightMode: isLightMode,
                               textColor: textColor,
                               cardColor: cardColor,
