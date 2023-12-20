@@ -45,8 +45,8 @@ class _ListUserPageState extends State<ListUserPage> {
   void _deleteUser(int id, CookieRequest cookieRequest) async {
     try {
       final response = await cookieRequest 
-          // .post('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id//show-admin/delete-user/$id/', {});
-          .post('http://10.0.2.2:8000/show-admin/delete-user/$id/', {});
+          .post('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id//show-admin/delete-user/$id/', {});
+          // .post('http://10.0.2.2:8000/show-admin/delete-user/$id/', {});
       if (response["status"] == true) {
         setState(() {
           
