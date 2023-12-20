@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/features/admin/models/user.dart';
 import 'package:ulas_buku_mobile/features/admin/presentation/form/book_form.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
 class ListUserPage extends StatefulWidget {
-  const ListUserPage({Key? key}) : super(key: key);
+  ListUserPage({this.isLightMode = true, super.key});
+  bool isLightMode;
 
   @override
   State<ListUserPage> createState() => _ListUserPageState();
@@ -15,16 +18,25 @@ class ListUserPage extends StatefulWidget {
 
 class _ListUserPageState extends State<ListUserPage> {
   int index = 0;
+  late bool isLightMode;
+  @override
+  void initState() {
+    super.initState();
+    isLightMode = widget.isLightMode;
+  }
 
   Future<List<User>> fetchUsers(CookieRequest cookieRequest) async {
     try {
       final List<User> listUser = [];
+      print("sebelum");
       final response = await cookieRequest.get(EndPoints.getUser);
+      print(response);
 
       for (var i in response) {
         User user = User.fromJson(i);
         listUser.add(user);
       }
+      print(listUser);
 
       return listUser;
     } catch (e) {
@@ -35,7 +47,8 @@ class _ListUserPageState extends State<ListUserPage> {
   void _deleteUser(int id, CookieRequest cookieRequest) async {
     try {
       final response = await cookieRequest 
-          .post('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id//show-admin/delete-user/$id/', {});
+          // .post('https://ulasbuku-a04-tk.pbp.cs.ui.ac.id//show-admin/delete-user/$id/', {});
+          .post('http://10.0.2.2:8000/show-admin/delete-user/$id/', {});
       if (response["status"] == true) {
         setState(() {
           
@@ -90,6 +103,7 @@ class _ListUserPageState extends State<ListUserPage> {
                           ),
                           Text(
                             "User $username telah dihapus !",
+                            overflow: TextOverflow.ellipsis,
                             style:
                                 const TextStyle(color: Colors.black),
                           ),
@@ -211,12 +225,25 @@ class _ListUserPageState extends State<ListUserPage> {
         onTap: (value) {
           if (value == 0) {
             //navigate ke home
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => HomePage(isLightMode: isLightMode, isAdmin: true,)
+              )
+            );
           } else if (value == 1) {
             // navigate ke bookmark
           } else if (value == 2) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BookForm()));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => BookForm(isLightMode: isLightMode,)
+              )
+            );
           } else if (value == 3) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ListUserPage()));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ListUserPage(isLightMode: isLightMode,)
+              )
+            );
           }
           setState(() {
             index = value;

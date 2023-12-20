@@ -362,7 +362,8 @@ class _EditBookPageState extends State<EditBookPage> {
                   ),
                   onPressed: () async {
                     final response = await request.postJson(
-                    "https://ulasbuku-a04-tk.pbp.cs.ui.ac.id//show-admin/edit-flutter/${widget.book.pk}",
+                    // "https://ulasbuku-a04-tk.pbp.cs.ui.ac.id//show-admin/edit-flutter/${widget.book.pk}",
+                    "http://10.0.2.2:8000/show-admin/edit-flutter/${widget.book.pk}",
                     jsonEncode(<String, String>{
                         'title': _title!,
                         'author': _author!,
@@ -402,24 +403,6 @@ class _EditBookPageState extends State<EditBookPage> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavBar(
-        isLightMode: isLightMode,
-        currentIndex: index,
-        onTap: (value) {
-          if (value == 0) {
-            //navigate ke home
-          } else if (value == 1) {
-            // navigate ke bookmark
-          } else if (value == 2) {
-            
-          } else if (value == 3) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListUserPage()));
-          }
-          setState(() {
-            index = value;
-          });
-        },
       ),
     );
   }

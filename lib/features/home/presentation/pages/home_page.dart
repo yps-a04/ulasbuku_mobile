@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -323,9 +325,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ));
           } else if (value == 2) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BookForm()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookForm(isLightMode: isLightMode,)));
           } else if (value == 3) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ListUserPage()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListUserPage(isLightMode: isLightMode,)));
           }
           else if (value == 4)
           {

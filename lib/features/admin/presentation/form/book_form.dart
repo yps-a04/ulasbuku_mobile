@@ -8,7 +8,8 @@ import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 
 class BookForm extends StatefulWidget {
-  const BookForm({Key? key}) : super(key: key);
+  BookForm({this.isLightMode = true, super.key});
+  bool isLightMode;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -17,7 +18,12 @@ class BookForm extends StatefulWidget {
 
 class _BookFormState extends State<BookForm> {
   final _formKey = GlobalKey<FormState>();
-  bool isLightMode = true;
+  late bool isLightMode;
+  @override
+  void initState() {
+    super.initState();
+    isLightMode = widget.isLightMode;
+  }
   String _title = "";
   String _author = "";
   double _averageRating = 0.0;
@@ -338,7 +344,8 @@ class _BookFormState extends State<BookForm> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                           final response = await request.postJson(
-                          "http://ulasbuku-a04-tk.pbp.cs.ui.ac.id/show-admin/create-flutter/",
+                          // "http://ulasbuku-a04-tk.pbp.cs.ui.ac.id/show-admin/create-flutter/",
+                          "http://10.0.2.2:8000/show-admin/create-flutter/",
                           jsonEncode(<String, String>{
                               'title': _title,
                               'author': _author,
@@ -390,12 +397,19 @@ class _BookFormState extends State<BookForm> {
         onTap: (value) {
           if (value == 0) {
             //navigate ke home
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => HomePage(isLightMode: isLightMode, isAdmin: true),
+              ),
+            );
           } else if (value == 1) {
             // navigate ke bookmark
           } else if (value == 2) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const BookForm()));
-          } else if (value == 3) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ListUserPage()));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ListUserPage(isLightMode: isLightMode,)
+              )
+            );
           }
           setState(() {
             index = value;
