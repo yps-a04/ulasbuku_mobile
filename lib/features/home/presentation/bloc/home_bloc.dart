@@ -13,6 +13,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(HomeInitial()) {
     on<HomeLoadDataEvent>(_getBookList);
     on<HomeSearchEvent>(_searchBook);
+    on<UpdateBookmarkedBooksEvent>(_updateBookmarkedBooks);
   }
 
   void _getBookList(
@@ -68,5 +69,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     }
+  }
+
+  void _updateBookmarkedBooks(
+    UpdateBookmarkedBooksEvent event,
+    Emitter<HomeState> emit,
+  ) {
+    emit(HomeBookmarkedBooksUpdated(bookmarkedBooks: event.bookmarkedBooks));
   }
 }

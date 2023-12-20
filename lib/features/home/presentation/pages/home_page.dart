@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -33,6 +35,7 @@ class _HomePageState extends State<HomePage> {
     isLightMode = widget.isLightMode;
     fetchBookmark();
   }
+
   ScrollController homeController = ScrollController();
   List<Book> bookmarkedBooks = [];
 
@@ -44,6 +47,8 @@ class _HomePageState extends State<HomePage> {
       final books = await dataSource.fetchBooks();
       setState(() {
         bookmarkedBooks = books;
+        final bloc = context.read<HomeBloc>();
+        bloc.add(UpdateBookmarkedBooksEvent(bookmarkedBooks: bookmarkedBooks));
       });
     } catch (e) {
       print('error : $e');
@@ -243,7 +248,6 @@ class _HomePageState extends State<HomePage> {
                                 textColor: textColor,
                                 cardColor: cardColors[index % 5],
                                 book: state.results[index],
-                                bookmarkedBooks : bookmarkedBooks,
                                 );
                           },
                         ),
@@ -273,7 +277,7 @@ class _HomePageState extends State<HomePage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  BookmarkPage(bookmarkedBooks: bookmarkedBooks, isLightMode: isLightMode,)));
+                                                  BookmarkPage(isLightMode: isLightMode,)));
                                     },
                                     child: const Text(
                                       "Show All",
@@ -297,7 +301,6 @@ class _HomePageState extends State<HomePage> {
                                       cardColor: cardColors[index % 5],
                                       textColor: textColor,
                                       book: bookmarkedBooks[index],
-                                      bookmarkedBooks: bookmarkedBooks,
                                     );
                                   },
                                 ),
@@ -310,8 +313,7 @@ class _HomePageState extends State<HomePage> {
                             homeScrollController: homeController,
                             bloc: bloc,
                             cardColors: cardColors,
-                            textColor: textColor,
-                            bookmarkedBooks: bookmarkedBooks)
+                            textColor: textColor,)
                       ],
                     );
                   },
@@ -334,7 +336,6 @@ class _HomePageState extends State<HomePage> {
                 MaterialPageRoute(
                   builder: (context) => BookmarkPage(
                     isLightMode: isLightMode,
-                    bookmarkedBooks: bookmarkedBooks,
                   ),
                 ));
           } else if (value == 2) {

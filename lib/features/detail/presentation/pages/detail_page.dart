@@ -2,13 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
-import 'package:ulas_buku_mobile/features/detail/presentation/widgets/review_card.dart';
-import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
+import 'package:ulas_buku_mobile/features/detail/data/review_model.dart';
+import 'package:ulas_buku_mobile/features/detail/presentation/widgets/review_card.dart';
+import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 
 
 // ignore: must_be_immutable
@@ -17,13 +19,11 @@ class DetailPage extends StatefulWidget {
       {this.isLightMode = true,
       required this.bgColor,
       required this.book,
-      super.key,
-      required this.bookmarkedBooks});
+      super.key});
 
   Book book;
   Color bgColor;
   bool isLightMode;
-  List<Book>? bookmarkedBooks;
 
   @override
   State<StatefulWidget> createState() => _DetailPageState();
@@ -39,9 +39,13 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<void> checkBookmarks() async {
-    for (var element in widget.bookmarkedBooks!) {
-      if (element.pk == widget.book.pk) {
-        isBookmarked = true;
+    final homeBloc = context.read<HomeBloc>();
+    final currentState = homeBloc.state;
+    if (currentState is HomeBookmarkedBooksUpdated) {
+      for (var element in currentState.bookmarkedBooks) { 
+        if (element.pk == widget.book.pk) {
+          isBookmarked = true;
+        }
       }
     }
   }
@@ -64,10 +68,23 @@ class _DetailPageState extends State<DetailPage> {
 
 
 
+  Future<List<Data>> fetchReview(int pk, CookieRequest request) async {
+    try {
+      final response = await request.get('${EndPoints.getReview}$pk');
+
+      // print(response);
+      final data = Review.fromJson(response);
+      return data.data ?? [];
+    } catch (e) {
+      throw Exception('error : $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Color textColor =
         widget.isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor;
+    final request = context.watch<CookieRequest>();
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -233,32 +250,42 @@ class _DetailPageState extends State<DetailPage> {
                     const SizedBox(
                       height: 16,
                     ),
-                    SizedBox(
-                      height: height * 0.3,
-                      child: ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        separatorBuilder: (context, index) => const SizedBox(
-                          width: 16,
-                        ),
-                        itemBuilder: (context, index) {
-                          return ReviewCard(
-                            textColor: textColor,
-                            reviewer: "Reviewer Name",
-                            reviewDate: "22/22/2222",
-                            title: "Title",
-                            text:
-                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                                ' Etiam egestas quam eget orci imperdiet hendrerit. Nulla ultricies'
-                                ' dignissim risus nec feugiat. Aliquam eget fringilla mi, in pulvinar'
-                                ' lectus. Pellentesque facilisis accumsan lorem, vitae suscipit ligula '
-                                'fermentum vel. Sed efficitur arcu ac lectus porttitor, vel bibendum '
-                                'turpis sollicitudin. Sed laoreet quam ac orci congue, a mattis magna'
-                                ' pretium. Integer et dui sit amet odio auctor porta id nec lectus.',
+                    FutureBuilder(
+                      future: fetchReview(widget.book.pk!, request),
+                      builder: (context, snapshot) {
+                        if (snapshot.data != null) {
+                          if (snapshot.data!.isEmpty) {
+                            return const Center(
+                              child: Text("Belum ada review untuk buku ini :("),
+                            );
+                          }
+                          return SizedBox(
+                            height: height * 0.3,
+                            child: ListView.separated(
+                              physics: const BouncingScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.length,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                width: 16,
+                              ),
+                              itemBuilder: (context, index) {
+                                return ReviewCard(
+                                    textColor: textColor,
+                                    reviewer: snapshot.data![index].user!,
+                                    reviewDate: "",
+                                    title: snapshot.data![index].title!,
+                                    text: snapshot.data![index].review!);
+                              },
+                            ),
                           );
-                        },
-                      ),
+                        } else {
+                          return const Center(
+                            child: Text(
+                                "Terjadi kesalahan saat mengambil data review..."),
+                          );
+                        }
+                      },
                     )
                   ],
                 ),

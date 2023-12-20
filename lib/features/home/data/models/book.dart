@@ -35,6 +35,7 @@ class Fields {
   int? textReviewCount;
   String? publicationDate;
   String? publisher;
+  bool? isBookmarked;
 
   Fields(
       {this.title,
@@ -47,7 +48,8 @@ class Fields {
       this.ratingCount,
       this.textReviewCount,
       this.publicationDate,
-      this.publisher});
+      this.publisher,
+      this.isBookmarked});
 
   Fields.fromJson(Map<String, dynamic> json) {
     title = json['title'];
@@ -61,6 +63,7 @@ class Fields {
     textReviewCount = json['text_review_count'];
     publicationDate = json['publication_date'];
     publisher = json['publisher'];
+    isBookmarked = json['isBookmarked'];
   }
 
   Map<String, dynamic> toJson() {

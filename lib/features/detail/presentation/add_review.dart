@@ -1,21 +1,27 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
+import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/detail/presentation/pages/detail_page.dart';
 
 // ignore: must_be_immutable
 class AddReview extends StatelessWidget {
- AddReview({required this.bgColor, required this.book, super.key, required this.bookmarkedBooks});
-
- final TextEditingController _titleController = TextEditingController();
- final TextEditingController _reviewController = TextEditingController();
- final _formKey = GlobalKey<FormState>();
- 
+  AddReview(
+      {required this.bgColor,
+      required this.isLightMode,
+      required this.book,
+      super.key});
+  final bool isLightMode;
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _reviewController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   Color bgColor;
   Book book;
@@ -52,9 +58,11 @@ class AddReview extends StatelessWidget {
                 child: Container(
                   height: height * 1.25,
                   width: width,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
+                  decoration: BoxDecoration(
+                    color: isLightMode
+                        ? UBColor.lightBgColor
+                        : UBColor.darkBgColor,
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30),
                     ),
@@ -70,10 +78,13 @@ class AddReview extends StatelessWidget {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [const Text(
+                      children: [
+                        Text(
                           "Tambahkan Review",
                           style: TextStyle(
-                              color: Colors.black,
+                              color: isLightMode
+                                  ? UBColor.darkBgColor
+                                  : UBColor.lightBgColor,
                               fontSize: 30,
                               fontWeight: FontWeight.bold),
                         )
@@ -96,13 +107,24 @@ class AddReview extends StatelessWidget {
                             controller: _titleController,
                             decoration: InputDecoration(
                               labelText: "Review Title",
-                              border: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 1),
+                              labelStyle: TextStyle(
+                                  color: isLightMode
+                                      ? UBColor.darkBgColor
+                                      : UBColor.lightBgColor),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1,
+                                    color: isLightMode
+                                        ? UBColor.darkBgColor
+                                        : UBColor.lightBgColor),
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.black, width: 1),
+                                borderSide: BorderSide(
+                                    color: isLightMode
+                                        ? UBColor.darkBgColor
+                                        : UBColor.lightBgColor,
+                                    width: 1),
                                 borderRadius: BorderRadius.circular(25),
                               ),
                             ),
@@ -113,17 +135,28 @@ class AddReview extends StatelessWidget {
                           TextField(
                             controller: _reviewController,
                             maxLines: 10,
-                            style: TextStyle(height: 1.5), // Adjust as needed
+                            style: const TextStyle(height: 1.5), // Adjust as needed
                             decoration: InputDecoration(
                               labelText: "Write Your Review Here",
+                              labelStyle: TextStyle(
+                                  color: isLightMode
+                                      ? UBColor.darkBgColor
+                                      : UBColor.lightBgColor),
                               alignLabelWithHint: true,
-                              border: OutlineInputBorder(
-                                borderSide: const BorderSide(width: 1),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1,
+                                    color: isLightMode
+                                        ? UBColor.darkBgColor
+                                        : UBColor.lightBgColor),
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.black, width: 1),
+                                borderSide: BorderSide(
+                                    color: isLightMode
+                                        ? UBColor.darkBgColor
+                                        : UBColor.lightBgColor,
+                                    width: 1),
                                 borderRadius: BorderRadius.circular(25),
                               ),
                             ),
@@ -135,47 +168,78 @@ class AddReview extends StatelessWidget {
                       ),
                     ),
                     UBButton(
-                      width: width,
-                      height: 50,
-                      primaryColor: bgColor,
-                      secondaryColor: Colors.white,
-                      text: "Submit Review",
-                      icon: Icons.arrow_forward_ios,
-                      onTap: () async {
-                        if (_formKey.currentState!.validate()) {
-                          final response = await request.post(
-                            "http://10.0.2.2:8000/add-review-flutter/",
-                            jsonEncode(<String, String>{
-                              "title": _titleController.text,
-                              "review": _reviewController.text,
-                              "bookname": book.fields!.title!,
-                            }),
-                          );
-                          if (response['status'] == 'success') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Review berhasil ditambahkan"),
-                            ));
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailPage(
-                                  isLightMode: true,
-                                  book: book,
-                                  bgColor: bgColor,
-                                  bookmarkedBooks: bookmarkedBooks,
-                                ),
-                              ),
+                        width: width,
+                        height: 50,
+                        primaryColor: bgColor,
+                        secondaryColor: !isLightMode
+                            ? UBColor.darkBgColor
+                            : UBColor.lightBgColor,
+                        text: "Submit Review",
+                        icon: Icons.arrow_forward_ios,
+                        onTap: () async {
+                          if (_formKey.currentState!.validate()) {
+                            final response = await request.post(
+                              EndPoints.addReview,
+                              jsonEncode(<String, String>{
+                                "title": _titleController.text,
+                                "review": _reviewController.text,
+                                "bookname": book.fields!.title!,
+                              }),
                             );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Review gagal ditambahkan"),
-                            ));
+                            if (response['status'] == 'success') {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Review berhasil ditambahkan"),
+                              ));
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailPage(
+                                    isLightMode: true,
+                                    book: book,
+                                    bgColor: bgColor,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                ..hideCurrentSnackBar()
+                                ..showSnackBar(
+                                  SnackBar(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor: Colors.white,
+                                    margin: EdgeInsets.fromLTRB(
+                                        width * 0.1,
+                                        height * 0.1,
+                                        width * 0.1,
+                                        height * 0.75),
+                                    content: const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.check,
+                                          color: Colors.green,
+                                        ),
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Text(
+                                          "Review berhasil ditambahkan!.",
+                                          style: TextStyle(
+                                              color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                            }
                           }
                         }
-                      }
-                      /* () => Navigator.of(context)
+                        /* () => Navigator.of(context)
                           .push(MaterialPageRoute(
                         builder: (context) => DetailPage(
                           isLightMode: true,
@@ -183,7 +247,7 @@ class AddReview extends StatelessWidget {
                           bgColor: bgColor,
                         ),
                       )),*/
-                    )
+                        )
                   ],
                 ),
               )

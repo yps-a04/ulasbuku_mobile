@@ -12,10 +12,9 @@ import 'package:ulas_buku_mobile/features/detail/presentation/pages/detail_page.
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 
 class BookmarkCard extends StatefulWidget {
-  BookmarkCard({super.key, required this.book, this.isLightMode = true, required this.bookmarkedBooks});
+  BookmarkCard({super.key, required this.book, this.isLightMode = true});
   Book book;
   bool isLightMode;
-  List<Book>? bookmarkedBooks;
   @override
   State<StatefulWidget> createState() => _BookmarkCardState();
 }
@@ -98,7 +97,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
                               children: [
                                 RatingBarIndicator(
                                   rating: widget.book.fields!.averageRating!,
-                                  itemBuilder: (context, index) => Icon(
+                                  itemBuilder: (context, index) => const Icon(
                                     Icons.star,
                                   ),
                                   itemCount: 5,
@@ -152,7 +151,6 @@ class _BookmarkCardState extends State<BookmarkCard> {
                                     isLightMode: widget.isLightMode,
                                     book: widget.book,
                                     bgColor: Colors.white,
-                                    bookmarkedBooks: widget.bookmarkedBooks,
                                   ),
                                 )),
                               )
@@ -197,7 +195,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(8, 0, 4, 0),
+                  padding: const EdgeInsets.fromLTRB(8, 0, 4, 0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +208,7 @@ class _BookmarkCardState extends State<BookmarkCard> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 4),
+                        padding: const EdgeInsets.only(top: 4),
                         child: Text(
                           widget.book.fields!.author ?? '',
                           style: const TextStyle(

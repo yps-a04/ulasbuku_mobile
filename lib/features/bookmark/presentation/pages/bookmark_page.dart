@@ -1,27 +1,37 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:ulas_buku_mobile/features/bookmark/presentation/widget/bookmark_card.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/bloc/home_bloc.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 import 'package:ulas_buku_mobile/features/home/data/models/book.dart';
 import 'package:ulas_buku_mobile/features/home/presentation/widgets/bottom_bar.dart';
 import 'package:ulas_buku_mobile/features/profile/profile.dart';
 import 'package:ulas_buku_mobile/core/theme/ub_color.dart';
+// import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookmarkPage extends StatefulWidget {
-  const BookmarkPage(
-      {super.key, this.isLightMode = true, required this.bookmarkedBooks});
+  const BookmarkPage({super.key, this.isLightMode = true});
   final bool isLightMode;
-  final List<Book>? bookmarkedBooks;
+
   @override
   _BookmarkPageState createState() => _BookmarkPageState();
 }
 
 class _BookmarkPageState extends State<BookmarkPage> {
   int index = 1;
+  List<Book>?
+      bookmarkedBooks; 
+
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<HomeBloc>();
+    
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
+        backgroundColor:
+            widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
         title: const Text(
           'Bookmarks',
           style: TextStyle(
@@ -33,7 +43,8 @@ class _BookmarkPageState extends State<BookmarkPage> {
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_rounded,
-            color: widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
+            color:
+                widget.isLightMode ? UBColor.darkBgColor : UBColor.lightBgColor,
             size: 30,
           ),
           onPressed: () {
@@ -48,7 +59,9 @@ class _BookmarkPageState extends State<BookmarkPage> {
           IconButton(
             icon: Icon(
               Icons.tune_rounded,
-              color: widget.isLightMode ? UBColor.lightBgColor : UBColor.darkBgColor,
+              color: widget.isLightMode
+                  ? UBColor.lightBgColor
+                  : UBColor.darkBgColor,
               size: 24,
             ),
             onPressed: () {},
@@ -67,7 +80,9 @@ class _BookmarkPageState extends State<BookmarkPage> {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(40),
                   border: Border.all(
-                    color: widget.isLightMode ? UBColor.darkBgColor:UBColor.lightBgColor ,
+                    color: widget.isLightMode
+                        ? UBColor.darkBgColor
+                        : UBColor.lightBgColor,
                   ),
                 ),
                 child: const Padding(
@@ -113,28 +128,40 @@ class _BookmarkPageState extends State<BookmarkPage> {
             ),
             Padding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                child: (widget.bookmarkedBooks == null)
-                    ? const Center(child: CircularProgressIndicator())
-                    : Expanded(
+                child: BlocBuilder<HomeBloc, HomeState>(
+                  bloc: bloc,
+                  builder: (context, state) {
+                  if (state is HomeBookmarkedBooksUpdated) {
+                    List<Book> bookmarkedBooks = state.bookmarkedBooks;
+                    if (bookmarkedBooks.isEmpty) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                    return Expanded(
                         child: SizedBox(
                           height: 200,
                           child: ListView.builder(
-                            itemCount: widget.bookmarkedBooks!.length,
+                            itemCount: bookmarkedBooks.length,
                             itemBuilder: (context, index) {
                               return BookmarkCard(
-                                  book: widget.bookmarkedBooks![index],
-                                  bookmarkedBooks: widget.bookmarkedBooks,);
+                                book: bookmarkedBooks[index],
+                              );
                             },
                           ),
                         ),
-                      )),
+                      );
+                    } 
+                  }
+                  
+                return const Center(child: CircularProgressIndicator());
+                }
+                )
+              ),
           ],
         ),
-      ), 
+      ),
       bottomNavigationBar: BottomNavBar(
         isLightMode: widget.isLightMode,
         currentIndex: index,
-
         onTap: (value) {
           print(value);
           if (value == 0) {
@@ -148,9 +175,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
             // navigate ke add book
           } else if (value == 3) {
             // navigate ke add book
-          }
-          else if (value == 4)
-          {
+          } else if (value == 4) {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ProfilePage(),
@@ -162,7 +187,6 @@ class _BookmarkPageState extends State<BookmarkPage> {
           });
         },
       ),
-    
     );
   }
 }
