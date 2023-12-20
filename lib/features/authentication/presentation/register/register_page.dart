@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -6,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/login/login_page.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -144,7 +145,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                         ),
                       );
-                      print(response);
                       if (response['status'] == true) {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const LoginPage(),
@@ -161,19 +161,19 @@ class _RegisterPageState extends State<RegisterPage> {
                               backgroundColor: Colors.white,
                               margin: EdgeInsets.fromLTRB(width * 0.1,
                                   height * 0.1, width * 0.1, height * 0.75),
-                              content: Row(
+                              content: const Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.check,
                                     color: Colors.green,
                                   ),
-                                  const SizedBox(
+                                  SizedBox(
                                     width: 16,
                                   ),
                                   Text(
                                     "Register berhasil! ",
-                                    style: const TextStyle(color: Colors.black),
+                                    style: TextStyle(color: Colors.black),
                                   ),
                                 ],
                               ),
@@ -191,19 +191,19 @@ class _RegisterPageState extends State<RegisterPage> {
                               backgroundColor: Colors.white,
                               margin: EdgeInsets.fromLTRB(width * 0.1,
                                   height * 0.1, width * 0.1, height * 0.75),
-                              content: Row(
+                              content: const Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.close,
                                     color: Colors.red,
                                   ),
-                                  const SizedBox(
+                                  SizedBox(
                                     width: 16,
                                   ),
                                   Text(
                                     "Register gagal! ",
-                                    style: const TextStyle(color: Colors.black),
+                                    style: TextStyle(color: Colors.black),
                                   ),
                                 ],
                               ),
