@@ -1,7 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:ulas_buku_mobile/core/environments/endpoints.dart';
 import 'package:ulas_buku_mobile/core/widgets/ub_button.dart';
 import 'package:ulas_buku_mobile/features/authentication/presentation/register/register_page.dart';
-import 'package:ulas_buku_mobile/features/home/presentation/home_page.dart';
+import 'package:ulas_buku_mobile/features/home/presentation/pages/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -95,10 +101,114 @@ class _LoginPageState extends State<LoginPage> {
                     primaryColor: Colors.black,
                     secondaryColor: Colors.white,
                     alignment: MainAxisAlignment.center,
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const HomePage(),
-                      ));
+                    onTap: () async {
+                      String username = _usernameController.text;
+                      String password = _passwordController.text;
+
+                      // Cek kredensial
+                      final response = await request.login(EndPoints.login, {
+                        'username': username,
+                        'password': password,
+                      });
+
+                      if (request.loggedIn) {
+                        String uname = response['username'];
+                        bool isStaff = response['is_staff'][0];
+
+                        if (isStaff) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage(isAdmin: true,)),
+                          );
+
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              SnackBar(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.white,
+                                margin: EdgeInsets.fromLTRB(width * 0.1,
+                                    height * 0.1, width * 0.1, height * 0.75),
+                                content: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                    ),
+                                    const SizedBox(
+                                      width: 16,
+                                    ),
+                                    Text(
+                                      "Selamat datang, $uname.",
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                        
+                        } 
+                        else {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomePage(isAdmin: false,)),
+                          );
+
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              SnackBar(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.white,
+                                margin: EdgeInsets.fromLTRB(width * 0.1,
+                                    height * 0.1, width * 0.1, height * 0.75),
+                                content: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                    ),
+                                    const SizedBox(
+                                      width: 16,
+                                    ),
+                                    Text(
+                                      "Selamat datang, $uname.",
+                                      style:
+                                          const TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                        }
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Login Gagal'),
+                            content: Text(response['message']),
+                            actions: [
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     },
                   ),
                   Row(

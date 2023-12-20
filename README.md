@@ -2,7 +2,6 @@
 [![Pre-Release](https://github.com/yps-a04/ulasbuku_mobile/actions/workflows/pre-release.yml/badge.svg)](https://github.com/yps-a04/ulasbuku_mobile/actions/workflows/pre-release.yml)
 [![Release](https://github.com/yps-a04/ulasbuku_mobile/actions/workflows/release.yml/badge.svg)](https://github.com/yps-a04/ulasbuku_mobile/actions/workflows/release.yml)
 [![Build status](https://build.appcenter.ms/v0.1/apps/c458ebb8-218a-4fa7-93b2-5d27c6dd9dea/branches/main/badge)](https://appcenter.ms)
-
 # UlasBuku: Project Tugas Kelompok A04 PBP
 - Link Repository: [Click](https://github.com/yps-a04/ulasbuku_mobile)
 - Link *Website* Proyek UTS: (soon)
@@ -40,7 +39,7 @@ Tema yang kami gunakan adalah **<i>aplikasi review</i> buku**
 - Menambahkan fitur search
 - menambahkan fitur sort
 
-#### Modul <code>book_details</code> by Yasmin Putri Viryadhani:
+#### Modul <code>book_details</code> by Yasmine Putri Viryadhani:
 - Menampilkan detail buku beserta reviewnya
 - Menambahkan fitur *add review*
 
@@ -59,7 +58,7 @@ Tema yang kami gunakan adalah **<i>aplikasi review</i> buku**
 - Menambahkan fitur add/delete/edit buku
 - Menambahkan fitur delete user
 
-## Sumber <i>dataset</i> katalog buku
+## Sumber <i>dataset</i> katalog buku 
 - Kelompok kami menggunakan **Kaggle** sebagai sumber dataset buku-buku yang tersedia di UlasBuku
 - Dataset Kaggle yang kami pilih bersumber dari **GoodReads** dan **Amazon**
     - [Goodreads](https://www.kaggle.com/datasets/jealousleopard/goodreadsbooks)
